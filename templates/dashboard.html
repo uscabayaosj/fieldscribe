@@ -1,10 +1,10 @@
 {% extends "base.html" %}
 
-{% block title %}Dashboard{% endblock %}
+{% block title %}FieldScribe Pro Dashboard{% endblock %}
 
 {% block content %}
 <div class="container mx-auto px-4">
-    <h1 class="text-3xl font-bold mb-6">Your Journal Entries</h1>
+    <h1 class="text-3xl font-bold mb-6">Your Fieldnote Entries</h1>
     
     <a href="{{ url_for('entries.new_entry') }}" class="btn-primary mb-4 inline-block">Create New Entry</a>
     
@@ -33,7 +33,7 @@
             {% endfor %}
         </div>
     {% else %}
-        <p class="text-gray-600">You don't have any journal entries yet. Start by creating a new entry!</p>
+        <p class="text-gray-600">You don't have any fieldnote entries yet. Start by creating a new entry!</p>
     {% endif %}
 </div>
 

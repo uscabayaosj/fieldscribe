@@ -3,14 +3,14 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>{% block title %}Journal App{% endblock %}</title>
+    <title>{% block title %}FieldScribe Pro{% endblock %}</title>
     <link rel="stylesheet" href="{{ url_for('static', filename='css/tailwind.css') }}">
     <script src="https://cdn.jsdelivr.net/npm/feather-icons/dist/feather.min.js"></script>
 </head>
 <body class="bg-gray-100 min-h-screen flex flex-col">
     <header class="bg-blue-600 text-white">
         <nav class="container mx-auto px-4 py-4 flex justify-between items-center">
-            <a href="{{ url_for('entries.dashboard') }}" class="text-2xl font-bold">Journal App</a>
+            <a href="{{ url_for('entries.dashboard') }}" class="text-2xl font-bold">FieldScribe Pro</a>
             <button id="nav-toggle" class="md:hidden">
                 <i data-feather="menu"></i>
             </button>
@@ -43,7 +43,7 @@
 
     <footer class="bg-gray-800 text-white py-4">
         <div class="container mx-auto px-4 text-center">
-            &copy; 2023 Journal App. All rights reserved.
+            &copy; 2024 FieldScribe Pro. All rights reserved.
         </div>
     </footer>
 
