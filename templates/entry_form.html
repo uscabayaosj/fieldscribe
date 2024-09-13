@@ -1,0 +1,32 @@
+{% extends "base.html" %}
+
+{% block title %}{% if entry %}Edit Entry{% else %}New Entry{% endif %}{% endblock %}
+
+{% block content %}
+<div class="max-w-2xl mx-auto">
+    <h1 class="text-3xl font-bold mb-6">{% if entry %}Edit Entry{% else %}New Entry{% endif %}</h1>
+    <form method="POST" action="{{ url_for('entries.edit_entry', id=entry.id) if entry else url_for('entries.new_entry') }}" class="space-y-4">
+        <div>
+            <label for="title" class="block text-sm font-medium text-gray-700">Title</label>
+            <input type="text" name="title" id="title" required class="mt-1 block w-full rounded-md border-gray-300 shadow-sm focus:border-indigo-300 focus:ring focus:ring-indigo-200 focus:ring-opacity-50" value="{{ entry.title if entry else '' }}">
+        </div>
+        <div>
+            <label for="content" class="block text-sm font-medium text-gray-700">Content</label>
+            <textarea name="content" id="content" rows="5" required class="mt-1 block w-full rounded-md border-gray-300 shadow-sm focus:border-indigo-300 focus:ring focus:ring-indigo-200 focus:ring-opacity-50">{{ entry.content if entry else '' }}</textarea>
+        </div>
+        <div>
+            <label for="location" class="block text-sm font-medium text-gray-700">Location</label>
+            <input type="text" name="location" id="location" class="mt-1 block w-full rounded-md border-gray-300 shadow-sm focus:border-indigo-300 focus:ring focus:ring-indigo-200 focus:ring-opacity-50" value="{{ entry.location if entry else '' }}">
+        </div>
+        <div>
+            <label for="tags" class="block text-sm font-medium text-gray-700">Tags (separate by commas)</label>
+            <input type="text" name="tags" id="tags" class="mt-1 block w-full rounded-md border-gray-300 shadow-sm focus:border-indigo-300 focus:ring focus:ring-indigo-200 focus:ring-opacity-50" value="{{ entry.tags|join(', ') if entry and entry.tags else '' }}">
+        </div>
+        <div>
+            <button type="submit" class="inline-flex items-center px-4 py-2 border border-transparent text-sm font-medium rounded-md shadow-sm text-white bg-indigo-600 hover:bg-indigo-700 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-indigo-500">
+                {% if entry %}Update Entry{% else %}Create Entry{% endif %}
+            </button>
+        </div>
+    </form>
+</div>
+{% endblock %}

@@ -1,4 +1,4 @@
-from flask import Blueprint, render_template, redirect, url_for, request, jsonify
+from flask import Blueprint, render_template, redirect, url_for, request, jsonify, flash, abort
 from flask_login import login_required, current_user
 from models import Entry, Tag, Media
 from __init__ import db
@@ -33,6 +33,7 @@ def new_entry():
         db.session.add(entry)
         db.session.commit()
         
+        flash('New entry created successfully!', 'success')
         return redirect(url_for('entries.dashboard'))
     
     return render_template('entry_form.html')
@@ -42,7 +43,7 @@ def new_entry():
 def view_entry(id):
     entry = Entry.query.get_or_404(id)
     if entry.user_id != current_user.id:
-        return jsonify({'error': 'Unauthorized'}), 403
+        abort(403)
     return render_template('entry_detail.html', entry=entry)
 
 @bp.route('/entry/<int:id>/edit', methods=['GET', 'POST'])
@@ -50,7 +51,7 @@ def view_entry(id):
 def edit_entry(id):
     entry = Entry.query.get_or_404(id)
     if entry.user_id != current_user.id:
-        return jsonify({'error': 'Unauthorized'}), 403
+        abort(403)
     
     if request.method == 'POST':
         entry.title = request.form['title']
@@ -66,6 +67,7 @@ def edit_entry(id):
             entry.tags.append(tag)
         
         db.session.commit()
+        flash('Entry updated successfully!', 'success')
         return redirect(url_for('entries.view_entry', id=entry.id))
     
     return render_template('entry_form.html', entry=entry)
@@ -75,10 +77,11 @@ def edit_entry(id):
 def delete_entry(id):
     entry = Entry.query.get_or_404(id)
     if entry.user_id != current_user.id:
-        return jsonify({'error': 'Unauthorized'}), 403
+        abort(403)
     
     db.session.delete(entry)
     db.session.commit()
+    flash('Entry deleted successfully!', 'success')
     return redirect(url_for('entries.dashboard'))
 
 @bp.route('/entry/<int:id>/export')
@@ -86,7 +89,7 @@ def delete_entry(id):
 def export_entry(id):
     entry = Entry.query.get_or_404(id)
     if entry.user_id != current_user.id:
-        return jsonify({'error': 'Unauthorized'}), 403
+        abort(403)
     
     pdf_content = generate_pdf(entry)
     return pdf_content, 200, {'Content-Type': 'application/pdf'}
@@ -96,7 +99,17 @@ def export_entry(id):
 def share_entry(id):
     entry = Entry.query.get_or_404(id)
     if entry.user_id != current_user.id:
-        return jsonify({'error': 'Unauthorized'}), 403
+        abort(403)
     
     share_url = url_for('entries.view_entry', id=entry.id, _external=True)
     return jsonify({'share_url': share_url})
+
+@bp.errorhandler(403)
+def forbidden_error(error):
+    flash('You do not have permission to access this resource.', 'error')
+    return redirect(url_for('entries.dashboard'))
+
+@bp.errorhandler(404)
+def not_found_error(error):
+    flash('The requested resource was not found.', 'error')
+    return redirect(url_for('entries.dashboard'))
