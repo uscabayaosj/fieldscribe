@@ -21,6 +21,7 @@ class Entry(db.Model):
     title = db.Column(db.String(100), nullable=False)
     content = db.Column(db.Text, nullable=False)
     date = db.Column(db.DateTime, default=datetime.utcnow)
+    timestamp = db.Column(db.DateTime, default=datetime.utcnow)
     location = db.Column(db.String(100))
     user_id = db.Column(db.Integer, db.ForeignKey('user.id'), nullable=False)
     media = db.relationship('Media', backref='entry', lazy='dynamic')

@@ -1,9 +1,11 @@
-from flask import Blueprint, render_template, redirect, url_for, request, jsonify, flash, abort
+from flask import Blueprint, render_template, redirect, url_for, request, jsonify, flash, abort, current_app
 from flask_login import login_required, current_user
 from models import Entry, Tag, Media
 from __init__ import db
 from utils.pdf_generator import generate_pdf
 import json
+import logging
+from datetime import datetime
 
 bp = Blueprint('entries', __name__)
 
@@ -23,6 +25,7 @@ def new_entry():
         tags = request.form.getlist('tags')
         
         entry = Entry(title=title, content=content, location=location, user_id=current_user.id)
+        entry.timestamp = datetime.utcnow()
         
         for tag_name in tags:
             tag = Tag.query.filter_by(name=tag_name).first()
@@ -57,14 +60,27 @@ def edit_entry(id):
         entry.title = request.form['title']
         entry.content = request.form['content']
         entry.location = request.form['location']
+        entry.timestamp = datetime.utcnow()
         
-        entry.tags.clear()
-        tags = request.form.getlist('tags')
-        for tag_name in tags:
+        # Get the list of tag names from the form
+        new_tag_names = request.form.get('tags', '').split(',')
+        new_tag_names = [tag.strip() for tag in new_tag_names if tag.strip()]
+
+        # Get the existing tags for the entry
+        existing_tags = entry.tags
+
+        # Remove tags that are not in the new list
+        for tag in existing_tags:
+            if tag.name not in new_tag_names:
+                entry.tags.remove(tag)
+
+        # Add new tags
+        for tag_name in new_tag_names:
             tag = Tag.query.filter_by(name=tag_name).first()
             if not tag:
                 tag = Tag(name=tag_name)
-            entry.tags.append(tag)
+            if tag not in entry.tags:
+                entry.tags.append(tag)
         
         db.session.commit()
         flash('Entry updated successfully!', 'success')
@@ -91,8 +107,14 @@ def export_entry(id):
     if entry.user_id != current_user.id:
         abort(403)
     
-    pdf_content = generate_pdf(entry)
-    return pdf_content, 200, {'Content-Type': 'application/pdf'}
+    try:
+        user_timezone = request.args.get('timezone', 'UTC')
+        pdf_content = generate_pdf(entry, user_timezone)
+        return pdf_content, 200, {'Content-Type': 'application/pdf'}
+    except Exception as e:
+        current_app.logger.error(f"Error generating PDF for entry {id}: {str(e)}")
+        flash('An error occurred while generating the PDF. Please try again later.', 'error')
+        return redirect(url_for('entries.view_entry', id=entry.id))
 
 @bp.route('/entry/<int:id>/share', methods=['POST'])
 @login_required

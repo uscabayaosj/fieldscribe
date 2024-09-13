@@ -23,7 +23,7 @@
             {% for entry in entries %}
                 <div class="bg-white shadow-md rounded-lg p-6">
                     <h2 class="text-xl font-semibold mb-2">{{ entry.title }}</h2>
-                    <p class="text-gray-600 mb-2">{{ entry.date.strftime('%B %d, %Y') }}</p>
+                    <p class="text-gray-600 mb-2">Date: <span class="local-time" data-utc="{{ entry.timestamp.isoformat() if entry.timestamp else entry.date.isoformat() }}"></span></p>
                     <p class="mb-4">{{ entry.content[:100] }}{% if entry.content|length > 100 %}...{% endif %}</p>
                     <div class="flex justify-between">
                         <a href="{{ url_for('entries.view_entry', id=entry.id) }}" class="text-blue-500 hover:text-blue-700">Read more</a>
@@ -36,4 +36,21 @@
         <p class="text-gray-600">You don't have any journal entries yet. Start by creating a new entry!</p>
     {% endif %}
 </div>
+
+<script>
+document.addEventListener('DOMContentLoaded', function() {
+    document.querySelectorAll('.local-time').forEach(function(el) {
+        var utcTime = new Date(el.dataset.utc + 'Z');  // Append 'Z' to ensure UTC interpretation
+        el.textContent = utcTime.toLocaleString(undefined, {
+            year: 'numeric',
+            month: 'long',
+            day: 'numeric',
+            hour: '2-digit',
+            minute: '2-digit',
+            hour12: true,
+            timeZoneName: 'short'
+        });
+    });
+});
+</script>
 {% endblock %}

@@ -1,0 +1,56 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>{{ entry.title }} - Journal Entry</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            line-height: 1.6;
+            color: #333;
+        }
+        h1 {
+            color: #2c3e50;
+        }
+        .metadata {
+            color: #7f8c8d;
+            margin-bottom: 20px;
+        }
+        .content {
+            margin-bottom: 20px;
+        }
+        .tags {
+            margin-top: 20px;
+        }
+        .tag {
+            background-color: #ecf0f1;
+            color: #2c3e50;
+            padding: 5px 10px;
+            border-radius: 20px;
+            display: inline-block;
+            margin-right: 5px;
+        }
+    </style>
+</head>
+<body>
+    <h1>{{ entry.title }}</h1>
+    <div class="metadata">
+        <p>Date: {{ entry.formatted_timestamp }}</p>
+        {% if entry.location %}
+        <p>Location: {{ entry.location }}</p>
+        {% endif %}
+    </div>
+    <div class="content">
+        {{ entry.content }}
+    </div>
+    {% if entry.tags %}
+    <div class="tags">
+        <h2>Tags:</h2>
+        {% for tag in entry.tags %}
+        <span class="tag">{{ tag.name }}</span>
+        {% endfor %}
+    </div>
+    {% endif %}
+</body>
+</html>

@@ -1,0 +1,111 @@
+{% extends "base.html" %}
+
+{% block title %}{{ entry.title }}{% endblock %}
+
+{% block content %}
+<div class="max-w-3xl mx-auto">
+    <h1 class="text-3xl font-bold mb-4">{{ entry.title }}</h1>
+    <p class="text-gray-600 mb-4">Date: <span class="local-time" data-utc="{{ entry.timestamp.isoformat() if entry.timestamp else entry.date.isoformat() }}"></span></p>
+    
+    {% if entry.location %}
+    <p class="text-gray-600 mb-4"><i class="fas fa-map-marker-alt"></i> {{ entry.location }}</p>
+    {% endif %}
+    
+    <div class="bg-white shadow-md rounded-lg p-6 mb-6">
+        <p class="whitespace-pre-wrap">{{ entry.content }}</p>
+    </div>
+    
+    {% if entry.tags %}
+    <div class="mb-6">
+        <h2 class="text-xl font-semibold mb-2">Tags:</h2>
+        <div class="flex flex-wrap gap-2">
+            {% for tag in entry.tags %}
+            <span class="bg-blue-100 text-blue-800 px-2 py-1 rounded-full text-sm">{{ tag.name }}</span>
+            {% endfor %}
+        </div>
+    </div>
+    {% endif %}
+    
+    {% if entry.media %}
+    <div class="mb-6">
+        <h2 class="text-xl font-semibold mb-2">Media:</h2>
+        <div class="grid grid-cols-2 md:grid-cols-3 gap-4">
+            {% for media in entry.media %}
+            <div class="media-item">
+                {% if media.media_type in ['jpg', 'jpeg', 'png', 'gif'] %}
+                <img src="{{ url_for('static', filename='uploads/' + media.filename) }}" alt="Entry media" class="w-full h-auto rounded-lg">
+                {% elif media.media_type == 'mp3' %}
+                <audio controls src="{{ url_for('static', filename='uploads/' + media.filename) }}" class="w-full"></audio>
+                {% elif media.media_type == 'mp4' %}
+                <video controls src="{{ url_for('static', filename='uploads/' + media.filename) }}" class="w-full h-auto rounded-lg"></video>
+                {% endif %}
+            </div>
+            {% endfor %}
+        </div>
+    </div>
+    {% endif %}
+    
+    <div class="flex justify-between items-center">
+        <div>
+            <a href="{{ url_for('entries.edit_entry', id=entry.id) }}" class="btn-primary mr-2">Edit</a>
+            <button onclick="deleteEntry()" class="btn-danger">Delete</button>
+        </div>
+        <div>
+            <button onclick="shareEntry()" class="btn-primary mr-2">Share</button>
+            <a href="{{ url_for('entries.export_entry', id=entry.id) }}?timezone=" class="btn-primary" target="_blank" id="exportBtn">Export</a>
+        </div>
+    </div>
+</div>
+
+<script>
+function deleteEntry() {
+    if (confirm('Are you sure you want to delete this entry?')) {
+        fetch('{{ url_for("entries.delete_entry", id=entry.id) }}', {
+            method: 'POST',
+        }).then(response => {
+            if (response.ok) {
+                window.location.href = '{{ url_for("entries.dashboard") }}';
+            } else {
+                alert('Failed to delete entry');
+            }
+        });
+    }
+}
+
+function shareEntry() {
+    fetch('{{ url_for("entries.share_entry", id=entry.id) }}', {
+        method: 'POST',
+    }).then(response => response.json())
+    .then(data => {
+        if (data.share_url) {
+            navigator.clipboard.writeText(data.share_url);
+            alert('Share link copied to clipboard');
+        } else {
+            alert('Failed to generate share link');
+        }
+    });
+}
+
+document.addEventListener('DOMContentLoaded', function() {
+    document.querySelectorAll('.local-time').forEach(function(el) {
+        var utcTime = new Date(el.dataset.utc + 'Z');  // Append 'Z' to ensure UTC interpretation
+        el.textContent = utcTime.toLocaleString(undefined, {
+            year: 'numeric',
+            month: 'long',
+            day: 'numeric',
+            hour: '2-digit',
+            minute: '2-digit',
+            hour12: true,
+            timeZoneName: 'short'
+        });
+    });
+
+    // Update the Export button with the user's timezone
+    var exportBtn = document.getElementById('exportBtn');
+    if (exportBtn) {
+        var userTimezone = Intl.DateTimeFormat().resolvedOptions().timeZone;
+        exportBtn.href += userTimezone;
+    }
+});
+</script>
+{% endblock %}

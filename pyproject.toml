@@ -13,6 +13,7 @@ flask-login = "^0.6.3"
 werkzeug = "^3.0.4"
 psycopg2-binary = "^2.9.9"
 weasyprint = "^62.3"
+pytz = "^2024.2"
 
 
 [build-system]
