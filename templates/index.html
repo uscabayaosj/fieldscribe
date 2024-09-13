@@ -1,0 +1,14 @@
+{% extends "base.html" %}
+
+{% block title %}Welcome to Journal App{% endblock %}
+
+{% block content %}
+<div class="text-center">
+    <h1 class="text-4xl font-bold mb-4">Welcome to Journal App</h1>
+    <p class="text-xl mb-8">Capture your thoughts, memories, and experiences with ease.</p>
+    <div class="space-x-4">
+        <a href="{{ url_for('auth.login') }}" class="btn-primary">Login</a>
+        <a href="{{ url_for('auth.register') }}" class="btn-primary">Register</a>
+    </div>
+</div>
+{% endblock %}

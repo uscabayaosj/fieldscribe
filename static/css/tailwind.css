@@ -1,0 +1,18 @@
+@import 'https://cdn.jsdelivr.net/npm/tailwindcss@2.2.19/dist/tailwind.min.css';
+
+/* Custom styles */
+.journal-entry {
+    @apply bg-white shadow-md rounded-lg p-6 mb-4;
+}
+
+.entry-form {
+    @apply max-w-2xl mx-auto bg-white shadow-md rounded-lg p-8;
+}
+
+.btn-primary {
+    @apply bg-blue-500 hover:bg-blue-600 text-white font-bold py-2 px-4 rounded;
+}
+
+.btn-danger {
+    @apply bg-red-500 hover:bg-red-600 text-white font-bold py-2 px-4 rounded;
+}
