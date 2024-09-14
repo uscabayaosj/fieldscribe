@@ -10,20 +10,18 @@
     
     {% with messages = get_flashed_messages(with_categories=true) %}
         {% if messages %}
-            <div class="space-y-4">
-                {% for category, message in messages %}
-                    <div class="bg-{{ 'green' if category == 'success' else 'red' }}-100 border border-{{ 'green' if category == 'success' else 'red' }}-400 text-{{ 'green' if category == 'success' else 'red' }}-700 px-4 py-3 rounded relative mb-4" role="alert">
-                        <span class="block sm:inline font-medium">{{ message }}</span>
-                    </div>
-                {% endfor %}
-            </div>
+            {% for category, message in messages %}
+                <div class="bg-{{ 'green' if category == 'success' else 'red' }}-100 border border-{{ 'green' if category == 'success' else 'red' }}-400 text-{{ 'green' if category == 'success' else 'red' }}-700 px-4 py-3 rounded relative mb-4" role="alert">
+                    <span class="block sm:inline">{{ message }}</span>
+                </div>
+            {% endfor %}
         {% endif %}
     {% endwith %}
 
     {% if entries %}
-        <div class="grid gap-8 grid-cols-1 md:grid-cols-2 lg:grid-cols-3">
+        <div class="grid gap-4 grid-cols-1 md:grid-cols-2 lg:grid-cols-3">
             {% for entry in entries %}
-                <div class="bg-white shadow-md rounded-lg p-6 space-y-4">
+                <div class="bg-white shadow-md rounded-lg p-6">
                     <h2 class="text-xl font-semibold mb-2">{{ entry.title }}</h2>
                     <p class="text-gray-600 mb-2">Date: <span class="local-time" data-utc="{{ entry.timestamp.isoformat() if entry.timestamp else entry.date.isoformat() }}"></span></p>
                     <p class="mb-4">{{ entry.content[:100] }}{% if entry.content|length > 100 %}...{% endif %}</p>

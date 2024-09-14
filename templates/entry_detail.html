@@ -3,32 +3,32 @@
 {% block title %}{{ entry.title }}{% endblock %}
 
 {% block content %}
-<section class="max-w-3xl mx-auto py-8">
-    <header class="mb-6">
-        <h1 class="text-4xl font-bold mb-2">{{ entry.title }}</h1>
-        <p class="text-gray-500 mb-1">Date: <span class="local-time" data-utc="{{ entry.timestamp.isoformat() if entry.timestamp else entry.date.isoformat() }}"></span></p>
-        {% if entry.location %}
-        <p class="text-gray-500"><i class="fas fa-map-marker-alt"></i> {{ entry.location }}</p>
-        {% endif %}
-    </header>
-    <article class="bg-white shadow-md rounded-lg p-6 mb-8">
-        <p class="whitespace-pre-wrap leading-relaxed">{{ entry.content }}</p>
-    </article>
+<div class="max-w-3xl mx-auto">
+    <h1 class="text-3xl font-bold mb-4">{{ entry.title }}</h1>
+    <p class="text-gray-600 mb-4">Date: <span class="local-time" data-utc="{{ entry.timestamp.isoformat() if entry.timestamp else entry.date.isoformat() }}"></span></p>
+    
+    {% if entry.location %}
+    <p class="text-gray-600 mb-4"><i class="fas fa-map-marker-alt"></i> {{ entry.location }}</p>
+    {% endif %}
+    
+    <div class="bg-white shadow-md rounded-lg p-6 mb-6">
+        <p class="whitespace-pre-wrap">{{ entry.content }}</p>
+    </div>
     
     {% if entry.tags %}
-    <section class="mb-8">
-        <h2 class="text-2xl font-semibold mb-2">Tags:</h2>
-        <div class="flex flex-wrap gap-3">
+    <div class="mb-6">
+        <h2 class="text-xl font-semibold mb-2">Tags:</h2>
+        <div class="flex flex-wrap gap-2">
             {% for tag in entry.tags %}
-            <span class="bg-blue-100 text-blue-800 px-3 py-1 rounded-full text-sm">{{ tag.name }}</span>
+            <span class="bg-blue-100 text-blue-800 px-2 py-1 rounded-full text-sm">{{ tag.name }}</span>
             {% endfor %}
         </div>
-    </section>
+    </div>
     {% endif %}
     
     {% if entry.media %}
-    <section class="mb-8">
-        <h2 class="text-2xl font-semibold mb-2">Media:</h2>
+    <div class="mb-6">
+        <h2 class="text-xl font-semibold mb-2">Media:</h2>
         <div class="grid grid-cols-2 md:grid-cols-3 gap-4">
             {% for media in entry.media %}
             <div class="media-item">
@@ -42,10 +42,10 @@
             </div>
             {% endfor %}
         </div>
-    </section>
+    </div>
     {% endif %}
     
-    <footer class="flex justify-between items-center">
+    <div class="flex justify-between items-center">
         <div>
             <a href="{{ url_for('entries.edit_entry', id=entry.id) }}" class="btn-primary mr-2">Edit</a>
             <button onclick="deleteEntry()" class="btn-danger">Delete</button>
@@ -54,8 +54,8 @@
             <button onclick="shareEntry()" class="btn-primary mr-2">Share</button>
             <a href="{{ url_for('entries.export_entry', id=entry.id) }}?timezone=" class="btn-primary" target="_blank" id="exportBtn">Export</a>
         </div>
-    </footer>
-</section>
+    </div>
+</div>
 
 <script>
 function deleteEntry() {
