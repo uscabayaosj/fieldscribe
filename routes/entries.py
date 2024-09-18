@@ -6,6 +6,8 @@ from utils.pdf_generator import generate_pdf
 import json
 import logging
 from datetime import datetime
+from werkzeug.utils import secure_filename
+import os
 
 bp = Blueprint('entries', __name__)
 
@@ -32,6 +34,18 @@ def new_entry():
             if not tag:
                 tag = Tag(name=tag_name)
             entry.tags.append(tag)
+        
+        # Handle photo upload
+        if 'photo' in request.files:
+            photo = request.files['photo']
+            if photo.filename != '':
+                filename = secure_filename(photo.filename)
+                upload_dir = os.path.join(current_app.root_path, 'static', 'uploads')
+                os.makedirs(upload_dir, exist_ok=True)
+                photo_path = os.path.join(upload_dir, filename)
+                photo.save(photo_path)
+                media = Media(filename=filename, media_type='image', entry=entry)
+                db.session.add(media)
         
         db.session.add(entry)
         db.session.commit()
@@ -81,6 +95,18 @@ def edit_entry(id):
                 tag = Tag(name=tag_name)
             if tag not in entry.tags:
                 entry.tags.append(tag)
+        
+        # Handle photo upload
+        if 'photo' in request.files:
+            photo = request.files['photo']
+            if photo.filename != '':
+                filename = secure_filename(photo.filename)
+                upload_dir = os.path.join(current_app.root_path, 'static', 'uploads')
+                os.makedirs(upload_dir, exist_ok=True)
+                photo_path = os.path.join(upload_dir, filename)
+                photo.save(photo_path)
+                media = Media(filename=filename, media_type='image', entry=entry)
+                db.session.add(media)
         
         db.session.commit()
         flash('Entry updated successfully!', 'success')

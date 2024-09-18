@@ -1,10 +1,12 @@
 import React, { useState, useEffect } from 'react';
-import { View, Text, TextInput, TouchableOpacity, StyleSheet } from 'react-native';
+import { View, Text, TextInput, TouchableOpacity, StyleSheet, Image } from 'react-native';
+import * as ImagePicker from 'expo-image-picker';
 
 const EntryFormScreen = ({ route, navigation }) => {
   const [title, setTitle] = useState('');
   const [content, setContent] = useState('');
   const [location, setLocation] = useState('');
+  const [photo, setPhoto] = useState(null);
 
   const entryId = route.params?.entryId;
 
@@ -18,10 +20,57 @@ const EntryFormScreen = ({ route, navigation }) => {
     }
   }, [entryId]);
 
-  const handleSave = () => {
+  const handleSave = async () => {
     // TODO: Implement save functionality
-    console.log('Saving entry:', { title, content, location });
-    navigation.goBack();
+    const formData = new FormData();
+    formData.append('title', title);
+    formData.append('content', content);
+    formData.append('location', location);
+    if (photo) {
+      formData.append('photo', {
+        uri: photo,
+        type: 'image/jpeg',
+        name: 'photo.jpg',
+      });
+    }
+
+    try {
+      const response = await fetch('YOUR_API_ENDPOINT', {
+        method: 'POST',
+        body: formData,
+        headers: {
+          'Content-Type': 'multipart/form-data',
+        },
+      });
+
+      if (response.ok) {
+        console.log('Entry saved successfully');
+        navigation.goBack();
+      } else {
+        console.error('Failed to save entry');
+      }
+    } catch (error) {
+      console.error('Error saving entry:', error);
+    }
+  };
+
+  const handleTakePhoto = async () => {
+    const permissionResult = await ImagePicker.requestCameraPermissionsAsync();
+    
+    if (permissionResult.granted === false) {
+      alert("You've refused to allow this app to access your camera!");
+      return;
+    }
+
+    const result = await ImagePicker.launchCameraAsync({
+      allowsEditing: true,
+      aspect: [4, 3],
+      quality: 1,
+    });
+
+    if (!result.canceled) {
+      setPhoto(result.assets[0].uri);
+    }
   };
 
   return (
@@ -46,6 +95,10 @@ const EntryFormScreen = ({ route, navigation }) => {
         value={location}
         onChangeText={setLocation}
       />
+      <TouchableOpacity style={styles.button} onPress={handleTakePhoto}>
+        <Text style={styles.buttonText}>Take Photo</Text>
+      </TouchableOpacity>
+      {photo && <Image source={{ uri: photo }} style={styles.photo} />}
       <TouchableOpacity style={styles.button} onPress={handleSave}>
         <Text style={styles.buttonText}>Save Entry</Text>
       </TouchableOpacity>
@@ -84,6 +137,12 @@ const styles = StyleSheet.create({
   buttonText: {
     color: 'white',
     fontSize: 16,
+  },
+  photo: {
+    width: '100%',
+    height: 200,
+    resizeMode: 'cover',
+    marginTop: 20,
   },
 });
 

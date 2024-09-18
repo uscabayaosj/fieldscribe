@@ -32,11 +32,11 @@
         <div class="grid grid-cols-2 md:grid-cols-3 gap-4">
             {% for media in entry.media %}
             <div class="media-item">
-                {% if media.media_type in ['jpg', 'jpeg', 'png', 'gif'] %}
+                {% if media.media_type == 'image' %}
                 <img src="{{ url_for('static', filename='uploads/' + media.filename) }}" alt="Entry media" class="w-full h-auto rounded-lg">
-                {% elif media.media_type == 'mp3' %}
+                {% elif media.media_type == 'audio' %}
                 <audio controls src="{{ url_for('static', filename='uploads/' + media.filename) }}" class="w-full"></audio>
-                {% elif media.media_type == 'mp4' %}
+                {% elif media.media_type == 'video' %}
                 <video controls src="{{ url_for('static', filename='uploads/' + media.filename) }}" class="w-full h-auto rounded-lg"></video>
                 {% endif %}
             </div>

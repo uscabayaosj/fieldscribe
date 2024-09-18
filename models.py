@@ -24,7 +24,7 @@ class Entry(db.Model):
     timestamp = db.Column(db.DateTime, default=datetime.utcnow)
     location = db.Column(db.String(100))
     user_id = db.Column(db.Integer, db.ForeignKey('user.id'), nullable=False)
-    media = db.relationship('Media', backref='entry', lazy='dynamic')
+    media = db.relationship('Media', backref='entry', lazy='dynamic', cascade='all, delete-orphan')
     tags = db.relationship('Tag', secondary='entry_tags', backref=db.backref('entries', lazy='dynamic'))
 
 class Media(db.Model):
