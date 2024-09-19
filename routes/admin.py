@@ -12,7 +12,10 @@ def require_admin():
         abort(403)
 
 @bp.route('/dashboard')
+@login_required
 def admin_dashboard():
+    if not current_user.is_admin:
+        abort(403)
     return render_template('admin/dashboard.html')
 
 @bp.route('/users')
