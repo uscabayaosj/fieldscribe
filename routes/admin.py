@@ -11,7 +11,7 @@ def require_admin():
     if not current_user.is_admin:
         abort(403)
 
-@bp.route('/')
+@bp.route('/dashboard')
 def admin_dashboard():
     return render_template('admin/dashboard.html')
 

@@ -18,6 +18,9 @@
                 {% if current_user.is_authenticated %}
                     <li><a href="{{ url_for('entries.dashboard') }}" class="hover:text-blue-200">Dashboard</a></li>
                     <li><a href="{{ url_for('entries.new_entry') }}" class="hover:text-blue-200">New Entry</a></li>
+                    {% if current_user.is_admin %}
+                        <li><a href="{{ url_for('admin.admin_dashboard') }}" class="hover:text-blue-200">Admin</a></li>
+                    {% endif %}
                     <li><a href="{{ url_for('auth.logout') }}" class="hover:text-blue-200">Logout</a></li>
                 {% else %}
                     <li><a href="{{ url_for('auth.login') }}" class="hover:text-blue-200">Login</a></li>
