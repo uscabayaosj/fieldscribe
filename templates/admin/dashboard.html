@@ -1,0 +1,21 @@
+{% extends "base.html" %}
+
+{% block title %}Admin Dashboard{% endblock %}
+
+{% block content %}
+<div class="container mx-auto px-4 py-8">
+    <h1 class="text-3xl font-bold mb-6">Admin Dashboard</h1>
+    <div class="grid grid-cols-1 md:grid-cols-2 gap-6">
+        <div class="bg-white shadow-md rounded-lg p-6">
+            <h2 class="text-xl font-semibold mb-4">User Management</h2>
+            <p class="mb-4">Manage user accounts and permissions.</p>
+            <a href="{{ url_for('admin.manage_users') }}" class="btn-primary">Manage Users</a>
+        </div>
+        <div class="bg-white shadow-md rounded-lg p-6">
+            <h2 class="text-xl font-semibold mb-4">Entry Management</h2>
+            <p class="mb-4">View and manage all journal entries.</p>
+            <a href="{{ url_for('admin.manage_entries') }}" class="btn-primary">Manage Entries</a>
+        </div>
+    </div>
+</div>
+{% endblock %}

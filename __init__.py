@@ -25,10 +25,11 @@ def create_app():
             with db.engine.connect() as connection:
                 connection.execute(sa.text('ALTER TABLE entry ADD COLUMN timestamp DATETIME'))
 
-    from routes import auth, entries, media
+    from routes import auth, entries, media, admin
     app.register_blueprint(auth.bp)
     app.register_blueprint(entries.bp)
     app.register_blueprint(media.bp)
+    app.register_blueprint(admin.bp)
 
     @login_manager.user_loader
     def load_user(user_id):
