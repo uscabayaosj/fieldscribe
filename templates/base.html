@@ -10,93 +10,47 @@
     <script src="https://cdn.tailwindcss.com"></script>
     <script>
         tailwind.config = {
-            darkMode: ["class"],
             theme: {
-                container: {
-                    center: true,
-                    padding: "2rem",
-                    screens: {
-                        "2xl": "1400px",
-                    },
-                },
                 extend: {
                     colors: {
-                        border: "hsl(var(--border))",
-                        input: "hsl(var(--input))",
-                        ring: "hsl(var(--ring))",
-                        background: "hsl(var(--background))",
-                        foreground: "hsl(var(--foreground))",
-                        primary: {
-                            DEFAULT: "hsl(var(--primary))",
-                            foreground: "hsl(var(--primary-foreground))",
+                        sky: {
+                            50: '#f0f9ff',
+                            100: '#e0f2fe',
+                            200: '#bae6fd',
+                            300: '#7dd3fc',
+                            400: '#38bdf8',
+                            500: '#0ea5e9',
+                            600: '#0284c7',
+                            700: '#0369a1',
+                            800: '#075985',
+                            900: '#0c4a6e',
                         },
-                        secondary: {
-                            DEFAULT: "hsl(var(--secondary))",
-                            foreground: "hsl(var(--secondary-foreground))",
-                        },
-                        destructive: {
-                            DEFAULT: "hsl(var(--destructive))",
-                            foreground: "hsl(var(--destructive-foreground))",
-                        },
-                        muted: {
-                            DEFAULT: "hsl(var(--muted))",
-                            foreground: "hsl(var(--muted-foreground))",
-                        },
-                        accent: {
-                            DEFAULT: "hsl(var(--accent))",
-                            foreground: "hsl(var(--accent-foreground))",
-                        },
-                        popover: {
-                            DEFAULT: "hsl(var(--popover))",
-                            foreground: "hsl(var(--popover-foreground))",
-                        },
-                        card: {
-                            DEFAULT: "hsl(var(--card))",
-                            foreground: "hsl(var(--card-foreground))",
-                        },
-                    },
-                    borderRadius: {
-                        lg: "var(--radius)",
-                        md: "calc(var(--radius) - 2px)",
-                        sm: "calc(var(--radius) - 4px)",
-                    },
-                    keyframes: {
-                        "accordion-down": {
-                            from: { height: 0 },
-                            to: { height: "var(--radix-accordion-content-height)" },
-                        },
-                        "accordion-up": {
-                            from: { height: "var(--radix-accordion-content-height)" },
-                            to: { height: 0 },
-                        },
-                    },
-                    animation: {
-                        "accordion-down": "accordion-down 0.2s ease-out",
-                        "accordion-up": "accordion-up 0.2s ease-out",
                     },
                 },
             },
         }
     </script>
 </head>
-<body class="bg-background text-foreground">
-    <header class="bg-primary text-primary-foreground">
+<body class="bg-sky-50 text-sky-900">
+    <header class="bg-sky-600 text-white">
         <nav class="container mx-auto px-4 py-4 flex justify-between items-center">
             <a href="{{ url_for('entries.dashboard') }}" class="text-2xl font-bold">FieldScribe Pro</a>
             <button id="nav-toggle" class="md:hidden">
-                <i data-feather="menu"></i>
+                <svg xmlns="http://www.w3.org/2000/svg" class="h-6 w-6" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4 6h16M4 12h16m-7 6h7" />
+                </svg>
             </button>
             <ul id="nav-menu" class="hidden md:flex space-x-4">
                 {% if current_user.is_authenticated %}
-                    <li><a href="{{ url_for('entries.dashboard') }}" class="hover:text-accent-foreground">Dashboard</a></li>
-                    <li><a href="{{ url_for('entries.new_entry') }}" class="hover:text-accent-foreground">New Entry</a></li>
+                    <li><a href="{{ url_for('entries.dashboard') }}" class="hover:text-sky-200">Dashboard</a></li>
+                    <li><a href="{{ url_for('entries.new_entry') }}" class="hover:text-sky-200">New Entry</a></li>
                     {% if current_user.is_admin %}
-                        <li><a href="{{ url_for('admin.admin_dashboard') }}" class="hover:text-accent-foreground">Admin</a></li>
+                        <li><a href="{{ url_for('admin.admin_dashboard') }}" class="hover:text-sky-200">Admin</a></li>
                     {% endif %}
-                    <li><a href="{{ url_for('auth.logout') }}" class="hover:text-accent-foreground">Logout</a></li>
+                    <li><a href="{{ url_for('auth.logout') }}" class="hover:text-sky-200">Logout</a></li>
                 {% else %}
-                    <li><a href="{{ url_for('auth.login') }}" class="hover:text-accent-foreground">Login</a></li>
-                    <li><a href="{{ url_for('auth.register') }}" class="hover:text-accent-foreground">Register</a></li>
+                    <li><a href="{{ url_for('auth.login') }}" class="hover:text-sky-200">Login</a></li>
+                    <li><a href="{{ url_for('auth.register') }}" class="hover:text-sky-200">Register</a></li>
                 {% endif %}
             </ul>
         </nav>
@@ -106,8 +60,9 @@
         {% with messages = get_flashed_messages(with_categories=true) %}
             {% if messages %}
                 {% for category, message in messages %}
-                    <div class="bg-accent text-accent-foreground px-4 py-3 rounded relative mb-4" role="alert">
-                        <span class="block sm:inline">{{ message }}</span>
+                    <div class="bg-sky-100 border-l-4 border-sky-500 text-sky-700 p-4 mb-4" role="alert">
+                        <p class="font-bold">{{ category.capitalize() }}</p>
+                        <p>{{ message }}</p>
                     </div>
                 {% endfor %}
             {% endif %}
@@ -116,7 +71,7 @@
         {% block content %}{% endblock %}
     </main>
 
-    <footer class="bg-secondary text-secondary-foreground py-4">
+    <footer class="bg-sky-800 text-white py-4 mt-8">
         <div class="container mx-auto px-4 text-center">
             &copy; 2024 AnthroInsight. All rights reserved.
         </div>

@@ -3,24 +3,24 @@
 {% block title %}{{ entry.title }}{% endblock %}
 
 {% block content %}
-<div class="max-w-3xl mx-auto">
-    <h1 class="text-3xl font-bold mb-4">{{ entry.title }}</h1>
-    <p class="text-gray-600 mb-4">Date: <span class="local-time" data-utc="{{ entry.timestamp.isoformat() if entry.timestamp else entry.date.isoformat() }}"></span></p>
+<div class="max-w-3xl mx-auto bg-white p-8 rounded-lg shadow-md">
+    <h1 class="text-3xl font-bold mb-4 text-sky-800">{{ entry.title }}</h1>
+    <p class="text-sky-600 mb-4">Date: <span class="local-time" data-utc="{{ entry.timestamp.isoformat() if entry.timestamp else entry.date.isoformat() }}"></span></p>
     
     {% if entry.location %}
-    <p class="text-gray-600 mb-4"><i class="fas fa-map-marker-alt"></i> {{ entry.location }}</p>
+    <p class="text-sky-600 mb-4"><i class="fas fa-map-marker-alt"></i> {{ entry.location }}</p>
     {% endif %}
     
-    <div class="bg-white shadow-md rounded-lg p-6 mb-6">
-        <p class="whitespace-pre-wrap">{{ entry.content }}</p>
+    <div class="bg-sky-50 rounded-lg p-6 mb-6">
+        <p class="text-sky-800 whitespace-pre-wrap">{{ entry.content }}</p>
     </div>
     
     {% if entry.tags %}
     <div class="mb-6">
-        <h2 class="text-xl font-semibold mb-2">Tags:</h2>
+        <h2 class="text-xl font-semibold mb-2 text-sky-700">Tags:</h2>
         <div class="flex flex-wrap gap-2">
             {% for tag in entry.tags %}
-            <span class="bg-blue-100 text-blue-800 px-2 py-1 rounded-full text-sm">{{ tag.name }}</span>
+            <span class="bg-sky-100 text-sky-800 px-2 py-1 rounded-full text-sm">{{ tag.name }}</span>
             {% endfor %}
         </div>
     </div>
@@ -28,7 +28,7 @@
     
     {% if entry.media %}
     <div class="mb-6">
-        <h2 class="text-xl font-semibold mb-2">Media:</h2>
+        <h2 class="text-xl font-semibold mb-2 text-sky-700">Media:</h2>
         <div class="grid grid-cols-2 md:grid-cols-3 gap-4">
             {% for media in entry.media %}
             <div class="media-item">
@@ -45,14 +45,14 @@
     </div>
     {% endif %}
     
-    <div class="flex justify-between items-center">
+    <div class="flex justify-between items-center mt-6">
         <div>
-            <a href="{{ url_for('entries.edit_entry', id=entry.id) }}" class="btn-primary mr-2">Edit</a>
-            <button onclick="deleteEntry()" class="btn-danger">Delete</button>
+            <a href="{{ url_for('entries.edit_entry', id=entry.id) }}" class="bg-sky-500 hover:bg-sky-600 text-white font-bold py-2 px-4 rounded focus:outline-none focus:shadow-outline transition duration-300 mr-2">Edit</a>
+            <button onclick="deleteEntry()" class="bg-red-500 hover:bg-red-600 text-white font-bold py-2 px-4 rounded focus:outline-none focus:shadow-outline transition duration-300">Delete</button>
         </div>
         <div>
-            <button onclick="shareEntry()" class="btn-primary mr-2">Share</button>
-            <a href="{{ url_for('entries.export_entry', id=entry.id) }}?timezone=" class="btn-primary" target="_blank" id="exportBtn">Export</a>
+            <button onclick="shareEntry()" class="bg-sky-100 hover:bg-sky-200 text-sky-800 font-bold py-2 px-4 rounded focus:outline-none focus:shadow-outline transition duration-300 mr-2">Share</button>
+            <a href="{{ url_for('entries.export_entry', id=entry.id) }}?timezone=" class="bg-sky-500 hover:bg-sky-600 text-white font-bold py-2 px-4 rounded focus:outline-none focus:shadow-outline transition duration-300" target="_blank" id="exportBtn">Export</a>
         </div>
     </div>
 </div>
@@ -88,7 +88,7 @@ function shareEntry() {
 
 document.addEventListener('DOMContentLoaded', function() {
     document.querySelectorAll('.local-time').forEach(function(el) {
-        var utcTime = new Date(el.dataset.utc + 'Z');  // Append 'Z' to ensure UTC interpretation
+        var utcTime = new Date(el.dataset.utc + 'Z');
         el.textContent = utcTime.toLocaleString(undefined, {
             year: 'numeric',
             month: 'long',
@@ -100,7 +100,6 @@ document.addEventListener('DOMContentLoaded', function() {
         });
     });
 
-    // Update the Export button with the user's timezone
     var exportBtn = document.getElementById('exportBtn');
     if (exportBtn) {
         var userTimezone = Intl.DateTimeFormat().resolvedOptions().timeZone;
