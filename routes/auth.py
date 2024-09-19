@@ -1,5 +1,5 @@
 from flask import Blueprint, render_template, redirect, url_for, flash, request
-from flask_login import login_user, logout_user, login_required
+from flask_login import login_user, logout_user, login_required, current_user
 from werkzeug.security import generate_password_hash
 from models import User
 from __init__ import db
@@ -30,6 +30,11 @@ def register():
 
 @bp.route('/login', methods=['GET', 'POST'])
 def login():
+    if current_user.is_authenticated:
+        if current_user.is_admin:
+            return redirect(url_for('admin.admin_dashboard'))
+        return redirect(url_for('entries.dashboard'))
+
     if request.method == 'POST':
         username = request.form['username']
         password = request.form['password']
@@ -37,6 +42,8 @@ def login():
         user = User.query.filter_by(username=username).first()
         if user and user.check_password(password):
             login_user(user)
+            if user.is_admin:
+                return redirect(url_for('admin.admin_dashboard'))
             return redirect(url_for('entries.dashboard'))
         else:
             flash('Invalid username or password')
