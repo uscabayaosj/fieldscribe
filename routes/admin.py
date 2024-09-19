@@ -1,4 +1,4 @@
-from flask import Blueprint, render_template, redirect, url_for, request, flash, abort
+from flask import Blueprint, render_template, redirect, url_for, request, flash, abort, current_app
 from flask_login import login_required, current_user
 from models import User, Entry
 from __init__ import db
@@ -40,9 +40,17 @@ def toggle_admin(user_id):
 def delete_user(user_id):
     user = User.query.get_or_404(user_id)
     if user != current_user:
-        db.session.delete(user)
-        db.session.commit()
-        flash(f"User {user.username} has been deleted.", 'success')
+        try:
+            # Delete all entries associated with the user
+            Entry.query.filter_by(user_id=user.id).delete()
+            # Delete the user
+            db.session.delete(user)
+            db.session.commit()
+            flash(f"User {user.username} and all their entries have been deleted.", 'success')
+        except Exception as e:
+            db.session.rollback()
+            current_app.logger.error(f"Error deleting user {user.id}: {str(e)}")
+            flash(f"An error occurred while deleting the user. Please try again.", 'error')
     else:
         flash("You cannot delete your own account.", 'error')
     return redirect(url_for('admin.manage_users'))
