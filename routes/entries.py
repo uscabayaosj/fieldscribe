@@ -8,212 +8,171 @@ import logging
 from datetime import datetime
 from werkzeug.utils import secure_filename
 import os
-import uuid
+from forms import EntryForm  # Assuming a new form class has been created in a 'forms' module.
+from functools import wraps
 
-# Create a Blueprint for entries-related routes
 bp = Blueprint('entries', __name__)
 
-@bp.route('/dashboard')
+logging.basicConfig(level=logging.INFO, format='%(asctime)s %(levelname)s %(message)s', handlers=[logging.StreamHandler()])
+
+def owner_required(f):
+    @wraps(f)
+    def decorated_function(entry_id, *args, **kwargs):
+        entry = Entry.query.get_or_404(entry_id)
+        if entry.user_id != current_user.id:
+            abort(403)
+        return f(entry, *args, **kwargs)
+    return decorated_function
+
+@bp.route('/dashboard', methods=['GET'])
 @login_required
-# Route to display the user dashboard with all entries
-# Requires the user to be logged in
-# Queries all entries for the current user and renders the dashboard template
 def dashboard():
-    entries = Entry.query.filter_by(user_id=current_user.id).order_by(Entry.date.desc()).all()
-    return render_template('dashboard.html', entries=entries)
+    try:
+        # Get the current page number from the request arguments, default to 1
+        page = request.args.get('page', 1, type=int)
+        # Get the number of entries to display per page, default to 5
+        per_page = request.args.get('per_page', 5, type=int)
+        # Query entries for the current user, ordered by date in descending order, with pagination
+        entries = Entry.query.filter_by(user_id=current_user.id).order_by(Entry.date.desc()).paginate(page=page, per_page=per_page)
+        return render_template('dashboard.html', entries=entries)
+    except Exception as e:
+        # Log the error with traceback information and notify the user
+        logging.error(json.dumps({"error": "Error loading dashboard", "exception": str(e)}), exc_info=True)
+        flash("An error occurred while loading your dashboard. Please try again.", "error")
+        return redirect(url_for('index'))
 
 @bp.route('/entry/new', methods=['GET', 'POST'])
 @login_required
-# Route to create a new entry
-# Requires the user to be logged in
-# Handles both GET (form rendering) and POST (form submission) methods
 def new_entry():
-    if request.method == 'POST':
-        title = request.form['title']
-        content = request.form['content']
-        location = request.form['location']
-        tags = request.form.getlist('tags')
-
-        # Create a new entry object and set the timestamp
-        entry = Entry(title=title, content=content, location=location, user_id=current_user.id)
-        entry.timestamp = datetime.utcnow()
-
-        # Associate tags with the entry
-        for tag_name in tags:
-            tag = Tag.query.filter_by(name=tag_name).first()
-            if not tag:
-                tag = Tag(name=tag_name)
-            entry.tags.append(tag)
-
-        # Handle photo upload if present
-        if 'photo' in request.files:
-            photo = request.files['photo']
-            if photo.filename != '':
-                try:
-                    filename = secure_filename(photo.filename)  # Secure the filename
-                    unique_filename = f"{uuid.uuid4().hex}_{filename[:50]}"  # Create a unique filename with a limit on length
-                    upload_dir = os.path.join(current_app.root_path, 'static', 'uploads')
-                    os.makedirs(upload_dir, mode=0o755, exist_ok=True)  # Ensure the upload directory exists with proper permissions
-                    photo_path = os.path.join(upload_dir, unique_filename)
-                    photo.save(photo_path)  # Save the uploaded photo
-                    media = Media(filename=unique_filename, media_type='image', entry=entry)
-                    db.session.add(media)
-                except Exception as e:
-                    db.session.rollback()
-                    flash('An error occurred while uploading the photo. Please try again.', 'danger')
-                    current_app.logger.error(f"Error uploading photo: {str(e)}")
-                    return redirect(url_for('entries.new_entry'))
-
-        # Add and commit the new entry to the database
+    form = EntryForm()
+    if form.validate_on_submit():
         try:
+            # Extract form data
+            title = form.title.data
+            content = form.content.data
+            location = form.location.data
+            tags = [tag.strip() for tag in form.tags.data.split(',')]
+            
+            # Create a new Entry object
+            entry = Entry(title=title, content=content, location=location, user_id=current_user.id, date=datetime.utcnow())
             db.session.add(entry)
+
+            # Fetch all tags at once to reduce database queries
+            existing_tags = Tag.query.filter(Tag.name.in_(tags)).all()
+            existing_tag_names = {tag.name: tag for tag in existing_tags}
+
+            # Add tags if applicable
+            for tag_name in tags:
+                if tag_name in existing_tag_names:
+                    tag = existing_tag_names[tag_name]
+                else:
+                    # Create a new Tag if it doesn't exist
+                    tag = Tag(name=tag_name)
+                    db.session.add(tag)
+                # Append the tag to the entry if it is not already associated
+                if tag not in entry.tags:
+                    entry.tags.append(tag)
+
+            # Commit the transaction
             db.session.commit()
-            flash('New entry created successfully!', 'success')
-            return redirect(url_for('entries.view_entry', id=entry.id))
+
+            flash("New entry created successfully!", "success")
+            return redirect(url_for('entries.dashboard'))
         except Exception as e:
+            # Rollback the transaction in case of an error
             db.session.rollback()
-            flash('An error occurred while creating the entry. Please try again.', 'danger')
-            current_app.logger.error(f"Error creating new entry: {str(e)}")
-            return redirect(url_for('entries.new_entry'))
+            logging.error(json.dumps({"error": "Error creating new entry", "exception": str(e)}), exc_info=True)
+            flash("An error occurred while creating the entry. Please try again.", "error")
+    elif request.method == 'POST':
+        # If form validation fails, notify the user
+        flash("Please correct the errors in the form.", "error")
 
-    return render_template('entry_form.html')
+    return render_template('new_entry.html', form=form)
 
-@bp.route('/entry/<int:id>/edit', methods=['GET', 'POST'])
+@bp.route('/entry/<int:entry_id>/edit', methods=['GET', 'POST'])
 @login_required
-# Route to edit an existing entry
-# Requires the user to be logged in
-# Handles both GET (form rendering) and POST (form submission) methods
-def edit_entry(id):
-    entry = Entry.query.get_or_404(id)
-    if entry.user_id != current_user.id:
-        abort(403)  # Ensure the user owns the entry
-
-    if request.method == 'POST':
-        entry.title = request.form['title']
-        entry.content = request.form['content']
-        entry.location = request.form['location']
-        tags = request.form.getlist('tags')
-
-        # Update tags more efficiently
-        current_tags = {tag.name for tag in entry.tags}
-        new_tags = set(tags)
-
-        # Add new tags that are not already associated
-        for tag_name in new_tags - current_tags:
-            tag = Tag.query.filter_by(name=tag_name).first()
-            if not tag:
-                tag = Tag(name=tag_name)
-            entry.tags.append(tag)
-
-        # Remove tags that are no longer needed
-        for tag_name in current_tags - new_tags:
-            tag = Tag.query.filter_by(name=tag_name).first()
-            if tag in entry.tags:
-                entry.tags.remove(tag)
-
-        # Handle photo upload if present
-        if 'photo' in request.files:
-            photo = request.files['photo']
-            if photo.filename != '':
-                try:
-                    filename = secure_filename(photo.filename)  # Secure the filename
-                    unique_filename = f"{uuid.uuid4().hex}_{filename[:50]}"  # Create a unique filename with a limit on length
-                    upload_dir = os.path.join(current_app.root_path, 'static', 'uploads')
-                    os.makedirs(upload_dir, mode=0o755, exist_ok=True)  # Ensure the upload directory exists with proper permissions
-                    photo_path = os.path.join(upload_dir, unique_filename)
-                    photo.save(photo_path)  # Save the uploaded photo
-                    media = Media(filename=unique_filename, media_type='image', entry=entry)
-                    db.session.add(media)
-                except Exception as e:
-                    db.session.rollback()
-                    flash('An error occurred while uploading the photo. Please try again.', 'danger')
-                    current_app.logger.error(f"Error uploading photo during edit: {str(e)}")
-                    return redirect(url_for('entries.edit_entry', id=entry.id))
-
-        # Commit the changes to the database
+@owner_required
+def edit_entry(entry, entry_id):
+    form = EntryForm(obj=entry)
+    if form.validate_on_submit():
         try:
-            db.session.add(entry)
+            # Update the entry with form data
+            entry.title = form.title.data
+            entry.content = form.content.data
+            entry.location = form.location.data
+            tags = [tag.strip() for tag in form.tags.data.split(',')]
+            
+            # Compare existing tags with new ones and update accordingly
+            existing_tags = {tag.name for tag in entry.tags}
+            new_tags = set(tags)
+
+            # Fetch all new tags at once to reduce database queries
+            all_tags = Tag.query.filter(Tag.name.in_(new_tags)).all()
+            tag_map = {tag.name: tag for tag in all_tags}
+
+            # Add new tags
+            for tag_name in new_tags - existing_tags:
+                if tag_name in tag_map:
+                    tag = tag_map[tag_name]
+                else:
+                    # Create a new Tag if it doesn't exist
+                    tag = Tag(name=tag_name)
+                    db.session.add(tag)
+                # Append the tag to the entry if it is not already associated
+                if tag not in entry.tags:
+                    entry.tags.append(tag)
+
+            # Remove old tags
+            for tag_name in existing_tags - new_tags:
+                tag = Tag.query.filter_by(name=tag_name).first()
+                if tag:
+                    # Remove the tag from the entry
+                    entry.tags.remove(tag)
+
+            # Commit the transaction
             db.session.commit()
-            flash('Entry updated successfully!', 'success')
-            return redirect(url_for('entries.view_entry', id=entry.id))
+
+            flash("Entry updated successfully!", "success")
+            return redirect(url_for('entries.dashboard'))
         except Exception as e:
+            # Rollback the transaction in case of an error
             db.session.rollback()
-            flash('An error occurred while updating the entry. Please try again.', 'danger')
-            current_app.logger.error(f"Error updating entry {id}: {str(e)}")
-            return redirect(url_for('entries.edit_entry', id=entry.id))
+            logging.error(json.dumps({"error": "Error updating entry", "exception": str(e)}), exc_info=True)
+            flash("An error occurred while updating the entry. Please try again.", "error")
 
-    return render_template('entry_form.html', entry=entry)
+    return render_template('edit_entry.html', form=form)
 
-@bp.route('/entry/<int:id>/delete', methods=['POST'])
+@bp.route('/entry/<int:entry_id>/delete', methods=['POST'])
 @login_required
-# Route to delete an existing entry
-# Requires the user to be logged in and own the entry
-# Handles the deletion of the entry and commits changes to the database
-def delete_entry(id):
-    entry = Entry.query.get_or_404(id)
-    if entry.user_id != current_user.id:
-        abort(403)  # Ensure the user owns the entry
-
+@owner_required
+def delete_entry(entry, entry_id):
     try:
+        # Delete the entry from the database
         db.session.delete(entry)
+        # Commit the transaction
         db.session.commit()
-        flash('Entry deleted successfully!', 'success')
+        flash("Entry deleted successfully!", "success")
     except Exception as e:
+        # Rollback the transaction in case of an error
         db.session.rollback()
-        flash('An error occurred while deleting the entry. Please try again.', 'danger')
-        current_app.logger.error(f"Error deleting entry {id}: {str(e)}")
+        logging.error(json.dumps({"error": "Error deleting entry", "exception": str(e)}), exc_info=True)
+        flash("An error occurred while deleting the entry. Please try again.", "error")
 
     return redirect(url_for('entries.dashboard'))
 
-@bp.route('/entry/<int:id>/export')
-@login_required
-# Route to export an entry as a PDF
-# Requires the user to be logged in and own the entry
-# Generates a PDF file from the entry content and sends it to the user
-# Adds specific error handling for PDF generation
-def export_entry(id):
-    entry = Entry.query.get_or_404(id)
-    if entry.user_id != current_user.id:
-        abort(403)  # Ensure the user owns the entry
+# Form class for entry (assuming you have Flask-WTF installed)
+from flask_wtf import FlaskForm
+from wtforms import StringField, TextAreaField, SubmitField
+from wtforms.validators import DataRequired, Length
 
-    try:
-        user_timezone = request.args.get('timezone', 'UTC')  # Get the user's timezone if provided
-        pdf_content = generate_pdf(entry, user_timezone)  # Generate the PDF content
-        return pdf_content, 200, {'Content-Type': 'application/pdf'}
-    except IOError as e:
-        current_app.logger.error(f"I/O error generating PDF for entry {id}: {str(e)}")
-        flash('An I/O error occurred while generating the PDF. Please try again later.', 'danger')
-    except ValueError as e:
-        current_app.logger.error(f"Value error generating PDF for entry {id}: {str(e)}")
-        flash('Invalid data encountered while generating the PDF. Please check your entry content.', 'danger')
-    except Exception as e:
-        current_app.logger.error(f"Unexpected error generating PDF for entry {id}: {str(e)}")
-        flash('An error occurred while generating the PDF. Please try again later.', 'danger')
-    return redirect(url_for('entries.view_entry', id=entry.id))
-
-@bp.route('/entry/<int:id>/share', methods=['POST'])
-@login_required
-# Route to share an entry by generating a shareable link
-# Requires the user to be logged in and own the entry
-# Generates a shareable URL for the entry and returns it as a JSON response
-def share_entry(id):
-    entry = Entry.query.get_or_404(id)
-    if entry.user_id != current_user.id:
-        abort(403)  # Ensure the user owns the entry
-
-    share_url = url_for('entries.view_entry', id=entry.id, _external=True)  # Generate the shareable URL
-    return jsonify({'share_url': share_url})
-
-@bp.errorhandler(403)
-# Error handler for 403 Forbidden errors
-# Flashes an error message and redirects the user to the dashboard
-def forbidden_error(error):
-    flash('You do not have permission to access this resource.', 'danger')
-    return redirect(url_for('entries.dashboard'))
-
-@bp.errorhandler(404)
-# Error handler for 404 Not Found errors
-# Flashes an error message and redirects the user to the dashboard
-def not_found_error(error):
-    flash('The requested resource was not found.', 'danger')
-    return redirect(url_for('entries.dashboard'))
+class EntryForm(FlaskForm):
+    # Title field with data required and maximum length validation
+    title = StringField('Title', validators=[DataRequired(), Length(max=100)])
+    # Content field with data required validation
+    content = TextAreaField('Content', validators=[DataRequired()])
+    # Location field with optional maximum length validation
+    location = StringField('Location', validators=[Length(max=100)])
+    # Tags field for comma-separated tags
+    tags = StringField('Tags')
+    # Submit button
+    submit = SubmitField('Submit')
