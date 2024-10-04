@@ -45,7 +45,9 @@
                     <li><a href="{{ url_for('entries.dashboard') }}" class="hover:text-sky-200">Dashboard</a></li>
                     <li><a href="{{ url_for('entries.new_entry') }}" class="hover:text-sky-200">New Entry</a></li>
                     {% if current_user.is_admin %}
-                        <li><a href="{{ url_for('admin.admin_dashboard') }}" class="hover:text-sky-200">Admin</a></li>
+                        <li><a href="{{ url_for('admin.admin_dashboard') }}" class="hover:text-sky-200">Admin Dashboard</a></li>
+                        <li><a href="{{ url_for('admin.manage_users') }}" class="hover:text-sky-200">Manage Users</a></li>
+                        <li><a href="{{ url_for('admin.manage_entries') }}" class="hover:text-sky-200">Manage Entries</a></li>
                     {% endif %}
                     <li><a href="{{ url_for('auth.logout') }}" class="hover:text-sky-200">Logout</a></li>
                 {% else %}
