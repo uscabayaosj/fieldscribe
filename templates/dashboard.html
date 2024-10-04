@@ -19,8 +19,8 @@
                         <p class="text-sm text-sky-600">Date: <span class="local-time" data-utc="{{ entry.timestamp.isoformat() if entry.timestamp else entry.date.isoformat() }}"></span></p>
                         <p class="text-sky-700">{{ entry.content[:100] }}{% if entry.content|length > 100 %}...{% endif %}</p>
                         <div class="flex justify-between pt-4">
-                            <a href="{{ url_for('entries.view_entry', id=entry.id) }}" class="bg-sky-100 hover:bg-sky-200 text-sky-800 font-semibold py-2 px-4 rounded transition duration-300">Read more</a>
-                            <a href="{{ url_for('entries.edit_entry', id=entry.id) }}" class="bg-sky-500 hover:bg-sky-600 text-white font-semibold py-2 px-4 rounded transition duration-300">Edit</a>
+                            <a href="{{ url_for('entries.view_entry', entry_id=entry.id) }}" class="bg-sky-100 hover:bg-sky-200 text-sky-800 font-semibold py-2 px-4 rounded transition duration-300">Read more</a>
+                            <a href="{{ url_for('entries.edit_entry', entry_id=entry.id) }}" class="bg-sky-500 hover:bg-sky-600 text-white font-semibold py-2 px-4 rounded transition duration-300">Edit</a>
                         </div>
                     </div>
                 </div>
