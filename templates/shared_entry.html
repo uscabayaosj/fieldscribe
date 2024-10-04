@@ -44,48 +44,9 @@
         </div>
     </div>
     {% endif %}
-    
-    <div class="flex justify-between items-center mt-6">
-        <div>
-            <a href="{{ url_for('entries.edit_entry', entry_id=entry.id) }}" class="bg-sky-500 hover:bg-sky-600 text-white font-bold py-2 px-4 rounded focus:outline-none focus:shadow-outline transition duration-300 mr-2">Edit</a>
-            <button onclick="deleteEntry()" class="bg-red-500 hover:bg-red-600 text-white font-bold py-2 px-4 rounded focus:outline-none focus:shadow-outline transition duration-300">Delete</button>
-        </div>
-        <div>
-            <button onclick="shareEntry()" class="bg-sky-100 hover:bg-sky-200 text-sky-800 font-bold py-2 px-4 rounded focus:outline-none focus:shadow-outline transition duration-300 mr-2">Share</button>
-            <a href="{{ url_for('entries.export_entry', entry_id=entry.id) }}?timezone=" class="bg-sky-500 hover:bg-sky-600 text-white font-bold py-2 px-4 rounded focus:outline-none focus:shadow-outline transition duration-300" target="_blank" id="exportBtn">Export</a>
-        </div>
-    </div>
 </div>
 
 <script>
-function deleteEntry() {
-    if (confirm('Are you sure you want to delete this entry?')) {
-        fetch('{{ url_for("entries.delete_entry", entry_id=entry.id) }}', {
-            method: 'POST',
-        }).then(response => {
-            if (response.ok) {
-                window.location.href = '{{ url_for("entries.dashboard") }}';
-            } else {
-                alert('Failed to delete entry');
-            }
-        });
-    }
-}
-
-function shareEntry() {
-    fetch('{{ url_for("entries.share_entry", entry_id=entry.id) }}', {
-        method: 'POST',
-    }).then(response => response.json())
-    .then(data => {
-        if (data.share_url) {
-            navigator.clipboard.writeText(data.share_url);
-            alert('Share link copied to clipboard');
-        } else {
-            alert('Failed to generate share link');
-        }
-    });
-}
-
 document.addEventListener('DOMContentLoaded', function() {
     document.querySelectorAll('.local-time').forEach(function(el) {
         var utcTime = new Date(el.dataset.utc + 'Z');
@@ -99,12 +60,6 @@ document.addEventListener('DOMContentLoaded', function() {
             timeZoneName: 'short'
         });
     });
-
-    var exportBtn = document.getElementById('exportBtn');
-    if (exportBtn) {
-        var userTimezone = Intl.DateTimeFormat().resolvedOptions().timeZone;
-        exportBtn.href += userTimezone;
-    }
 });
 </script>
 {% endblock %}

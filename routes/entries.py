@@ -11,6 +11,7 @@ import os
 from forms import EntryForm
 from functools import wraps
 import tempfile
+import secrets
 
 bp = Blueprint('entries', __name__)
 
@@ -168,3 +169,25 @@ def export_entry(entry):
         logging.error(json.dumps({"error": "Error exporting entry", "exception": str(e)}), exc_info=True)
         flash("An error occurred while exporting the entry. Please try again.", "error")
         return redirect(url_for('entries.view_entry', entry_id=entry.id))
+
+@bp.route('/entry/<int:entry_id>/share', methods=['POST'])
+@login_required
+@owner_required
+def share_entry(entry):
+    try:
+        share_token = secrets.token_urlsafe(16)
+        
+        entry.share_token = share_token
+        db.session.commit()
+        
+        share_url = url_for('entries.view_shared_entry', share_token=share_token, _external=True)
+        
+        return jsonify({'share_url': share_url}), 200
+    except Exception as e:
+        logging.error(json.dumps({"error": "Error sharing entry", "exception": str(e)}), exc_info=True)
+        return jsonify({'error': 'An error occurred while sharing the entry'}), 500
+
+@bp.route('/shared/<string:share_token>')
+def view_shared_entry(share_token):
+    entry = Entry.query.filter_by(share_token=share_token).first_or_404()
+    return render_template('shared_entry.html', entry=entry)

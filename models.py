@@ -1,11 +1,13 @@
-from datetime import datetime
+from flask_sqlalchemy import SQLAlchemy
 from flask_login import UserMixin
 from werkzeug.security import generate_password_hash, check_password_hash
-from __init__ import db
+from datetime import datetime
+
+db = SQLAlchemy()
 
 class User(UserMixin, db.Model):
     id = db.Column(db.Integer, primary_key=True)
-    username = db.Column(db.String(64), unique=True, nullable=False)
+    username = db.Column(db.String(80), unique=True, nullable=False)
     email = db.Column(db.String(120), unique=True, nullable=False)
     password_hash = db.Column(db.String(128))
     is_admin = db.Column(db.Boolean, default=False)
@@ -21,18 +23,12 @@ class Entry(db.Model):
     id = db.Column(db.Integer, primary_key=True)
     title = db.Column(db.String(100), nullable=False)
     content = db.Column(db.Text, nullable=False)
-    date = db.Column(db.DateTime, default=datetime.utcnow)
-    timestamp = db.Column(db.DateTime, default=datetime.utcnow)
-    location = db.Column(db.String(100))
+    date = db.Column(db.DateTime, nullable=False, default=datetime.utcnow)
     user_id = db.Column(db.Integer, db.ForeignKey('user.id'), nullable=False)
-    media = db.relationship('Media', backref='entry', lazy='dynamic', cascade='all, delete-orphan')
+    location = db.Column(db.String(100))
     tags = db.relationship('Tag', secondary='entry_tags', backref=db.backref('entries', lazy='dynamic'))
-
-class Media(db.Model):
-    id = db.Column(db.Integer, primary_key=True)
-    filename = db.Column(db.String(100), nullable=False)
-    media_type = db.Column(db.String(20), nullable=False)
-    entry_id = db.Column(db.Integer, db.ForeignKey('entry.id'), nullable=False)
+    media = db.relationship('Media', backref='entry', lazy='dynamic')
+    share_token = db.Column(db.String(32), unique=True)
 
 class Tag(db.Model):
     id = db.Column(db.Integer, primary_key=True)
@@ -42,3 +38,9 @@ entry_tags = db.Table('entry_tags',
     db.Column('entry_id', db.Integer, db.ForeignKey('entry.id'), primary_key=True),
     db.Column('tag_id', db.Integer, db.ForeignKey('tag.id'), primary_key=True)
 )
+
+class Media(db.Model):
+    id = db.Column(db.Integer, primary_key=True)
+    filename = db.Column(db.String(255), nullable=False)
+    entry_id = db.Column(db.Integer, db.ForeignKey('entry.id'), nullable=False)
+    media_type = db.Column(db.String(50), nullable=False)
