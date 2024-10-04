@@ -137,11 +137,10 @@ def delete_entry(entry, entry_id):
 @bp.route('/entry/<int:entry_id>', methods=['GET'])
 @login_required
 @owner_required
-def view_entry(entry, entry_id):
+def view_entry(entry):
     try:
         return render_template('entry_detail.html', entry=entry)
     except Exception as e:
         logging.error(json.dumps({"error": "Error viewing entry", "exception": str(e)}), exc_info=True)
         flash("An error occurred while viewing the entry. Please try again.", "error")
         return redirect(url_for('entries.dashboard'))
-
