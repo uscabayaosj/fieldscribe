@@ -50,9 +50,18 @@ def toggle_admin(user_id):
 def delete_user(user_id):
     user = User.query.get_or_404(user_id)
     if user != current_user:
-        db.session.delete(user)
-        db.session.commit()
-        flash(f"User {user.username} has been deleted.", 'success')
+        try:
+            # Delete all entries associated with the user
+            Entry.query.filter_by(user_id=user.id).delete()
+            
+            # Delete the user
+            db.session.delete(user)
+            db.session.commit()
+            flash(f"User {user.username} and all associated entries have been deleted.", 'success')
+        except SQLAlchemyError as e:
+            db.session.rollback()
+            current_app.logger.error(f"Error deleting user: {str(e)}")
+            flash(f"An error occurred while deleting the user. Please try again.", 'error')
     else:
         flash("You cannot delete your own account.", 'warning')
     return redirect(url_for('admin.manage_users'))
