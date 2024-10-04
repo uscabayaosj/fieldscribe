@@ -79,7 +79,7 @@ def new_entry():
 @bp.route('/entry/<int:entry_id>/edit', methods=['GET', 'POST'])
 @login_required
 @owner_required
-def edit_entry(entry, entry_id):
+def edit_entry(entry):
     form = EntryForm(obj=entry)
     if form.validate_on_submit():
         try:
@@ -117,12 +117,12 @@ def edit_entry(entry, entry_id):
             logging.error(json.dumps({"error": "Error updating entry", "exception": str(e)}), exc_info=True)
             flash("An error occurred while updating the entry. Please try again.", "error")
 
-    return render_template('edit_entry.html', form=form)
+    return render_template('edit_entry.html', form=form, entry=entry)
 
 @bp.route('/entry/<int:entry_id>/delete', methods=['POST'])
 @login_required
 @owner_required
-def delete_entry(entry, entry_id):
+def delete_entry(entry):
     try:
         db.session.delete(entry)
         db.session.commit()
