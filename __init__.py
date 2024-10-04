@@ -4,34 +4,27 @@ from flask_login import LoginManager
 from config import Config
 import sqlalchemy as sa
 
+# Create the SQLAlchemy instance outside of the create_app function
 db = SQLAlchemy()
-login_manager = LoginManager()
 
 def create_app():
     app = Flask(__name__)
-    app.config.from_object(Config)
-
+    
+    # Configure your database
+    app.config['SQLALCHEMY_DATABASE_URI'] = 'your_database_uri_here'
+    app.config['SQLALCHEMY_TRACK_MODIFICATIONS'] = False
+    
+    # Initialize the app with the SQLAlchemy instance
     db.init_app(app)
-    login_manager.init_app(app)
-    login_manager.login_view = 'auth.login'
-
+    
     with app.app_context():
-        from models import User
-        db.create_all()
-        # Check if the timestamp column exists in the entry table
-        inspector = sa.inspect(db.engine)
-        if 'timestamp' not in [c['name'] for c in inspector.get_columns('entry')]:
-            # If it doesn't exist, add it
-            with db.engine.connect() as connection:
-                connection.execute(sa.text('ALTER TABLE entry ADD COLUMN timestamp DATETIME'))
+        # Import models here to avoid circular imports
+        from .models import User
         
-        # Check if the is_admin column exists in the user table
-        if 'is_admin' not in [c['name'] for c in inspector.get_columns('user')]:
-            # If it doesn't exist, add it
-            with db.engine.connect() as connection:
-                connection.execute(sa.text('ALTER TABLE user ADD COLUMN is_admin BOOLEAN DEFAULT FALSE'))
-
-        # Create admin user if it doesn't exist
+        # Create tables
+        db.create_all()
+        
+        # Your existing code
         admin_user = User.query.filter_by(username='admin').first()
         if not admin_user:
             admin_user = User(username='admin', email='admin@example.com', is_admin=True)
