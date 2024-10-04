@@ -4,7 +4,7 @@ app = Flask(__name__)
 
 @app.route('/')
 def index():
-    return render_template('index.html')  # Ensure this template exists
+    return render_template('index.html')  # Ensure this template exists in the 'templates' directory
 
 # ... other route definitions ...
 
