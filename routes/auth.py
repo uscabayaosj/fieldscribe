@@ -55,7 +55,7 @@ def register():
         
         # Create a new user and hash the password
         new_user = User(username=username, email=email)
-        new_user.password = generate_password_hash(password)  # Use werkzeug's hash function to hash the password
+        new_user.set_password(password)  # Use the set_password method
         
         # Add and commit the new user to the database
         try:
@@ -83,7 +83,7 @@ def login():
         
         # Check if the user exists and verify the password
         user = User.query.filter_by(username=username).first()
-        if user and check_password_hash(user.password, password):
+        if user and user.check_password(password):  # Use the check_password method
             login_user(user)  # Log in the user
 
             # Redirect to the original page requested or to the dashboard
@@ -105,50 +105,3 @@ def logout():
     logout_user()
     flash('You have been logged out.', 'info')
     return redirect(url_for('auth.login'))
-
-# Improved UI elements for templates
-# register.html
-# ---------------------
-# {% extends 'base.html' %}
-# {% block content %}
-# <div class="container">
-#     <h2>Register</h2>
-#     <form method="POST" action="">
-#         <div class="form-group">
-#             <label for="username">Username</label>
-#             <input type="text" class="form-control" id="username" name="username" required>
-#         </div>
-#         <div class="form-group">
-#             <label for="email">Email</label>
-#             <input type="email" class="form-control" id="email" name="email" required>
-#         </div>
-#         <div class="form-group">
-#             <label for="password">Password</label>
-#             <input type="password" class="form-control" id="password" name="password" required>
-#         </div>
-#         <button type="submit" class="btn btn-primary">Register</button>
-#     </form>
-# </div>
-# {% endblock %}
-
-# login.html
-# ---------------------
-# {% extends 'base.html' %}
-# {% block content %}
-# <div class="container">
-#     <h2>Login</h2>
-#     <form method="POST" action="">
-#         <div class="form-group">
-#             <label for="username">Username</label>
-#             <input type="text" class="form-control" id="username" name="username" required>
-#         </div>
-#         <div class="form-group">
-#             <label for="password">Password</label>
-#             <input type="password" class="form-control" id="password" name="password" required>
-#         </div>
-#         <button type="submit" class="btn btn-primary">Login</button>
-#     </form>
-# </div>
-# {% endblock %}
-
-# Added Bootstrap classes to improve form styling, flash message categories for better user feedback, and ensured the code handles edge cases such as duplicate emails or usernames more gracefully.
