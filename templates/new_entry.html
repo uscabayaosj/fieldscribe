@@ -1,0 +1,56 @@
+{% extends "base.html" %}
+
+{% block title %}Create New Entry{% endblock %}
+
+{% block content %}
+<div class="max-w-2xl mx-auto bg-white p-8 rounded-lg shadow-md">
+    <h1 class="text-3xl font-bold mb-6 text-sky-800">Create New Entry</h1>
+    <form method="POST" action="{{ url_for('entries.new_entry') }}" class="space-y-4" enctype="multipart/form-data">
+        {{ form.hidden_tag() }}
+        <div class="space-y-2">
+            <label for="title" class="block text-sm font-medium text-sky-700">Title</label>
+            {{ form.title(class="w-full px-3 py-2 border border-sky-300 rounded-md focus:outline-none focus:ring-2 focus:ring-sky-500") }}
+        </div>
+        <div class="space-y-2">
+            <label for="content" class="block text-sm font-medium text-sky-700">Content</label>
+            {{ form.content(class="w-full px-3 py-2 border border-sky-300 rounded-md focus:outline-none focus:ring-2 focus:ring-sky-500", rows="5") }}
+        </div>
+        <div class="space-y-2">
+            <label for="location" class="block text-sm font-medium text-sky-700">Location</label>
+            {{ form.location(class="w-full px-3 py-2 border border-sky-300 rounded-md focus:outline-none focus:ring-2 focus:ring-sky-500") }}
+        </div>
+        <div class="space-y-2">
+            <label for="tags" class="block text-sm font-medium text-sky-700">Tags (separate by commas)</label>
+            {{ form.tags(class="w-full px-3 py-2 border border-sky-300 rounded-md focus:outline-none focus:ring-2 focus:ring-sky-500") }}
+        </div>
+        <div class="space-y-2">
+            <label for="photo" class="block text-sm font-medium text-sky-700">Photo</label>
+            <input type="file" name="photo" id="photo" accept="image/*" capture="environment" class="w-full px-3 py-2 border border-sky-300 rounded-md focus:outline-none focus:ring-2 focus:ring-sky-500">
+        </div>
+        <div id="photo-preview" class="mt-2 hidden">
+            <img id="preview-image" src="" alt="Preview" class="max-w-full h-auto rounded-md">
+        </div>
+        <div>
+            {{ form.submit(class="bg-sky-500 hover:bg-sky-600 text-white font-bold py-2 px-4 rounded focus:outline-none focus:shadow-outline transition duration-300") }}
+        </div>
+    </form>
+</div>
+
+<script>
+    const photoInput = document.getElementById('photo');
+    const photoPreview = document.getElementById('photo-preview');
+    const previewImage = document.getElementById('preview-image');
+
+    photoInput.addEventListener('change', function(event) {
+        const file = event.target.files[0];
+        if (file) {
+            const reader = new FileReader();
+            reader.onload = function(e) {
+                previewImage.src = e.target.result;
+                photoPreview.classList.remove('hidden');
+            }
+            reader.readAsDataURL(file);
+        }
+    });
+</script>
+{% endblock %}
