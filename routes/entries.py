@@ -1,4 +1,4 @@
-from flask import Blueprint, render_template, redirect, url_for, request, jsonify, flash, abort, current_app
+from flask import Blueprint, render_template, redirect, url_for, request, jsonify, flash, abort, current_app, send_file
 from flask_login import login_required, current_user
 from models import Entry, Tag, Media
 from __init__ import db
@@ -10,6 +10,7 @@ from werkzeug.utils import secure_filename
 import os
 from forms import EntryForm
 from functools import wraps
+import tempfile
 
 bp = Blueprint('entries', __name__)
 
@@ -144,3 +145,26 @@ def view_entry(entry):
         logging.error(json.dumps({"error": "Error viewing entry", "exception": str(e)}), exc_info=True)
         flash("An error occurred while viewing the entry. Please try again.", "error")
         return redirect(url_for('entries.dashboard'))
+
+@bp.route('/entry/<int:entry_id>/export', methods=['GET'])
+@login_required
+@owner_required
+def export_entry(entry):
+    try:
+        timezone = request.args.get('timezone', 'UTC')
+        pdf_content = generate_pdf(entry, timezone)
+        
+        with tempfile.NamedTemporaryFile(delete=False, suffix='.pdf') as temp_file:
+            temp_file.write(pdf_content)
+            temp_file_path = temp_file.name
+
+        return send_file(
+            temp_file_path,
+            as_attachment=True,
+            download_name=f"entry_{entry.id}.pdf",
+            mimetype='application/pdf'
+        )
+    except Exception as e:
+        logging.error(json.dumps({"error": "Error exporting entry", "exception": str(e)}), exc_info=True)
+        flash("An error occurred while exporting the entry. Please try again.", "error")
+        return redirect(url_for('entries.view_entry', entry_id=entry.id))

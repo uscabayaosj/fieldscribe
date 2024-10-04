@@ -1,0 +1,661 @@
+ * Serving Flask app '__init__'
+ * Debug mode: on
+2024-10-04 18:59:17,255 INFO WARNING: This is a development server. Do not use it in a production deployment. Use a production WSGI server instead.
+ * Running on all addresses (0.0.0.0)
+ * Running on http://127.0.0.1:5000
+ * Running on http://172.31.196.67:5000
+2024-10-04 18:59:17,255 INFO Press CTRL+C to quit
+2024-10-04 18:59:17,255 INFO  * Restarting with stat
+2024-10-04 18:59:18,549 WARNING  * Debugger is active!
+2024-10-04 18:59:18,551 INFO  * Debugger PIN: 111-763-172
+2024-10-04 18:59:19,257 INFO 172.31.196.67 - - [04/Oct/2024 18:59:19] "GET / HTTP/1.1" 200 -
+2024-10-04 18:59:19,268 INFO 172.31.196.67 - - [04/Oct/2024 18:59:19] "GET /static/css/tailwind.css HTTP/1.1" 200 -
+2024-10-04 18:59:19,327 INFO 172.31.196.67 - - [04/Oct/2024 18:59:19] "GET /static/js/app.js HTTP/1.1" 200 -
+2024-10-04 19:00:27,991 INFO 172.31.196.67 - - [04/Oct/2024 19:00:27] "GET /entry/1/edit HTTP/1.1" 302 -
+2024-10-04 19:00:28,408 INFO 172.31.196.67 - - [04/Oct/2024 19:00:28] "GET /login?next=/entry/1/edit HTTP/1.1" 200 -
+2024-10-04 19:00:29,268 INFO 172.31.196.67 - - [04/Oct/2024 19:00:29] "GET / HTTP/1.1" 200 -
+2024-10-04 19:00:30,363 INFO 172.31.196.67 - - [04/Oct/2024 19:00:30] "GET /static/css/tailwind.css HTTP/1.1" 304 -
+2024-10-04 19:00:30,474 INFO 172.31.196.67 - - [04/Oct/2024 19:00:30] "GET /static/js/app.js HTTP/1.1" 304 -
+2024-10-04 19:02:37,421 INFO 172.31.196.67 - - [04/Oct/2024 19:02:37] "GET /login HTTP/1.1" 200 -
+2024-10-04 19:02:38,838 INFO 172.31.196.67 - - [04/Oct/2024 19:02:38] "GET /static/css/tailwind.css HTTP/1.1" 304 -
+2024-10-04 19:02:38,849 INFO 172.31.196.67 - - [04/Oct/2024 19:02:38] "GET /static/js/app.js HTTP/1.1" 304 -
+2024-10-04 19:05:09,909 INFO 172.31.196.67 - - [04/Oct/2024 19:05:09] "POST /login HTTP/1.1" 302 -
+2024-10-04 19:05:11,353 INFO 172.31.196.67 - - [04/Oct/2024 19:05:11] "GET /dashboard HTTP/1.1" 200 -
+2024-10-04 19:05:12,803 INFO 172.31.196.67 - - [04/Oct/2024 19:05:12] "POST /login HTTP/1.1" 302 -
+2024-10-04 19:05:14,674 INFO 172.31.196.67 - - [04/Oct/2024 19:05:14] "GET /dashboard HTTP/1.1" 200 -
+2024-10-04 19:05:19,337 INFO 172.31.196.67 - - [04/Oct/2024 19:05:19] "GET /static/css/tailwind.css HTTP/1.1" 304 -
+2024-10-04 19:05:21,199 INFO 172.31.196.67 - - [04/Oct/2024 19:05:21] "GET /static/js/app.js HTTP/1.1" 304 -
+2024-10-04 19:06:47,060 ERROR {"error": "Error viewing entry", "exception": "Could not build url for endpoint 'entries.export_entry' with values ['entry_id']. Did you mean 'entries.edit_entry' instead?"}
+Traceback (most recent call last):
+  File "/home/runner/workspace/routes/entries.py", line 142, in view_entry
+    return render_template('entry_detail.html', entry=entry)
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/home/runner/workspace/.pythonlibs/lib/python3.11/site-packages/flask/templating.py", line 150, in render_template
+    return _render(app, template, context)
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/home/runner/workspace/.pythonlibs/lib/python3.11/site-packages/flask/templating.py", line 131, in _render
+    rv = template.render(context)
+         ^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/home/runner/workspace/.pythonlibs/lib/python3.11/site-packages/jinja2/environment.py", line 1304, in render
+    self.environment.handle_exception()
+  File "/home/runner/workspace/.pythonlibs/lib/python3.11/site-packages/jinja2/environment.py", line 939, in handle_exception
+    raise rewrite_traceback_stack(source=source)
+  File "/home/runner/workspace/templates/entry_detail.html", line 1, in top-level template code
+    {% extends "base.html" %}
+  File "/home/runner/workspace/templates/base.html", line 74, in top-level template code
+    {% block content %}{% endblock %}
+    ^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/home/runner/workspace/templates/entry_detail.html", line 55, in block 'content'
+    <a href="{{ url_for('entries.export_entry', entry_id=entry.id) }}?timezone=" class="bg-sky-500 hover:bg-sky-600 text-white font-bold py-2 px-4 rounded focus:outline-none focus:shadow-outline transition duration-300" target="_blank" id="exportBtn">Export</a>
+    ^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/home/runner/workspace/.pythonlibs/lib/python3.11/site-packages/flask/app.py", line 1084, in url_for
+    return self.handle_url_build_error(error, endpoint, values)
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/home/runner/workspace/.pythonlibs/lib/python3.11/site-packages/flask/app.py", line 1073, in url_for
+    rv = url_adapter.build(  # type: ignore[union-attr]
+         ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/home/runner/workspace/.pythonlibs/lib/python3.11/site-packages/werkzeug/routing/map.py", line 924, in build
+    raise BuildError(endpoint, values, method, self)
+werkzeug.routing.exceptions.BuildError: Could not build url for endpoint 'entries.export_entry' with values ['entry_id']. Did you mean 'entries.edit_entry' instead?
+2024-10-04 19:06:47,062 INFO 172.31.196.67 - - [04/Oct/2024 19:06:47] "GET /entry/1 HTTP/1.1" 302 -
+2024-10-04 19:06:48,321 INFO 172.31.196.67 - - [04/Oct/2024 19:06:48] "GET /dashboard HTTP/1.1" 200 -
+2024-10-04 19:06:52,623 INFO 172.31.196.67 - - [04/Oct/2024 19:06:52] "GET /static/js/app.js HTTP/1.1" 304 -
+2024-10-04 19:06:52,676 INFO 172.31.196.67 - - [04/Oct/2024 19:06:52] "GET /static/css/tailwind.css HTTP/1.1" 304 -
+2024-10-04 19:07:06,522 ERROR {"error": "Error viewing entry", "exception": "Could not build url for endpoint 'entries.export_entry' with values ['entry_id']. Did you mean 'entries.edit_entry' instead?"}
+Traceback (most recent call last):
+  File "/home/runner/workspace/routes/entries.py", line 142, in view_entry
+    return render_template('entry_detail.html', entry=entry)
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/home/runner/workspace/.pythonlibs/lib/python3.11/site-packages/flask/templating.py", line 150, in render_template
+    return _render(app, template, context)
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/home/runner/workspace/.pythonlibs/lib/python3.11/site-packages/flask/templating.py", line 131, in _render
+    rv = template.render(context)
+         ^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/home/runner/workspace/.pythonlibs/lib/python3.11/site-packages/jinja2/environment.py", line 1304, in render
+    self.environment.handle_exception()
+  File "/home/runner/workspace/.pythonlibs/lib/python3.11/site-packages/jinja2/environment.py", line 939, in handle_exception
+    raise rewrite_traceback_stack(source=source)
+  File "/home/runner/workspace/templates/entry_detail.html", line 1, in top-level template code
+    {% extends "base.html" %}
+  File "/home/runner/workspace/templates/base.html", line 74, in top-level template code
+    {% block content %}{% endblock %}
+    ^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/home/runner/workspace/templates/entry_detail.html", line 55, in block 'content'
+    <a href="{{ url_for('entries.export_entry', entry_id=entry.id) }}?timezone=" class="bg-sky-500 hover:bg-sky-600 text-white font-bold py-2 px-4 rounded focus:outline-none focus:shadow-outline transition duration-300" target="_blank" id="exportBtn">Export</a>
+    ^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/home/runner/workspace/.pythonlibs/lib/python3.11/site-packages/flask/app.py", line 1084, in url_for
+    return self.handle_url_build_error(error, endpoint, values)
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/home/runner/workspace/.pythonlibs/lib/python3.11/site-packages/flask/app.py", line 1073, in url_for
+    rv = url_adapter.build(  # type: ignore[union-attr]
+         ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/home/runner/workspace/.pythonlibs/lib/python3.11/site-packages/werkzeug/routing/map.py", line 924, in build
+    raise BuildError(endpoint, values, method, self)
+werkzeug.routing.exceptions.BuildError: Could not build url for endpoint 'entries.export_entry' with values ['entry_id']. Did you mean 'entries.edit_entry' instead?
+2024-10-04 19:07:06,523 INFO 172.31.196.67 - - [04/Oct/2024 19:07:06] "GET /entry/2 HTTP/1.1" 302 -
+2024-10-04 19:07:07,715 INFO 172.31.196.67 - - [04/Oct/2024 19:07:07] "GET /dashboard HTTP/1.1" 200 -
+2024-10-04 19:07:10,876 INFO 172.31.196.67 - - [04/Oct/2024 19:07:10] "GET /static/css/tailwind.css HTTP/1.1" 304 -
+2024-10-04 19:07:10,883 INFO 172.31.196.67 - - [04/Oct/2024 19:07:10] "GET /static/js/app.js HTTP/1.1" 304 -
+2024-10-04 19:07:25,349 INFO 172.31.196.67 - - [04/Oct/2024 19:07:25] "GET /entry/1/edit HTTP/1.1" 500 -
+Traceback (most recent call last):
+  File "/home/runner/workspace/.pythonlibs/lib/python3.11/site-packages/flask/app.py", line 1498, in __call__
+    return self.wsgi_app(environ, start_response)
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/home/runner/workspace/.pythonlibs/lib/python3.11/site-packages/flask/app.py", line 1476, in wsgi_app
+    response = self.handle_exception(e)
+               ^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/home/runner/workspace/.pythonlibs/lib/python3.11/site-packages/flask/app.py", line 1473, in wsgi_app
+    response = self.full_dispatch_request()
+               ^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/home/runner/workspace/.pythonlibs/lib/python3.11/site-packages/flask/app.py", line 882, in full_dispatch_request
+    rv = self.handle_user_exception(e)
+         ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/home/runner/workspace/.pythonlibs/lib/python3.11/site-packages/flask/app.py", line 880, in full_dispatch_request
+    rv = self.dispatch_request()
+         ^^^^^^^^^^^^^^^^^^^^^^^
+  File "/home/runner/workspace/.pythonlibs/lib/python3.11/site-packages/flask/app.py", line 865, in dispatch_request
+    return self.ensure_sync(self.view_functions[rule.endpoint])(**view_args)  # type: ignore[no-any-return]
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/home/runner/workspace/.pythonlibs/lib/python3.11/site-packages/flask_login/utils.py", line 290, in decorated_view
+    return current_app.ensure_sync(func)(*args, **kwargs)
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/home/runner/workspace/routes/entries.py", line 24, in decorated_function
+    return f(entry, *args, **kwargs)
+           ^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/home/runner/workspace/routes/entries.py", line 120, in edit_entry
+    return render_template('edit_entry.html', form=form, entry=entry)
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/home/runner/workspace/.pythonlibs/lib/python3.11/site-packages/flask/templating.py", line 149, in render_template
+    template = app.jinja_env.get_or_select_template(template_name_or_list)
+               ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/home/runner/workspace/.pythonlibs/lib/python3.11/site-packages/jinja2/environment.py", line 1084, in get_or_select_template
+    return self.get_template(template_name_or_list, parent, globals)
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/home/runner/workspace/.pythonlibs/lib/python3.11/site-packages/jinja2/environment.py", line 1013, in get_template
+    return self._load_template(name, globals)
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/home/runner/workspace/.pythonlibs/lib/python3.11/site-packages/jinja2/environment.py", line 972, in _load_template
+    template = self.loader.load(self, name, self.make_globals(globals))
+               ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/home/runner/workspace/.pythonlibs/lib/python3.11/site-packages/jinja2/loaders.py", line 126, in load
+    source, filename, uptodate = self.get_source(environment, name)
+                                 ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/home/runner/workspace/.pythonlibs/lib/python3.11/site-packages/flask/templating.py", line 65, in get_source
+    return self._get_source_fast(environment, template)
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/home/runner/workspace/.pythonlibs/lib/python3.11/site-packages/flask/templating.py", line 99, in _get_source_fast
+    raise TemplateNotFound(template)
+jinja2.exceptions.TemplateNotFound: edit_entry.html
+2024-10-04 19:07:30,776 INFO 172.31.196.67 - - [04/Oct/2024 19:07:30] "GET /entry/1/edit?__debugger__=yes&cmd=resource&f=style.css HTTP/1.1" 304 -
+2024-10-04 19:07:30,784 INFO 172.31.196.67 - - [04/Oct/2024 19:07:30] "GET /entry/1/edit?__debugger__=yes&cmd=resource&f=debugger.js HTTP/1.1" 304 -
+2024-10-04 19:11:18,473 INFO  * Detected change in '/home/runner/workspace/routes/entries.py', reloading
+2024-10-04 19:11:18,652 INFO  * Restarting with stat
+2024-10-04 19:11:19,948 WARNING  * Debugger is active!
+2024-10-04 19:11:19,949 INFO  * Debugger PIN: 133-931-329
+2024-10-04 19:12:18,791 INFO 172.31.196.67 - - [04/Oct/2024 19:12:18] "GET / HTTP/1.1" 200 -
+2024-10-04 19:12:19,327 INFO 172.31.196.67 - - [04/Oct/2024 19:12:19] "GET /static/css/tailwind.css HTTP/1.1" 304 -
+2024-10-04 19:12:19,875 INFO 172.31.196.67 - - [04/Oct/2024 19:12:19] "GET /static/js/app.js HTTP/1.1" 304 -
+2024-10-04 19:12:58,857 INFO 172.31.196.67 - - [04/Oct/2024 19:12:58] "GET /login HTTP/1.1" 200 -
+2024-10-04 19:12:59,906 INFO 172.31.196.67 - - [04/Oct/2024 19:12:59] "GET /static/css/tailwind.css HTTP/1.1" 304 -
+2024-10-04 19:13:00,016 INFO 172.31.196.67 - - [04/Oct/2024 19:13:00] "GET /static/js/app.js HTTP/1.1" 304 -
+2024-10-04 19:13:54,745 INFO 172.31.196.67 - - [04/Oct/2024 19:13:54] "POST /login HTTP/1.1" 302 -
+2024-10-04 19:13:55,258 INFO 172.31.196.67 - - [04/Oct/2024 19:13:55] "GET /dashboard HTTP/1.1" 200 -
+2024-10-04 19:13:57,434 INFO 172.31.196.67 - - [04/Oct/2024 19:13:57] "GET /static/js/app.js HTTP/1.1" 304 -
+2024-10-04 19:13:57,485 INFO 172.31.196.67 - - [04/Oct/2024 19:13:57] "GET /static/css/tailwind.css HTTP/1.1" 304 -
+2024-10-04 19:14:09,367 ERROR {"error": "Error viewing entry", "exception": "Could not build url for endpoint 'entries.export_entry' with values ['entry_id']. Did you mean 'entries.edit_entry' instead?"}
+Traceback (most recent call last):
+  File "/home/runner/workspace/routes/entries.py", line 142, in view_entry
+    return render_template('entry_detail.html', entry=entry)
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/home/runner/workspace/.pythonlibs/lib/python3.11/site-packages/flask/templating.py", line 150, in render_template
+    return _render(app, template, context)
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/home/runner/workspace/.pythonlibs/lib/python3.11/site-packages/flask/templating.py", line 131, in _render
+    rv = template.render(context)
+         ^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/home/runner/workspace/.pythonlibs/lib/python3.11/site-packages/jinja2/environment.py", line 1304, in render
+    self.environment.handle_exception()
+  File "/home/runner/workspace/.pythonlibs/lib/python3.11/site-packages/jinja2/environment.py", line 939, in handle_exception
+    raise rewrite_traceback_stack(source=source)
+  File "/home/runner/workspace/templates/entry_detail.html", line 1, in top-level template code
+    {% extends "base.html" %}
+  File "/home/runner/workspace/templates/base.html", line 74, in top-level template code
+    {% block content %}{% endblock %}
+    ^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/home/runner/workspace/templates/entry_detail.html", line 55, in block 'content'
+    <a href="{{ url_for('entries.export_entry', entry_id=entry.id) }}?timezone=" class="bg-sky-500 hover:bg-sky-600 text-white font-bold py-2 px-4 rounded focus:outline-none focus:shadow-outline transition duration-300" target="_blank" id="exportBtn">Export</a>
+    ^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/home/runner/workspace/.pythonlibs/lib/python3.11/site-packages/flask/app.py", line 1084, in url_for
+    return self.handle_url_build_error(error, endpoint, values)
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/home/runner/workspace/.pythonlibs/lib/python3.11/site-packages/flask/app.py", line 1073, in url_for
+    rv = url_adapter.build(  # type: ignore[union-attr]
+         ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/home/runner/workspace/.pythonlibs/lib/python3.11/site-packages/werkzeug/routing/map.py", line 924, in build
+    raise BuildError(endpoint, values, method, self)
+werkzeug.routing.exceptions.BuildError: Could not build url for endpoint 'entries.export_entry' with values ['entry_id']. Did you mean 'entries.edit_entry' instead?
+2024-10-04 19:14:09,368 INFO 172.31.196.67 - - [04/Oct/2024 19:14:09] "GET /entry/2 HTTP/1.1" 302 -
+2024-10-04 19:14:10,015 INFO 172.31.196.67 - - [04/Oct/2024 19:14:10] "GET /dashboard HTTP/1.1" 200 -
+2024-10-04 19:14:10,480 ERROR {"error": "Error viewing entry", "exception": "Could not build url for endpoint 'entries.export_entry' with values ['entry_id']. Did you mean 'entries.edit_entry' instead?"}
+Traceback (most recent call last):
+  File "/home/runner/workspace/routes/entries.py", line 142, in view_entry
+    return render_template('entry_detail.html', entry=entry)
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/home/runner/workspace/.pythonlibs/lib/python3.11/site-packages/flask/templating.py", line 150, in render_template
+    return _render(app, template, context)
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/home/runner/workspace/.pythonlibs/lib/python3.11/site-packages/flask/templating.py", line 131, in _render
+    rv = template.render(context)
+         ^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/home/runner/workspace/.pythonlibs/lib/python3.11/site-packages/jinja2/environment.py", line 1304, in render
+    self.environment.handle_exception()
+  File "/home/runner/workspace/.pythonlibs/lib/python3.11/site-packages/jinja2/environment.py", line 939, in handle_exception
+    raise rewrite_traceback_stack(source=source)
+  File "/home/runner/workspace/templates/entry_detail.html", line 1, in top-level template code
+    {% extends "base.html" %}
+  File "/home/runner/workspace/templates/base.html", line 74, in top-level template code
+    {% block content %}{% endblock %}
+    ^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/home/runner/workspace/templates/entry_detail.html", line 55, in block 'content'
+    <a href="{{ url_for('entries.export_entry', entry_id=entry.id) }}?timezone=" class="bg-sky-500 hover:bg-sky-600 text-white font-bold py-2 px-4 rounded focus:outline-none focus:shadow-outline transition duration-300" target="_blank" id="exportBtn">Export</a>
+    ^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/home/runner/workspace/.pythonlibs/lib/python3.11/site-packages/flask/app.py", line 1084, in url_for
+    return self.handle_url_build_error(error, endpoint, values)
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/home/runner/workspace/.pythonlibs/lib/python3.11/site-packages/flask/app.py", line 1073, in url_for
+    rv = url_adapter.build(  # type: ignore[union-attr]
+         ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/home/runner/workspace/.pythonlibs/lib/python3.11/site-packages/werkzeug/routing/map.py", line 924, in build
+    raise BuildError(endpoint, values, method, self)
+werkzeug.routing.exceptions.BuildError: Could not build url for endpoint 'entries.export_entry' with values ['entry_id']. Did you mean 'entries.edit_entry' instead?
+2024-10-04 19:14:10,481 INFO 172.31.196.67 - - [04/Oct/2024 19:14:10] "GET /entry/2 HTTP/1.1" 302 -
+2024-10-04 19:14:11,290 INFO 172.31.196.67 - - [04/Oct/2024 19:14:11] "GET /dashboard HTTP/1.1" 200 -
+2024-10-04 19:14:12,304 INFO 172.31.196.67 - - [04/Oct/2024 19:14:12] "GET /static/css/tailwind.css HTTP/1.1" 304 -
+2024-10-04 19:14:12,304 INFO 172.31.196.67 - - [04/Oct/2024 19:14:12] "GET /static/js/app.js HTTP/1.1" 304 -
+2024-10-04 19:14:24,218 ERROR {"error": "Error viewing entry", "exception": "Could not build url for endpoint 'entries.export_entry' with values ['entry_id']. Did you mean 'entries.edit_entry' instead?"}
+Traceback (most recent call last):
+  File "/home/runner/workspace/routes/entries.py", line 142, in view_entry
+    return render_template('entry_detail.html', entry=entry)
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/home/runner/workspace/.pythonlibs/lib/python3.11/site-packages/flask/templating.py", line 150, in render_template
+    return _render(app, template, context)
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/home/runner/workspace/.pythonlibs/lib/python3.11/site-packages/flask/templating.py", line 131, in _render
+    rv = template.render(context)
+         ^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/home/runner/workspace/.pythonlibs/lib/python3.11/site-packages/jinja2/environment.py", line 1304, in render
+    self.environment.handle_exception()
+  File "/home/runner/workspace/.pythonlibs/lib/python3.11/site-packages/jinja2/environment.py", line 939, in handle_exception
+    raise rewrite_traceback_stack(source=source)
+  File "/home/runner/workspace/templates/entry_detail.html", line 1, in top-level template code
+    {% extends "base.html" %}
+  File "/home/runner/workspace/templates/base.html", line 74, in top-level template code
+    {% block content %}{% endblock %}
+    ^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/home/runner/workspace/templates/entry_detail.html", line 55, in block 'content'
+    <a href="{{ url_for('entries.export_entry', entry_id=entry.id) }}?timezone=" class="bg-sky-500 hover:bg-sky-600 text-white font-bold py-2 px-4 rounded focus:outline-none focus:shadow-outline transition duration-300" target="_blank" id="exportBtn">Export</a>
+    ^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/home/runner/workspace/.pythonlibs/lib/python3.11/site-packages/flask/app.py", line 1084, in url_for
+    return self.handle_url_build_error(error, endpoint, values)
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/home/runner/workspace/.pythonlibs/lib/python3.11/site-packages/flask/app.py", line 1073, in url_for
+    rv = url_adapter.build(  # type: ignore[union-attr]
+         ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/home/runner/workspace/.pythonlibs/lib/python3.11/site-packages/werkzeug/routing/map.py", line 924, in build
+    raise BuildError(endpoint, values, method, self)
+werkzeug.routing.exceptions.BuildError: Could not build url for endpoint 'entries.export_entry' with values ['entry_id']. Did you mean 'entries.edit_entry' instead?
+2024-10-04 19:14:24,219 INFO 172.31.196.67 - - [04/Oct/2024 19:14:24] "GET /entry/2 HTTP/1.1" 302 -
+2024-10-04 19:14:24,812 ERROR {"error": "Error viewing entry", "exception": "Could not build url for endpoint 'entries.export_entry' with values ['entry_id']. Did you mean 'entries.edit_entry' instead?"}
+Traceback (most recent call last):
+  File "/home/runner/workspace/routes/entries.py", line 142, in view_entry
+    return render_template('entry_detail.html', entry=entry)
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/home/runner/workspace/.pythonlibs/lib/python3.11/site-packages/flask/templating.py", line 150, in render_template
+    return _render(app, template, context)
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/home/runner/workspace/.pythonlibs/lib/python3.11/site-packages/flask/templating.py", line 131, in _render
+    rv = template.render(context)
+         ^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/home/runner/workspace/.pythonlibs/lib/python3.11/site-packages/jinja2/environment.py", line 1304, in render
+    self.environment.handle_exception()
+  File "/home/runner/workspace/.pythonlibs/lib/python3.11/site-packages/jinja2/environment.py", line 939, in handle_exception
+    raise rewrite_traceback_stack(source=source)
+  File "/home/runner/workspace/templates/entry_detail.html", line 1, in top-level template code
+    {% extends "base.html" %}
+  File "/home/runner/workspace/templates/base.html", line 74, in top-level template code
+    {% block content %}{% endblock %}
+    ^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/home/runner/workspace/templates/entry_detail.html", line 55, in block 'content'
+    <a href="{{ url_for('entries.export_entry', entry_id=entry.id) }}?timezone=" class="bg-sky-500 hover:bg-sky-600 text-white font-bold py-2 px-4 rounded focus:outline-none focus:shadow-outline transition duration-300" target="_blank" id="exportBtn">Export</a>
+    ^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/home/runner/workspace/.pythonlibs/lib/python3.11/site-packages/flask/app.py", line 1084, in url_for
+    return self.handle_url_build_error(error, endpoint, values)
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/home/runner/workspace/.pythonlibs/lib/python3.11/site-packages/flask/app.py", line 1073, in url_for
+    rv = url_adapter.build(  # type: ignore[union-attr]
+         ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/home/runner/workspace/.pythonlibs/lib/python3.11/site-packages/werkzeug/routing/map.py", line 924, in build
+    raise BuildError(endpoint, values, method, self)
+werkzeug.routing.exceptions.BuildError: Could not build url for endpoint 'entries.export_entry' with values ['entry_id']. Did you mean 'entries.edit_entry' instead?
+2024-10-04 19:14:24,813 INFO 172.31.196.67 - - [04/Oct/2024 19:14:24] "GET /entry/1 HTTP/1.1" 302 -
+2024-10-04 19:14:25,636 INFO 172.31.196.67 - - [04/Oct/2024 19:14:25] "GET /dashboard HTTP/1.1" 200 -
+2024-10-04 19:14:28,820 INFO 172.31.196.67 - - [04/Oct/2024 19:14:28] "GET /entry/1/edit HTTP/1.1" 500 -
+Traceback (most recent call last):
+  File "/home/runner/workspace/.pythonlibs/lib/python3.11/site-packages/flask/app.py", line 1498, in __call__
+    return self.wsgi_app(environ, start_response)
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/home/runner/workspace/.pythonlibs/lib/python3.11/site-packages/flask/app.py", line 1476, in wsgi_app
+    response = self.handle_exception(e)
+               ^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/home/runner/workspace/.pythonlibs/lib/python3.11/site-packages/flask/app.py", line 1473, in wsgi_app
+    response = self.full_dispatch_request()
+               ^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/home/runner/workspace/.pythonlibs/lib/python3.11/site-packages/flask/app.py", line 882, in full_dispatch_request
+    rv = self.handle_user_exception(e)
+         ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/home/runner/workspace/.pythonlibs/lib/python3.11/site-packages/flask/app.py", line 880, in full_dispatch_request
+    rv = self.dispatch_request()
+         ^^^^^^^^^^^^^^^^^^^^^^^
+  File "/home/runner/workspace/.pythonlibs/lib/python3.11/site-packages/flask/app.py", line 865, in dispatch_request
+    return self.ensure_sync(self.view_functions[rule.endpoint])(**view_args)  # type: ignore[no-any-return]
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/home/runner/workspace/.pythonlibs/lib/python3.11/site-packages/flask_login/utils.py", line 290, in decorated_view
+    return current_app.ensure_sync(func)(*args, **kwargs)
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/home/runner/workspace/routes/entries.py", line 24, in decorated_function
+    return f(entry, *args, **kwargs)
+           ^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/home/runner/workspace/routes/entries.py", line 120, in edit_entry
+    return render_template('edit_entry.html', form=form, entry=entry)
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/home/runner/workspace/.pythonlibs/lib/python3.11/site-packages/flask/templating.py", line 150, in render_template
+    return _render(app, template, context)
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/home/runner/workspace/.pythonlibs/lib/python3.11/site-packages/flask/templating.py", line 131, in _render
+    rv = template.render(context)
+         ^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/home/runner/workspace/.pythonlibs/lib/python3.11/site-packages/jinja2/environment.py", line 1304, in render
+    self.environment.handle_exception()
+  File "/home/runner/workspace/.pythonlibs/lib/python3.11/site-packages/jinja2/environment.py", line 939, in handle_exception
+    raise rewrite_traceback_stack(source=source)
+  File "/home/runner/workspace/templates/edit_entry.html", line 1, in top-level template code
+    {% extends "base.html" %}
+  File "/home/runner/workspace/templates/base.html", line 74, in top-level template code
+    {% block content %}{% endblock %}
+  File "/home/runner/workspace/templates/edit_entry.html", line 32, in block 'content'
+    <img id="preview-image" src="{{ url_for('static', filename='uploads/' + entry.media[0].filename) }}" alt="Preview" class="max-w-full h-auto rounded-md">
+  File "/home/runner/workspace/.pythonlibs/lib/python3.11/site-packages/jinja2/environment.py", line 487, in getattr
+    return getattr(obj, attribute)
+           ^^^^^^^^^^^^^^^^^^^^^^^
+jinja2.exceptions.UndefinedError: sqlalchemy.orm.dynamic.AppenderQuery object has no element 0
+2024-10-04 19:14:31,328 INFO 172.31.196.67 - - [04/Oct/2024 19:14:31] "GET /entry/1/edit?__debugger__=yes&cmd=resource&f=style.css HTTP/1.1" 304 -
+2024-10-04 19:14:31,341 INFO 172.31.196.67 - - [04/Oct/2024 19:14:31] "GET /entry/1/edit?__debugger__=yes&cmd=resource&f=debugger.js HTTP/1.1" 304 -
+2024-10-04 19:16:40,940 INFO 172.31.196.67 - - [04/Oct/2024 19:16:40] "GET /entry/1/edit HTTP/1.1" 302 -
+2024-10-04 19:16:40,945 INFO 172.31.196.67 - - [04/Oct/2024 19:16:40] "GET /login?next=/entry/1/edit HTTP/1.1" 200 -
+2024-10-04 19:16:40,953 INFO 172.31.196.67 - - [04/Oct/2024 19:16:40] "GET /static/css/tailwind.css HTTP/1.1" 200 -
+2024-10-04 19:16:40,960 INFO 172.31.196.67 - - [04/Oct/2024 19:16:40] "GET /static/js/app.js HTTP/1.1" 200 -
+2024-10-04 19:17:30,720 INFO 172.31.196.67 - - [04/Oct/2024 19:17:30] "GET /entry/1/edit HTTP/1.1" 200 -
+2024-10-04 19:17:32,568 INFO 172.31.196.67 - - [04/Oct/2024 19:17:32] "GET /entry/1/edit HTTP/1.1" 200 -
+2024-10-04 19:17:33,536 INFO 172.31.196.67 - - [04/Oct/2024 19:17:33] "GET /static/css/tailwind.css HTTP/1.1" 304 -
+2024-10-04 19:17:33,636 INFO 172.31.196.67 - - [04/Oct/2024 19:17:33] "GET /static/js/app.js HTTP/1.1" 304 -
+2024-10-04 19:18:29,412 INFO 172.31.196.67 - - [04/Oct/2024 19:18:29] "GET /dashboard HTTP/1.1" 200 -
+2024-10-04 19:18:30,274 INFO 172.31.196.67 - - [04/Oct/2024 19:18:30] "GET /static/css/tailwind.css HTTP/1.1" 304 -
+2024-10-04 19:18:30,275 INFO 172.31.196.67 - - [04/Oct/2024 19:18:30] "GET /static/js/app.js HTTP/1.1" 304 -
+2024-10-04 19:18:58,684 ERROR {"error": "Error viewing entry", "exception": "Could not build url for endpoint 'entries.export_entry' with values ['entry_id']. Did you mean 'entries.edit_entry' instead?"}
+Traceback (most recent call last):
+  File "/home/runner/workspace/routes/entries.py", line 142, in view_entry
+    return render_template('entry_detail.html', entry=entry)
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/home/runner/workspace/.pythonlibs/lib/python3.11/site-packages/flask/templating.py", line 150, in render_template
+    return _render(app, template, context)
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/home/runner/workspace/.pythonlibs/lib/python3.11/site-packages/flask/templating.py", line 131, in _render
+    rv = template.render(context)
+         ^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/home/runner/workspace/.pythonlibs/lib/python3.11/site-packages/jinja2/environment.py", line 1304, in render
+    self.environment.handle_exception()
+  File "/home/runner/workspace/.pythonlibs/lib/python3.11/site-packages/jinja2/environment.py", line 939, in handle_exception
+    raise rewrite_traceback_stack(source=source)
+  File "/home/runner/workspace/templates/entry_detail.html", line 1, in top-level template code
+    {% extends "base.html" %}
+  File "/home/runner/workspace/templates/base.html", line 74, in top-level template code
+    {% block content %}{% endblock %}
+    ^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/home/runner/workspace/templates/entry_detail.html", line 55, in block 'content'
+    <a href="{{ url_for('entries.export_entry', entry_id=entry.id) }}?timezone=" class="bg-sky-500 hover:bg-sky-600 text-white font-bold py-2 px-4 rounded focus:outline-none focus:shadow-outline transition duration-300" target="_blank" id="exportBtn">Export</a>
+    ^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/home/runner/workspace/.pythonlibs/lib/python3.11/site-packages/flask/app.py", line 1084, in url_for
+    return self.handle_url_build_error(error, endpoint, values)
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/home/runner/workspace/.pythonlibs/lib/python3.11/site-packages/flask/app.py", line 1073, in url_for
+    rv = url_adapter.build(  # type: ignore[union-attr]
+         ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/home/runner/workspace/.pythonlibs/lib/python3.11/site-packages/werkzeug/routing/map.py", line 924, in build
+    raise BuildError(endpoint, values, method, self)
+werkzeug.routing.exceptions.BuildError: Could not build url for endpoint 'entries.export_entry' with values ['entry_id']. Did you mean 'entries.edit_entry' instead?
+2024-10-04 19:18:58,685 INFO 172.31.196.67 - - [04/Oct/2024 19:18:58] "GET /entry/1 HTTP/1.1" 302 -
+2024-10-04 19:18:58,818 INFO 172.31.196.67 - - [04/Oct/2024 19:18:58] "GET /dashboard HTTP/1.1" 200 -
+2024-10-04 19:18:59,375 INFO 172.31.196.67 - - [04/Oct/2024 19:18:59] "GET /static/css/tailwind.css HTTP/1.1" 304 -
+2024-10-04 19:18:59,376 INFO 172.31.196.67 - - [04/Oct/2024 19:18:59] "GET /static/js/app.js HTTP/1.1" 304 -
+2024-10-04 19:19:02,567 ERROR {"error": "Error viewing entry", "exception": "Could not build url for endpoint 'entries.export_entry' with values ['entry_id']. Did you mean 'entries.edit_entry' instead?"}
+Traceback (most recent call last):
+  File "/home/runner/workspace/routes/entries.py", line 142, in view_entry
+    return render_template('entry_detail.html', entry=entry)
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/home/runner/workspace/.pythonlibs/lib/python3.11/site-packages/flask/templating.py", line 150, in render_template
+    return _render(app, template, context)
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/home/runner/workspace/.pythonlibs/lib/python3.11/site-packages/flask/templating.py", line 131, in _render
+    rv = template.render(context)
+         ^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/home/runner/workspace/.pythonlibs/lib/python3.11/site-packages/jinja2/environment.py", line 1304, in render
+    self.environment.handle_exception()
+  File "/home/runner/workspace/.pythonlibs/lib/python3.11/site-packages/jinja2/environment.py", line 939, in handle_exception
+    raise rewrite_traceback_stack(source=source)
+  File "/home/runner/workspace/templates/entry_detail.html", line 1, in top-level template code
+    {% extends "base.html" %}
+  File "/home/runner/workspace/templates/base.html", line 74, in top-level template code
+    {% block content %}{% endblock %}
+    ^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/home/runner/workspace/templates/entry_detail.html", line 55, in block 'content'
+    <a href="{{ url_for('entries.export_entry', entry_id=entry.id) }}?timezone=" class="bg-sky-500 hover:bg-sky-600 text-white font-bold py-2 px-4 rounded focus:outline-none focus:shadow-outline transition duration-300" target="_blank" id="exportBtn">Export</a>
+    ^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/home/runner/workspace/.pythonlibs/lib/python3.11/site-packages/flask/app.py", line 1084, in url_for
+    return self.handle_url_build_error(error, endpoint, values)
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/home/runner/workspace/.pythonlibs/lib/python3.11/site-packages/flask/app.py", line 1073, in url_for
+    rv = url_adapter.build(  # type: ignore[union-attr]
+         ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/home/runner/workspace/.pythonlibs/lib/python3.11/site-packages/werkzeug/routing/map.py", line 924, in build
+    raise BuildError(endpoint, values, method, self)
+werkzeug.routing.exceptions.BuildError: Could not build url for endpoint 'entries.export_entry' with values ['entry_id']. Did you mean 'entries.edit_entry' instead?
+2024-10-04 19:19:02,568 INFO 172.31.196.67 - - [04/Oct/2024 19:19:02] "GET /entry/2 HTTP/1.1" 302 -
+2024-10-04 19:19:02,693 INFO 172.31.196.67 - - [04/Oct/2024 19:19:02] "GET /dashboard HTTP/1.1" 200 -
+2024-10-04 19:19:03,999 INFO 172.31.196.67 - - [04/Oct/2024 19:19:03] "GET /static/js/app.js HTTP/1.1" 304 -
+2024-10-04 19:19:04,053 INFO 172.31.196.67 - - [04/Oct/2024 19:19:04] "GET /static/css/tailwind.css HTTP/1.1" 304 -
+2024-10-04 19:19:08,545 ERROR {"error": "Error viewing entry", "exception": "Could not build url for endpoint 'entries.export_entry' with values ['entry_id']. Did you mean 'entries.edit_entry' instead?"}
+Traceback (most recent call last):
+  File "/home/runner/workspace/routes/entries.py", line 142, in view_entry
+    return render_template('entry_detail.html', entry=entry)
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/home/runner/workspace/.pythonlibs/lib/python3.11/site-packages/flask/templating.py", line 150, in render_template
+    return _render(app, template, context)
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/home/runner/workspace/.pythonlibs/lib/python3.11/site-packages/flask/templating.py", line 131, in _render
+    rv = template.render(context)
+         ^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/home/runner/workspace/.pythonlibs/lib/python3.11/site-packages/jinja2/environment.py", line 1304, in render
+    self.environment.handle_exception()
+  File "/home/runner/workspace/.pythonlibs/lib/python3.11/site-packages/jinja2/environment.py", line 939, in handle_exception
+    raise rewrite_traceback_stack(source=source)
+  File "/home/runner/workspace/templates/entry_detail.html", line 1, in top-level template code
+    {% extends "base.html" %}
+  File "/home/runner/workspace/templates/base.html", line 74, in top-level template code
+    {% block content %}{% endblock %}
+    ^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/home/runner/workspace/templates/entry_detail.html", line 55, in block 'content'
+    <a href="{{ url_for('entries.export_entry', entry_id=entry.id) }}?timezone=" class="bg-sky-500 hover:bg-sky-600 text-white font-bold py-2 px-4 rounded focus:outline-none focus:shadow-outline transition duration-300" target="_blank" id="exportBtn">Export</a>
+    ^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/home/runner/workspace/.pythonlibs/lib/python3.11/site-packages/flask/app.py", line 1084, in url_for
+    return self.handle_url_build_error(error, endpoint, values)
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/home/runner/workspace/.pythonlibs/lib/python3.11/site-packages/flask/app.py", line 1073, in url_for
+    rv = url_adapter.build(  # type: ignore[union-attr]
+         ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/home/runner/workspace/.pythonlibs/lib/python3.11/site-packages/werkzeug/routing/map.py", line 924, in build
+    raise BuildError(endpoint, values, method, self)
+werkzeug.routing.exceptions.BuildError: Could not build url for endpoint 'entries.export_entry' with values ['entry_id']. Did you mean 'entries.edit_entry' instead?
+2024-10-04 19:19:08,546 INFO 172.31.196.67 - - [04/Oct/2024 19:19:08] "GET /entry/2 HTTP/1.1" 302 -
+2024-10-04 19:19:08,673 INFO 172.31.196.67 - - [04/Oct/2024 19:19:08] "GET /dashboard HTTP/1.1" 200 -
+2024-10-04 19:19:09,774 INFO 172.31.196.67 - - [04/Oct/2024 19:19:09] "GET /static/css/tailwind.css HTTP/1.1" 304 -
+2024-10-04 19:19:09,775 INFO 172.31.196.67 - - [04/Oct/2024 19:19:09] "GET /static/js/app.js HTTP/1.1" 304 -
+2024-10-04 19:19:13,817 INFO 172.31.196.67 - - [04/Oct/2024 19:19:13] "GET /entry/2/edit HTTP/1.1" 200 -
+2024-10-04 19:19:14,953 INFO 172.31.196.67 - - [04/Oct/2024 19:19:14] "GET /static/js/app.js HTTP/1.1" 304 -
+2024-10-04 19:19:14,960 INFO 172.31.196.67 - - [04/Oct/2024 19:19:14] "GET /static/css/tailwind.css HTTP/1.1" 304 -
+2024-10-04 19:19:26,584 INFO 172.31.196.67 - - [04/Oct/2024 19:19:26] "POST /entry/2/edit HTTP/1.1" 302 -
+2024-10-04 19:19:26,716 INFO 172.31.196.67 - - [04/Oct/2024 19:19:26] "GET /dashboard HTTP/1.1" 200 -
+2024-10-04 19:19:27,403 INFO 172.31.196.67 - - [04/Oct/2024 19:19:27] "GET /static/css/tailwind.css HTTP/1.1" 304 -
+2024-10-04 19:19:27,431 INFO 172.31.196.67 - - [04/Oct/2024 19:19:27] "GET /static/js/app.js HTTP/1.1" 304 -
+2024-10-04 19:19:31,236 INFO 172.31.196.67 - - [04/Oct/2024 19:19:31] "GET /entry/2/edit HTTP/1.1" 200 -
+2024-10-04 19:19:32,155 INFO 172.31.196.67 - - [04/Oct/2024 19:19:32] "GET /static/css/tailwind.css HTTP/1.1" 304 -
+2024-10-04 19:19:32,155 INFO 172.31.196.67 - - [04/Oct/2024 19:19:32] "GET /static/js/app.js HTTP/1.1" 304 -
+2024-10-04 19:19:44,042 INFO 172.31.196.67 - - [04/Oct/2024 19:19:44] "POST /entry/2/edit HTTP/1.1" 302 -
+2024-10-04 19:19:44,174 INFO 172.31.196.67 - - [04/Oct/2024 19:19:44] "GET /dashboard HTTP/1.1" 200 -
+2024-10-04 19:19:44,964 INFO 172.31.196.67 - - [04/Oct/2024 19:19:44] "GET /static/css/tailwind.css HTTP/1.1" 304 -
+2024-10-04 19:19:44,964 INFO 172.31.196.67 - - [04/Oct/2024 19:19:44] "GET /static/js/app.js HTTP/1.1" 304 -
+2024-10-04 19:19:48,547 INFO 172.31.196.67 - - [04/Oct/2024 19:19:48] "GET /entry/1/edit HTTP/1.1" 200 -
+2024-10-04 19:19:50,210 INFO 172.31.196.67 - - [04/Oct/2024 19:19:50] "GET /static/css/tailwind.css HTTP/1.1" 304 -
+2024-10-04 19:19:50,210 INFO 172.31.196.67 - - [04/Oct/2024 19:19:50] "GET /static/js/app.js HTTP/1.1" 304 -
+2024-10-04 19:19:59,385 INFO 172.31.196.67 - - [04/Oct/2024 19:19:59] "POST /entry/1/edit HTTP/1.1" 302 -
+2024-10-04 19:19:59,681 INFO 172.31.196.67 - - [04/Oct/2024 19:19:59] "GET /dashboard HTTP/1.1" 200 -
+2024-10-04 19:20:00,844 INFO 172.31.196.67 - - [04/Oct/2024 19:20:00] "GET /static/js/app.js HTTP/1.1" 304 -
+2024-10-04 19:20:00,846 INFO 172.31.196.67 - - [04/Oct/2024 19:20:00] "GET /static/css/tailwind.css HTTP/1.1" 304 -
+2024-10-04 19:20:08,070 INFO 172.31.196.67 - - [04/Oct/2024 19:20:08] "GET /entry/1/edit HTTP/1.1" 200 -
+2024-10-04 19:20:08,915 INFO 172.31.196.67 - - [04/Oct/2024 19:20:08] "GET /static/css/tailwind.css HTTP/1.1" 304 -
+2024-10-04 19:20:08,923 INFO 172.31.196.67 - - [04/Oct/2024 19:20:08] "GET /static/js/app.js HTTP/1.1" 304 -
+2024-10-04 19:20:14,624 INFO 172.31.196.67 - - [04/Oct/2024 19:20:14] "POST /entry/1/edit HTTP/1.1" 302 -
+2024-10-04 19:20:14,824 INFO 172.31.196.67 - - [04/Oct/2024 19:20:14] "POST /entry/1/edit HTTP/1.1" 302 -
+2024-10-04 19:20:15,138 INFO 172.31.196.67 - - [04/Oct/2024 19:20:15] "GET /dashboard HTTP/1.1" 200 -
+2024-10-04 19:20:19,167 INFO 172.31.196.67 - - [04/Oct/2024 19:20:19] "GET /static/css/tailwind.css HTTP/1.1" 304 -
+2024-10-04 19:20:19,176 INFO 172.31.196.67 - - [04/Oct/2024 19:20:19] "GET /static/js/app.js HTTP/1.1" 304 -
+2024-10-04 19:20:25,446 ERROR {"error": "Error viewing entry", "exception": "Could not build url for endpoint 'entries.export_entry' with values ['entry_id']. Did you mean 'entries.edit_entry' instead?"}
+Traceback (most recent call last):
+  File "/home/runner/workspace/routes/entries.py", line 142, in view_entry
+    return render_template('entry_detail.html', entry=entry)
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/home/runner/workspace/.pythonlibs/lib/python3.11/site-packages/flask/templating.py", line 150, in render_template
+    return _render(app, template, context)
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/home/runner/workspace/.pythonlibs/lib/python3.11/site-packages/flask/templating.py", line 131, in _render
+    rv = template.render(context)
+         ^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/home/runner/workspace/.pythonlibs/lib/python3.11/site-packages/jinja2/environment.py", line 1304, in render
+    self.environment.handle_exception()
+  File "/home/runner/workspace/.pythonlibs/lib/python3.11/site-packages/jinja2/environment.py", line 939, in handle_exception
+    raise rewrite_traceback_stack(source=source)
+  File "/home/runner/workspace/templates/entry_detail.html", line 1, in top-level template code
+    {% extends "base.html" %}
+  File "/home/runner/workspace/templates/base.html", line 74, in top-level template code
+    {% block content %}{% endblock %}
+    ^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/home/runner/workspace/templates/entry_detail.html", line 55, in block 'content'
+    <a href="{{ url_for('entries.export_entry', entry_id=entry.id) }}?timezone=" class="bg-sky-500 hover:bg-sky-600 text-white font-bold py-2 px-4 rounded focus:outline-none focus:shadow-outline transition duration-300" target="_blank" id="exportBtn">Export</a>
+    ^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/home/runner/workspace/.pythonlibs/lib/python3.11/site-packages/flask/app.py", line 1084, in url_for
+    return self.handle_url_build_error(error, endpoint, values)
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/home/runner/workspace/.pythonlibs/lib/python3.11/site-packages/flask/app.py", line 1073, in url_for
+    rv = url_adapter.build(  # type: ignore[union-attr]
+         ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/home/runner/workspace/.pythonlibs/lib/python3.11/site-packages/werkzeug/routing/map.py", line 924, in build
+    raise BuildError(endpoint, values, method, self)
+werkzeug.routing.exceptions.BuildError: Could not build url for endpoint 'entries.export_entry' with values ['entry_id']. Did you mean 'entries.edit_entry' instead?
+2024-10-04 19:20:25,447 INFO 172.31.196.67 - - [04/Oct/2024 19:20:25] "GET /entry/2 HTTP/1.1" 302 -
+2024-10-04 19:20:25,573 INFO 172.31.196.67 - - [04/Oct/2024 19:20:25] "GET /dashboard HTTP/1.1" 200 -
+2024-10-04 19:20:26,281 ERROR {"error": "Error viewing entry", "exception": "Could not build url for endpoint 'entries.export_entry' with values ['entry_id']. Did you mean 'entries.edit_entry' instead?"}
+Traceback (most recent call last):
+  File "/home/runner/workspace/routes/entries.py", line 142, in view_entry
+    return render_template('entry_detail.html', entry=entry)
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/home/runner/workspace/.pythonlibs/lib/python3.11/site-packages/flask/templating.py", line 150, in render_template
+    return _render(app, template, context)
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/home/runner/workspace/.pythonlibs/lib/python3.11/site-packages/flask/templating.py", line 131, in _render
+    rv = template.render(context)
+         ^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/home/runner/workspace/.pythonlibs/lib/python3.11/site-packages/jinja2/environment.py", line 1304, in render
+    self.environment.handle_exception()
+  File "/home/runner/workspace/.pythonlibs/lib/python3.11/site-packages/jinja2/environment.py", line 939, in handle_exception
+    raise rewrite_traceback_stack(source=source)
+  File "/home/runner/workspace/templates/entry_detail.html", line 1, in top-level template code
+    {% extends "base.html" %}
+  File "/home/runner/workspace/templates/base.html", line 74, in top-level template code
+    {% block content %}{% endblock %}
+    ^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/home/runner/workspace/templates/entry_detail.html", line 55, in block 'content'
+    <a href="{{ url_for('entries.export_entry', entry_id=entry.id) }}?timezone=" class="bg-sky-500 hover:bg-sky-600 text-white font-bold py-2 px-4 rounded focus:outline-none focus:shadow-outline transition duration-300" target="_blank" id="exportBtn">Export</a>
+    ^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/home/runner/workspace/.pythonlibs/lib/python3.11/site-packages/flask/app.py", line 1084, in url_for
+    return self.handle_url_build_error(error, endpoint, values)
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/home/runner/workspace/.pythonlibs/lib/python3.11/site-packages/flask/app.py", line 1073, in url_for
+    rv = url_adapter.build(  # type: ignore[union-attr]
+         ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/home/runner/workspace/.pythonlibs/lib/python3.11/site-packages/werkzeug/routing/map.py", line 924, in build
+    raise BuildError(endpoint, values, method, self)
+werkzeug.routing.exceptions.BuildError: Could not build url for endpoint 'entries.export_entry' with values ['entry_id']. Did you mean 'entries.edit_entry' instead?
+2024-10-04 19:20:26,282 INFO 172.31.196.67 - - [04/Oct/2024 19:20:26] "GET /entry/2 HTTP/1.1" 302 -
+2024-10-04 19:20:26,408 INFO 172.31.196.67 - - [04/Oct/2024 19:20:26] "GET /dashboard HTTP/1.1" 200 -
+2024-10-04 19:20:27,375 INFO 172.31.196.67 - - [04/Oct/2024 19:20:27] "GET /static/css/tailwind.css HTTP/1.1" 304 -
+2024-10-04 19:20:27,484 INFO 172.31.196.67 - - [04/Oct/2024 19:20:27] "GET /static/js/app.js HTTP/1.1" 304 -
+2024-10-04 19:20:30,866 ERROR {"error": "Error viewing entry", "exception": "Could not build url for endpoint 'entries.export_entry' with values ['entry_id']. Did you mean 'entries.edit_entry' instead?"}
+Traceback (most recent call last):
+  File "/home/runner/workspace/routes/entries.py", line 142, in view_entry
+    return render_template('entry_detail.html', entry=entry)
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/home/runner/workspace/.pythonlibs/lib/python3.11/site-packages/flask/templating.py", line 150, in render_template
+    return _render(app, template, context)
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/home/runner/workspace/.pythonlibs/lib/python3.11/site-packages/flask/templating.py", line 131, in _render
+    rv = template.render(context)
+         ^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/home/runner/workspace/.pythonlibs/lib/python3.11/site-packages/jinja2/environment.py", line 1304, in render
+    self.environment.handle_exception()
+  File "/home/runner/workspace/.pythonlibs/lib/python3.11/site-packages/jinja2/environment.py", line 939, in handle_exception
+    raise rewrite_traceback_stack(source=source)
+  File "/home/runner/workspace/templates/entry_detail.html", line 1, in top-level template code
+    {% extends "base.html" %}
+  File "/home/runner/workspace/templates/base.html", line 74, in top-level template code
+    {% block content %}{% endblock %}
+    ^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/home/runner/workspace/templates/entry_detail.html", line 55, in block 'content'
+    <a href="{{ url_for('entries.export_entry', entry_id=entry.id) }}?timezone=" class="bg-sky-500 hover:bg-sky-600 text-white font-bold py-2 px-4 rounded focus:outline-none focus:shadow-outline transition duration-300" target="_blank" id="exportBtn">Export</a>
+    ^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/home/runner/workspace/.pythonlibs/lib/python3.11/site-packages/flask/app.py", line 1084, in url_for
+    return self.handle_url_build_error(error, endpoint, values)
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/home/runner/workspace/.pythonlibs/lib/python3.11/site-packages/flask/app.py", line 1073, in url_for
+    rv = url_adapter.build(  # type: ignore[union-attr]
+         ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/home/runner/workspace/.pythonlibs/lib/python3.11/site-packages/werkzeug/routing/map.py", line 924, in build
+    raise BuildError(endpoint, values, method, self)
+werkzeug.routing.exceptions.BuildError: Could not build url for endpoint 'entries.export_entry' with values ['entry_id']. Did you mean 'entries.edit_entry' instead?
+2024-10-04 19:20:30,867 INFO 172.31.196.67 - - [04/Oct/2024 19:20:30] "GET /entry/2 HTTP/1.1" 302 -
+2024-10-04 19:20:31,629 INFO 172.31.196.67 - - [04/Oct/2024 19:20:31] "GET /dashboard HTTP/1.1" 200 -
+2024-10-04 19:20:33,162 INFO 172.31.196.67 - - [04/Oct/2024 19:20:33] "GET /static/css/tailwind.css HTTP/1.1" 304 -
+2024-10-04 19:20:33,223 INFO 172.31.196.67 - - [04/Oct/2024 19:20:33] "GET /static/js/app.js HTTP/1.1" 304 -
+2024-10-04 19:23:36,701 INFO 172.31.196.67 - - [04/Oct/2024 19:23:36] "GET /entry/1/edit HTTP/1.1" 200 -
+2024-10-04 19:23:37,524 INFO 172.31.196.67 - - [04/Oct/2024 19:23:37] "GET /static/css/tailwind.css HTTP/1.1" 304 -
+2024-10-04 19:23:37,524 INFO 172.31.196.67 - - [04/Oct/2024 19:23:37] "GET /static/js/app.js HTTP/1.1" 304 -
+2024-10-04 19:24:18,071 INFO 172.31.196.67 - - [04/Oct/2024 19:24:18] "GET /logout HTTP/1.1" 302 -
+2024-10-04 19:24:18,204 INFO 172.31.196.67 - - [04/Oct/2024 19:24:18] "GET /login HTTP/1.1" 200 -
+2024-10-04 19:24:18,957 INFO 172.31.196.67 - - [04/Oct/2024 19:24:18] "GET /static/js/app.js HTTP/1.1" 304 -
+2024-10-04 19:24:19,005 INFO 172.31.196.67 - - [04/Oct/2024 19:24:19] "GET /static/css/tailwind.css HTTP/1.1" 304 -
+2024-10-04 19:24:49,794 INFO 172.31.196.67 - - [04/Oct/2024 19:24:49] "POST /login HTTP/1.1" 302 -
+2024-10-04 19:24:49,921 INFO 172.31.196.67 - - [04/Oct/2024 19:24:49] "GET /dashboard HTTP/1.1" 200 -
+2024-10-04 19:24:50,738 INFO 172.31.196.67 - - [04/Oct/2024 19:24:50] "GET /static/css/tailwind.css HTTP/1.1" 304 -
+2024-10-04 19:24:50,774 INFO 172.31.196.67 - - [04/Oct/2024 19:24:50] "GET /static/js/app.js HTTP/1.1" 304 -
+2024-10-04 19:24:55,332 INFO 172.31.196.67 - - [04/Oct/2024 19:24:55] "GET /entry/1/edit HTTP/1.1" 200 -
+2024-10-04 19:24:56,423 INFO 172.31.196.67 - - [04/Oct/2024 19:24:56] "GET /static/js/app.js HTTP/1.1" 304 -
+2024-10-04 19:24:56,423 INFO 172.31.196.67 - - [04/Oct/2024 19:24:56] "GET /static/css/tailwind.css HTTP/1.1" 304 -
+2024-10-04 19:25:00,434 INFO 172.31.196.67 - - [04/Oct/2024 19:25:00] "POST /entry/1/edit HTTP/1.1" 302 -
+2024-10-04 19:25:00,560 INFO 172.31.196.67 - - [04/Oct/2024 19:25:00] "GET /dashboard HTTP/1.1" 200 -
+2024-10-04 19:25:01,792 INFO 172.31.196.67 - - [04/Oct/2024 19:25:01] "GET /static/css/tailwind.css HTTP/1.1" 304 -
+2024-10-04 19:25:01,792 INFO 172.31.196.67 - - [04/Oct/2024 19:25:01] "GET /static/js/app.js HTTP/1.1" 304 -
+2024-10-04 19:25:05,212 ERROR {"error": "Error viewing entry", "exception": "Could not build url for endpoint 'entries.export_entry' with values ['entry_id']. Did you mean 'entries.edit_entry' instead?"}
+Traceback (most recent call last):
+  File "/home/runner/workspace/routes/entries.py", line 142, in view_entry
+    return render_template('entry_detail.html', entry=entry)
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/home/runner/workspace/.pythonlibs/lib/python3.11/site-packages/flask/templating.py", line 150, in render_template
+    return _render(app, template, context)
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/home/runner/workspace/.pythonlibs/lib/python3.11/site-packages/flask/templating.py", line 131, in _render
+    rv = template.render(context)
+         ^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/home/runner/workspace/.pythonlibs/lib/python3.11/site-packages/jinja2/environment.py", line 1304, in render
+    self.environment.handle_exception()
+  File "/home/runner/workspace/.pythonlibs/lib/python3.11/site-packages/jinja2/environment.py", line 939, in handle_exception
+    raise rewrite_traceback_stack(source=source)
+  File "/home/runner/workspace/templates/entry_detail.html", line 1, in top-level template code
+    {% extends "base.html" %}
+  File "/home/runner/workspace/templates/base.html", line 74, in top-level template code
+    {% block content %}{% endblock %}
+    ^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/home/runner/workspace/templates/entry_detail.html", line 55, in block 'content'
+    <a href="{{ url_for('entries.export_entry', entry_id=entry.id) }}?timezone=" class="bg-sky-500 hover:bg-sky-600 text-white font-bold py-2 px-4 rounded focus:outline-none focus:shadow-outline transition duration-300" target="_blank" id="exportBtn">Export</a>
+    ^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/home/runner/workspace/.pythonlibs/lib/python3.11/site-packages/flask/app.py", line 1084, in url_for
+    return self.handle_url_build_error(error, endpoint, values)
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/home/runner/workspace/.pythonlibs/lib/python3.11/site-packages/flask/app.py", line 1073, in url_for
+    rv = url_adapter.build(  # type: ignore[union-attr]
+         ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/home/runner/workspace/.pythonlibs/lib/python3.11/site-packages/werkzeug/routing/map.py", line 924, in build
+    raise BuildError(endpoint, values, method, self)
+werkzeug.routing.exceptions.BuildError: Could not build url for endpoint 'entries.export_entry' with values ['entry_id']. Did you mean 'entries.edit_entry' instead?
+2024-10-04 19:25:05,213 INFO 172.31.196.67 - - [04/Oct/2024 19:25:05] "GET /entry/2 HTTP/1.1" 302 -
+2024-10-04 19:25:05,572 INFO 172.31.196.67 - - [04/Oct/2024 19:25:05] "GET /dashboard HTTP/1.1" 200 -
+2024-10-04 19:25:06,899 INFO 172.31.196.67 - - [04/Oct/2024 19:25:06] "GET /static/css/tailwind.css HTTP/1.1" 304 -
+2024-10-04 19:25:06,938 INFO 172.31.196.67 - - [04/Oct/2024 19:25:06] "GET /static/js/app.js HTTP/1.1" 304 -

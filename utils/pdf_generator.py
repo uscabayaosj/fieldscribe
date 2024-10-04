@@ -1,21 +1,44 @@
-from flask import render_template
-from weasyprint import HTML
-import tempfile
+from reportlab.lib.pagesizes import letter
+from reportlab.platypus import SimpleDocTemplate, Paragraph, Spacer
+from reportlab.lib.styles import getSampleStyleSheet, ParagraphStyle
+from reportlab.lib.units import inch
+from io import BytesIO
 from datetime import datetime
-from pytz import timezone
+import pytz
 
-def generate_pdf(entry, user_timezone):
-    # Convert UTC timestamp to user's local time
-    utc_time = entry.timestamp.replace(tzinfo=timezone('UTC'))
-    local_time = utc_time.astimezone(timezone(user_timezone))
+def generate_pdf(entry, timezone):
+    buffer = BytesIO()
+    doc = SimpleDocTemplate(buffer, pagesize=letter, rightMargin=72, leftMargin=72, topMargin=72, bottomMargin=18)
     
-    # Format the timestamp
-    entry.formatted_timestamp = local_time.strftime('%B %d, %Y at %I:%M %p %Z')
+    styles = getSampleStyleSheet()
+    styles.add(ParagraphStyle(name='Justify', alignment=4))  # 4 is for justified text
     
-    html_content = render_template('pdf_template.html', entry=entry)
+    story = []
     
-    with tempfile.NamedTemporaryFile(suffix='.pdf', delete=False) as pdf_file:
-        HTML(string=html_content).write_pdf(pdf_file.name)
-        pdf_content = pdf_file.read()
+    # Title
+    story.append(Paragraph(entry.title, styles['Heading1']))
+    story.append(Spacer(1, 12))
+    
+    # Date and Location
+    tz = pytz.timezone(timezone)
+    local_date = entry.date.replace(tzinfo=pytz.UTC).astimezone(tz)
+    date_str = local_date.strftime("%Y-%m-%d %H:%M:%S %Z")
+    story.append(Paragraph(f"Date: {date_str}", styles['Normal']))
+    if entry.location:
+        story.append(Paragraph(f"Location: {entry.location}", styles['Normal']))
+    story.append(Spacer(1, 12))
+    
+    # Content
+    story.append(Paragraph(entry.content, styles['Justify']))
+    story.append(Spacer(1, 12))
+    
+    # Tags
+    if entry.tags:
+        tags_str = ", ".join([tag.name for tag in entry.tags])
+        story.append(Paragraph(f"Tags: {tags_str}", styles['Italic']))
+    
+    doc.build(story)
+    pdf_content = buffer.getvalue()
+    buffer.close()
     
     return pdf_content

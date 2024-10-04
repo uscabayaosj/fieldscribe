@@ -16,6 +16,7 @@ weasyprint = "^62.3"
 pytz = "^2024.2"
 flask-wtf = "^1.2.1"
 python-magic = "^0.4.27"
+reportlab = "^4.2.5"
 
 
 [build-system]

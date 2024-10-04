@@ -1,5 +1,7 @@
 {pkgs}: {
   deps = [
+    pkgs.glibcLocales
+    pkgs.freetype
     pkgs.file
     pkgs.pango
     pkgs.harfbuzz
