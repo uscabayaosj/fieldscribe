@@ -1,9 +1,13 @@
 from flask import Flask
 from flask_app.extensions import db  # Import db from extensions
+import os
 
 def create_app():
     app = Flask(__name__)
-    # ... your existing configurations ...
+
+    # Set the database URI for PostgreSQL
+    app.config['SQLALCHEMY_DATABASE_URI'] = os.getenv('DATABASE_URL', 'postgresql://username:password@localhost/dbname')
+    app.config['SQLALCHEMY_TRACK_MODIFICATIONS'] = False  # Optional: Disable track modifications
 
     db.init_app(app)  # Initialize the db with the app
 
