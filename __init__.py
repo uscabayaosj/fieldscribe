@@ -36,7 +36,8 @@ def create_app():
             db.session.commit()
             print("Admin user created.")
 
-    from .routes import auth, entries, media, admin
+    # Update these imports to match your project structure
+    from routes import auth, entries, media, admin
     app.register_blueprint(auth.bp)
     app.register_blueprint(entries.bp)
     app.register_blueprint(media.bp)

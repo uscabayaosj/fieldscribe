@@ -1,5 +1,5 @@
 from flask import Flask, render_template
-from __init__ import create_app  # Assuming your package is named 'journal'
+from __init__ import create_app
 
 app = create_app()
 
