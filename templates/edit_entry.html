@@ -27,9 +27,9 @@
             <label for="photo" class="block text-sm font-medium text-sky-700">Photo</label>
             <input type="file" name="photo" id="photo" accept="image/*" class="w-full px-3 py-2 border border-sky-300 rounded-md focus:outline-none focus:ring-2 focus:ring-sky-500">
         </div>
-        <div id="photo-preview" class="mt-2 {% if not entry.media %}hidden{% endif %}">
-            {% if entry.media %}
-                <img id="preview-image" src="{{ url_for('static', filename='uploads/' + entry.media[0].filename) }}" alt="Preview" class="max-w-full h-auto rounded-md">
+        <div id="photo-preview" class="mt-2 {% if not entry.media.first() %}hidden{% endif %}">
+            {% if entry.media.first() %}
+                <img id="preview-image" src="{{ url_for('static', filename='uploads/' + entry.media.first().filename) }}" alt="Preview" class="max-w-full h-auto rounded-md">
             {% else %}
                 <img id="preview-image" src="" alt="Preview" class="max-w-full h-auto rounded-md">
             {% endif %}
