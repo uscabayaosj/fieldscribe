@@ -62,8 +62,10 @@ def create_app():
         # Register blueprints
         from routes.entries import bp as entries_bp
         from routes.auth import bp as auth_bp
+        from routes.admin import bp as admin_bp
         app.register_blueprint(entries_bp)
         app.register_blueprint(auth_bp)
+        app.register_blueprint(admin_bp, url_prefix='/admin')
 
         @app.route('/')
         def index():

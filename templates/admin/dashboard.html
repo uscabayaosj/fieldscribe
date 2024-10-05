@@ -4,17 +4,16 @@
 
 {% block content %}
 <div class="container mx-auto px-4 py-8">
-    <h1 class="text-3xl font-bold mb-6">Admin Dashboard</h1>
-    <div class="grid grid-cols-1 md:grid-cols-2 gap-6">
-        <div class="bg-white shadow-md rounded-lg p-6">
-            <h2 class="text-xl font-semibold mb-4">User Management</h2>
-            <p class="mb-4">Manage user accounts and permissions.</p>
-            <a href="{{ url_for('admin.manage_users') }}" class="bg-sky-500 hover:bg-sky-600 text-white font-bold py-2 px-4 rounded">Manage Users</a>
-        </div>
-        <div class="bg-white shadow-md rounded-lg p-6">
-            <h2 class="text-xl font-semibold mb-4">Entry Management</h2>
-            <p class="mb-4">View and manage all journal entries.</p>
-            <a href="{{ url_for('admin.manage_entries') }}" class="bg-sky-500 hover:bg-sky-600 text-white font-bold py-2 px-4 rounded">Manage Entries</a>
+    <h1 class="text-3xl font-bold mb-6 text-sky-800">Admin Dashboard</h1>
+    <div class="bg-white shadow-md rounded px-8 pt-6 pb-8 mb-4">
+        <p class="mb-4">Welcome to the admin dashboard. Here you can manage users and entries.</p>
+        <div class="flex space-x-4">
+            <a href="{{ url_for('admin.manage_users') }}" class="bg-sky-500 hover:bg-sky-700 text-white font-bold py-2 px-4 rounded">
+                Manage Users
+            </a>
+            <a href="{{ url_for('admin.manage_entries') }}" class="bg-sky-500 hover:bg-sky-700 text-white font-bold py-2 px-4 rounded">
+                Manage Entries
+            </a>
         </div>
     </div>
 </div>
