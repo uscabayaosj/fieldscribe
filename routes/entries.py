@@ -66,7 +66,6 @@ def new_entry():
                 if tag not in entry.tags:
                     entry.tags.append(tag)
 
-            # Handle photo upload
             if 'photo' in request.files:
                 photo = request.files['photo']
                 if photo.filename != '':
@@ -121,7 +120,6 @@ def edit_entry(entry):
                 if tag:
                     entry.tags.remove(tag)
 
-            # Handle photo upload
             if 'photo' in request.files:
                 photo = request.files['photo']
                 if photo.filename != '':
@@ -129,12 +127,10 @@ def edit_entry(entry):
                     photo_path = os.path.join(current_app.config['UPLOAD_FOLDER'], filename)
                     photo.save(photo_path)
                     
-                    # Delete old media if it exists
                     old_media = Media.query.filter_by(entry_id=entry.id).first()
                     if old_media:
                         db.session.delete(old_media)
                     
-                    # Create new media
                     media = Media(filename=filename, entry_id=entry.id, media_type='image')
                     db.session.add(media)
 
@@ -220,3 +216,24 @@ def share_entry(entry):
 def view_shared_entry(share_token):
     entry = Entry.query.filter_by(share_token=share_token).first_or_404()
     return render_template('shared_entry.html', entry=entry)
+
+@bp.route('/analyze', methods=['GET'])
+@login_required
+def analyze_entries():
+    try:
+        entries = Entry.query.filter_by(user_id=current_user.id).all()
+        serialized_entries = []
+        for entry in entries:
+            serialized_entry = {
+                'id': entry.id,
+                'title': entry.title,
+                'content': entry.content,
+                'date': entry.date.isoformat(),
+                'location': entry.location,
+                'tags': [tag.name for tag in entry.tags]
+            }
+            serialized_entries.append(serialized_entry)
+        return jsonify(serialized_entries), 200
+    except Exception as e:
+        logging.error(json.dumps({"error": "Error retrieving entries for analysis", "exception": str(e)}), exc_info=True)
+        return jsonify({'error': 'An error occurred while retrieving entries for analysis'}), 500
