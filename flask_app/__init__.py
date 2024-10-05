@@ -30,6 +30,7 @@ def create_app():
         # Check if the password_hash column needs to be altered
         from sqlalchemy import text
         db.session.execute(text("ALTER TABLE public.user ALTER COLUMN password_hash TYPE character varying(255);"))
+        db.session.execute(text("ALTER TABLE public.user ADD COLUMN IF NOT EXISTS is_admin BOOLEAN DEFAULT FALSE;"))
         db.session.commit()
 
         # Register blueprints

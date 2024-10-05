@@ -18,7 +18,9 @@ def is_safe_url(target):
     return test_url.scheme in ("http", "https") and ref_url.netloc == test_url.netloc
 
 def redirect_to_dashboard():
-    return redirect(url_for('admin.admin_dashboard') if current_user.is_admin else url_for('entries.dashboard'))
+    if hasattr(current_user, 'is_admin') and current_user.is_admin:
+        return redirect(url_for('admin.admin_dashboard'))
+    return redirect(url_for('entries.dashboard'))
 
 @bp.route('/register', methods=['GET', 'POST'])
 def register():
