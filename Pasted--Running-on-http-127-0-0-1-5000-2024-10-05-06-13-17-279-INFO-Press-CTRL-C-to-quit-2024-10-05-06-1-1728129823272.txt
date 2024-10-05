@@ -1,0 +1,122 @@
+* Running on http://127.0.0.1:5000
+2024-10-05 06:13:17,279 INFO Press CTRL+C to quit
+2024-10-05 06:13:17,280 INFO  * Restarting with stat
+2024-10-05 06:13:22,723 WARNING  * Debugger is active!
+2024-10-05 06:13:22,724 INFO  * Debugger PIN: 896-055-611
+2024-10-05 06:13:22,788 INFO 127.0.0.1 - - [05/Oct/2024 06:13:22] "GET / HTTP/1.1" 302 -
+2024-10-05 06:13:22,798 INFO 127.0.0.1 - - [05/Oct/2024 06:13:22] "GET /login HTTP/1.1" 200 -
+2024-10-05 06:13:22,806 INFO 127.0.0.1 - - [05/Oct/2024 06:13:22] "GET /static/css/tailwind.css HTTP/1.1" 404 -
+2024-10-05 06:13:22,874 INFO 127.0.0.1 - - [05/Oct/2024 06:13:22] "GET /static/js/app.js HTTP/1.1" 404 -
+2024-10-05 06:13:22,905 INFO 127.0.0.1 - - [05/Oct/2024 06:13:22] "GET /dashboard HTTP/1.1" 302 -
+2024-10-05 06:13:23,023 INFO 127.0.0.1 - - [05/Oct/2024 06:13:23] "GET /login?next=/dashboard HTTP/1.1" 200 -
+2024-10-05 06:13:23,582 INFO 127.0.0.1 - - [05/Oct/2024 06:13:23] "GET /static/css/tailwind.css HTTP/1.1" 404 -
+2024-10-05 06:13:24,259 INFO 127.0.0.1 - - [05/Oct/2024 06:13:24] "GET /static/js/app.js HTTP/1.1" 404 -
+2024-10-05 06:13:24,776 INFO 127.0.0.1 - - [05/Oct/2024 06:13:24] "GET / HTTP/1.1" 302 -
+2024-10-05 06:13:24,886 INFO 127.0.0.1 - - [05/Oct/2024 06:13:24] "GET /dashboard HTTP/1.1" 302 -
+2024-10-05 06:13:24,993 INFO 127.0.0.1 - - [05/Oct/2024 06:13:24] "GET /login?next=/dashboard HTTP/1.1" 200 -
+2024-10-05 06:13:25,248 INFO 127.0.0.1 - - [05/Oct/2024 06:13:25] "GET /static/css/tailwind.css HTTP/1.1" 404 -
+2024-10-05 06:13:25,434 INFO 127.0.0.1 - - [05/Oct/2024 06:13:25] "GET /static/js/app.js HTTP/1.1" 404 -
+2024-10-05 06:13:38,128 INFO 127.0.0.1 - - [05/Oct/2024 06:13:38] "GET /login HTTP/1.1" 200 -
+2024-10-05 06:13:38,353 INFO 127.0.0.1 - - [05/Oct/2024 06:13:38] "GET /static/css/tailwind.css HTTP/1.1" 404 -
+2024-10-05 06:13:38,572 INFO 127.0.0.1 - - [05/Oct/2024 06:13:38] "GET /static/js/app.js HTTP/1.1" 404 -
+2024-10-05 06:13:39,048 INFO 127.0.0.1 - - [05/Oct/2024 06:13:39] "GET /login HTTP/1.1" 200 -
+2024-10-05 06:13:39,283 INFO 127.0.0.1 - - [05/Oct/2024 06:13:39] "GET /static/css/tailwind.css HTTP/1.1" 404 -
+2024-10-05 06:13:39,429 INFO 127.0.0.1 - - [05/Oct/2024 06:13:39] "GET /static/js/app.js HTTP/1.1" 404 -
+2024-10-05 12:02:10,040 INFO 127.0.0.1 - - [05/Oct/2024 12:02:10] "POST /login HTTP/1.1" 500 -
+Traceback (most recent call last):
+  File "/home/runner/workspace/.pythonlibs/lib/python3.11/site-packages/sqlalchemy/engine/base.py", line 1967, in _exec_single_context
+    self.dialect.do_execute(
+  File "/home/runner/workspace/.pythonlibs/lib/python3.11/site-packages/sqlalchemy/engine/default.py", line 941, in do_execute
+    cursor.execute(statement, parameters)
+psycopg2.OperationalError: SSL connection has been closed unexpectedly
+
+
+The above exception was the direct cause of the following exception:
+
+Traceback (most recent call last):
+  File "/home/runner/workspace/.pythonlibs/lib/python3.11/site-packages/flask/app.py", line 1498, in __call__
+    return self.wsgi_app(environ, start_response)
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/home/runner/workspace/.pythonlibs/lib/python3.11/site-packages/flask/app.py", line 1476, in wsgi_app
+    response = self.handle_exception(e)
+               ^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/home/runner/workspace/.pythonlibs/lib/python3.11/site-packages/flask/app.py", line 1473, in wsgi_app
+    response = self.full_dispatch_request()
+               ^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/home/runner/workspace/.pythonlibs/lib/python3.11/site-packages/flask/app.py", line 882, in full_dispatch_request
+    rv = self.handle_user_exception(e)
+         ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/home/runner/workspace/.pythonlibs/lib/python3.11/site-packages/flask/app.py", line 880, in full_dispatch_request
+    rv = self.dispatch_request()
+         ^^^^^^^^^^^^^^^^^^^^^^^
+  File "/home/runner/workspace/.pythonlibs/lib/python3.11/site-packages/flask/app.py", line 865, in dispatch_request
+    return self.ensure_sync(self.view_functions[rule.endpoint])(**view_args)  # type: ignore[no-any-return]
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/home/runner/workspace/routes/auth.py", line 73, in login
+    user = User.query.filter_by(username=username).first()
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/home/runner/workspace/.pythonlibs/lib/python3.11/site-packages/sqlalchemy/orm/query.py", line 2728, in first
+    return self.limit(1)._iter().first()  # type: ignore
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/home/runner/workspace/.pythonlibs/lib/python3.11/site-packages/sqlalchemy/orm/query.py", line 2827, in _iter
+    result: Union[ScalarResult[_T], Result[_T]] = self.session.execute(
+                                                  ^^^^^^^^^^^^^^^^^^^^^
+  File "/home/runner/workspace/.pythonlibs/lib/python3.11/site-packages/sqlalchemy/orm/session.py", line 2362, in execute
+    return self._execute_internal(
+           ^^^^^^^^^^^^^^^^^^^^^^^
+  File "/home/runner/workspace/.pythonlibs/lib/python3.11/site-packages/sqlalchemy/orm/session.py", line 2247, in _execute_internal
+    result: Result[Any] = compile_state_cls.orm_execute_statement(
+                          ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/home/runner/workspace/.pythonlibs/lib/python3.11/site-packages/sqlalchemy/orm/context.py", line 293, in orm_execute_statement
+    result = conn.execute(
+             ^^^^^^^^^^^^^
+  File "/home/runner/workspace/.pythonlibs/lib/python3.11/site-packages/sqlalchemy/engine/base.py", line 1418, in execute
+    return meth(
+           ^^^^^
+  File "/home/runner/workspace/.pythonlibs/lib/python3.11/site-packages/sqlalchemy/sql/elements.py", line 515, in _execute_on_connection
+    return connection._execute_clauseelement(
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/home/runner/workspace/.pythonlibs/lib/python3.11/site-packages/sqlalchemy/engine/base.py", line 1640, in _execute_clauseelement
+    ret = self._execute_context(
+          ^^^^^^^^^^^^^^^^^^^^^^
+  File "/home/runner/workspace/.pythonlibs/lib/python3.11/site-packages/sqlalchemy/engine/base.py", line 1846, in _execute_context
+    return self._exec_single_context(
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/home/runner/workspace/.pythonlibs/lib/python3.11/site-packages/sqlalchemy/engine/base.py", line 1986, in _exec_single_context
+    self._handle_dbapi_exception(
+  File "/home/runner/workspace/.pythonlibs/lib/python3.11/site-packages/sqlalchemy/engine/base.py", line 2355, in _handle_dbapi_exception
+    raise sqlalchemy_exception.with_traceback(exc_info[2]) from e
+  File "/home/runner/workspace/.pythonlibs/lib/python3.11/site-packages/sqlalchemy/engine/base.py", line 1967, in _exec_single_context
+    self.dialect.do_execute(
+  File "/home/runner/workspace/.pythonlibs/lib/python3.11/site-packages/sqlalchemy/engine/default.py", line 941, in do_execute
+    cursor.execute(statement, parameters)
+sqlalchemy.exc.OperationalError: (psycopg2.OperationalError) SSL connection has been closed unexpectedly
+
+[SQL: SELECT "user".id AS user_id, "user".username AS user_username, "user".email AS user_email, "user".password_hash AS user_password_hash 
+FROM "user" 
+WHERE "user".username = %(username_1)s 
+ LIMIT %(param_1)s]
+[parameters: {'username_1': 'admin', 'param_1': 1}]
+(Background on this error at: https://sqlalche.me/e/20/e3q8)
+2024-10-05 12:02:10,376 INFO 127.0.0.1 - - [05/Oct/2024 12:02:10] "GET /login?__debugger__=yes&cmd=resource&f=style.css HTTP/1.1" 304 -
+2024-10-05 12:02:10,607 INFO 127.0.0.1 - - [05/Oct/2024 12:02:10] "GET /login?__debugger__=yes&cmd=resource&f=debugger.js HTTP/1.1" 304 -
+2024-10-05 12:02:17,908 INFO 127.0.0.1 - - [05/Oct/2024 12:02:17] "GET /login HTTP/1.1" 200 -
+2024-10-05 12:02:18,033 INFO 127.0.0.1 - - [05/Oct/2024 12:02:18] "GET /static/css/tailwind.css HTTP/1.1" 404 -
+2024-10-05 12:02:18,095 INFO 127.0.0.1 - - [05/Oct/2024 12:02:18] "GET /static/js/app.js HTTP/1.1" 404 -
+2024-10-05 12:02:40,849 INFO 127.0.0.1 - - [05/Oct/2024 12:02:40] "POST /login HTTP/1.1" 200 -
+2024-10-05 12:02:41,071 INFO 127.0.0.1 - - [05/Oct/2024 12:02:41] "GET /static/css/tailwind.css HTTP/1.1" 404 -
+2024-10-05 12:02:41,128 INFO 127.0.0.1 - - [05/Oct/2024 12:02:41] "GET /static/js/app.js HTTP/1.1" 404 -
+2024-10-05 12:02:52,944 INFO 127.0.0.1 - - [05/Oct/2024 12:02:52] "POST /login HTTP/1.1" 200 -
+2024-10-05 12:02:53,118 INFO 127.0.0.1 - - [05/Oct/2024 12:02:53] "GET /static/css/tailwind.css HTTP/1.1" 404 -
+2024-10-05 12:02:53,119 INFO 127.0.0.1 - - [05/Oct/2024 12:02:53] "GET /static/js/app.js HTTP/1.1" 404 -
+2024-10-05 12:02:56,799 INFO 127.0.0.1 - - [05/Oct/2024 12:02:56] "GET /dashboard HTTP/1.1" 302 -
+2024-10-05 12:02:56,964 INFO 127.0.0.1 - - [05/Oct/2024 12:02:56] "GET /login?next=/dashboard HTTP/1.1" 200 -
+2024-10-05 12:02:57,214 INFO 127.0.0.1 - - [05/Oct/2024 12:02:57] "GET /static/css/tailwind.css HTTP/1.1" 404 -
+2024-10-05 12:02:57,221 INFO 127.0.0.1 - - [05/Oct/2024 12:02:57] "GET /static/js/app.js HTTP/1.1" 404 -
+2024-10-05 12:03:07,268 INFO 127.0.0.1 - - [05/Oct/2024 12:03:07] "POST /login HTTP/1.1" 200 -
+2024-10-05 12:03:07,654 INFO 127.0.0.1 - - [05/Oct/2024 12:03:07] "GET /static/css/tailwind.css HTTP/1.1" 404 -
+2024-10-05 12:03:07,655 INFO 127.0.0.1 - - [05/Oct/2024 12:03:07] "GET /static/js/app.js HTTP/1.1" 404 -
+2024-10-05 12:03:10,749 INFO 127.0.0.1 - - [05/Oct/2024 12:03:10] "GET /dashboard HTTP/1.1" 302 -
+2024-10-05 12:03:10,907 INFO 127.0.0.1 - - [05/Oct/2024 12:03:10] "GET /login?next=/dashboard HTTP/1.1" 200 -
+2024-10-05 12:03:11,850 INFO 127.0.0.1 - - [05/Oct/2024 12:03:11] "GET /static/css/tailwind.css HTTP/1.1" 404 -
+2024-10-05 12:03:11,860 INFO 127.0.0.1 - - [05/Oct/2024 12:03:11] "GET /static/js/app.js HTTP/1.1" 404 -

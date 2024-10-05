@@ -6,8 +6,10 @@ import os
 def create_app():
     app = Flask(__name__, template_folder='../templates')
 
-    # Set the database URI for PostgreSQL
+    # Set the database URI for PostgreSQL with SSL mode disabled
     app.config['SQLALCHEMY_DATABASE_URI'] = os.getenv('DATABASE_URL', 'postgresql://username:password@localhost/dbname')
+    if '?sslmode=' not in app.config['SQLALCHEMY_DATABASE_URI']:
+        app.config['SQLALCHEMY_DATABASE_URI'] += '?sslmode=disable'
     app.config['SQLALCHEMY_TRACK_MODIFICATIONS'] = False
     app.config['SECRET_KEY'] = os.getenv('SECRET_KEY', 'your-secret-key')
 
