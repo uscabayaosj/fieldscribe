@@ -66,6 +66,16 @@ def new_entry():
                 if tag not in entry.tags:
                     entry.tags.append(tag)
 
+            # Handle photo upload
+            if 'photo' in request.files:
+                photo = request.files['photo']
+                if photo.filename != '':
+                    filename = secure_filename(photo.filename)
+                    photo_path = os.path.join(current_app.config['UPLOAD_FOLDER'], filename)
+                    photo.save(photo_path)
+                    media = Media(filename=filename, entry_id=entry.id, media_type='image')
+                    db.session.add(media)
+
             db.session.commit()
 
             flash("New entry created successfully!", "success")

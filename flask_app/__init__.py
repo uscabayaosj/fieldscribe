@@ -36,6 +36,10 @@ def create_app():
     app.config['SQLALCHEMY_TRACK_MODIFICATIONS'] = False
     app.config['SECRET_KEY'] = os.getenv('SECRET_KEY', 'your-secret-key')
 
+    # Add UPLOAD_FOLDER configuration
+    app.config['UPLOAD_FOLDER'] = os.path.join(app.root_path, 'static', 'uploads')
+    os.makedirs(app.config['UPLOAD_FOLDER'], exist_ok=True)
+
     db.init_app(app)
 
     login_manager = LoginManager()
