@@ -5,8 +5,12 @@ from flask_app.models import User
 from flask_app.extensions import db
 import re
 from urllib.parse import urlparse, urljoin
+import logging
 
 bp = Blueprint('auth', __name__)
+
+logging.basicConfig(level=logging.DEBUG)
+logger = logging.getLogger(__name__)
 
 def is_safe_url(target):
     ref_url = urlparse(request.host_url)
@@ -64,22 +68,29 @@ def register():
 @bp.route('/login', methods=['GET', 'POST'])
 def login():
     if current_user.is_authenticated:
+        logger.debug("User is already authenticated")
         return redirect_to_dashboard()
 
     if request.method == 'POST':
         username = request.form['username']
         password = request.form['password']
         
+        logger.debug(f"Login attempt for username: {username}")
+        
         user = User.query.filter_by(username=username).first()
         if user and user.check_password(password):
             login_user(user)
+            logger.debug(f"User {username} logged in successfully")
             flash('Logged in successfully.', 'success')
 
             next_page = request.args.get('next')
             if next_page and is_safe_url(next_page):
+                logger.debug(f"Redirecting to next page: {next_page}")
                 return redirect(next_page)
+            logger.debug("Redirecting to dashboard")
             return redirect_to_dashboard()
         else:
+            logger.debug(f"Invalid login attempt for username: {username}")
             flash('Invalid username or password', 'danger')
     
     return render_template('login.html')
