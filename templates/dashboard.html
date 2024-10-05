@@ -3,34 +3,31 @@
 {% block title %}FieldScribe Pro Dashboard{% endblock %}
 
 {% block content %}
-<div class="container mx-auto px-4 py-8">
-    <h1 class="text-4xl font-bold mb-8 text-sky-800">Your Fieldnote Entries</h1>
+<div class="container mx-auto px-4">
+    <h1 class="text-4xl font-bold mb-6 text-sky-800">Your Fieldnote Entries</h1>
     
-    <a href="{{ url_for('entries.new_entry') }}" class="inline-block bg-sky-600 hover:bg-sky-700 text-white font-bold py-3 px-6 rounded-lg focus:outline-none focus:ring-2 focus:ring-sky-500 focus:ring-offset-2 transition duration-300 mb-8">
+    <button onclick="location.href='{{ url_for('entries.new_entry') }}'" class="inline-block bg-[hsl(142.1,76.2%,36.3%)] hover:bg-[hsl(142.1,76.2%,46.3%)] text-white font-bold py-2 px-4 rounded focus:outline-none focus:shadow-outline transition duration-300 mb-6">
         Create New Entry
-    </a>
+    </button>
     
     {% if entries %}
-        <div class="grid gap-8 grid-cols-1 md:grid-cols-2 lg:grid-cols-3">
+        <div class="grid gap-6 grid-cols-1 md:grid-cols-2 lg:grid-cols-3">
             {% for entry in entries %}
-                <div class="bg-white rounded-lg border border-sky-200 shadow-lg overflow-hidden transition duration-300 hover:shadow-xl">
+                <div class="bg-white rounded-lg border border-sky-200 shadow-md overflow-hidden">
                     <div class="p-6 space-y-4">
                         <h2 class="text-2xl font-semibold text-sky-800 leading-tight">{{ entry.title }}</h2>
                         <p class="text-sm text-sky-600">Date: <span class="local-time" data-utc="{{ entry.timestamp.isoformat() if entry.timestamp else entry.date.isoformat() }}"></span></p>
-                        <p class="text-sky-700 line-clamp-3">{{ entry.content }}</p>
+                        <p class="text-sky-700">{{ entry.content[:100] }}{% if entry.content|length > 100 %}...{% endif %}</p>
                         <div class="flex justify-between pt-4">
-                            <a href="{{ url_for('entries.view_entry', entry_id=entry.id) }}" class="bg-sky-100 hover:bg-sky-200 text-sky-800 font-semibold py-2 px-4 rounded-lg transition duration-300">Read more</a>
-                            <a href="{{ url_for('entries.edit_entry', entry_id=entry.id) }}" class="bg-sky-500 hover:bg-sky-600 text-white font-semibold py-2 px-4 rounded-lg transition duration-300">Edit</a>
+                            <a href="{{ url_for('entries.view_entry', entry_id=entry.id) }}" class="bg-sky-100 hover:bg-sky-200 text-sky-800 font-semibold py-2 px-4 rounded transition duration-300">Read more</a>
+                            <a href="{{ url_for('entries.edit_entry', entry_id=entry.id) }}" class="bg-sky-500 hover:bg-sky-600 text-white font-semibold py-2 px-4 rounded transition duration-300">Edit</a>
                         </div>
                     </div>
                 </div>
             {% endfor %}
         </div>
     {% else %}
-        <div class="bg-sky-100 border-l-4 border-sky-500 text-sky-700 p-4 rounded-lg">
-            <p class="font-bold">No entries yet</p>
-            <p>You don't have any fieldnote entries yet. Start by creating a new entry!</p>
-        </div>
+        <p class="text-sky-700 bg-sky-100 border-l-4 border-sky-500 p-4 rounded">You don't have any fieldnote entries yet. Start by creating a new entry!</p>
     {% endif %}
 </div>
 

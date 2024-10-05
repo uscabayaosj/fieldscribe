@@ -4,14 +4,14 @@
 
 {% block content %}
 <div class="container mx-auto px-4 py-8">
-    <h1 class="text-4xl font-bold mb-8 text-sky-800">Thematic Analysis of Your Journal Entries</h1>
-    <div class="bg-white shadow-lg rounded-lg p-8 mb-6">
-        <h2 class="text-3xl font-semibold mb-6 text-sky-700">Analysis Results</h2>
-        <div class="prose prose-lg max-w-none text-gray-700">
+    <h1 class="text-3xl font-bold mb-6 text-sky-800">Thematic Analysis of Your Journal Entries</h1>
+    <div class="bg-white shadow-md rounded px-8 pt-6 pb-8 mb-4">
+        <h2 class="text-2xl font-semibold mb-4 text-sky-700">Analysis Results</h2>
+        <div class="prose max-w-none">
             {{ analysis_result|safe }}
         </div>
     </div>
-    <a href="{{ url_for('entries.dashboard') }}" class="bg-sky-600 hover:bg-sky-700 text-white font-bold py-3 px-6 rounded-lg focus:outline-none focus:shadow-outline transition duration-300">
+    <a href="{{ url_for('entries.dashboard') }}" class="bg-sky-500 hover:bg-sky-600 text-white font-bold py-2 px-4 rounded focus:outline-none focus:shadow-outline transition duration-300">
         Back to Dashboard
     </a>
 </div>
