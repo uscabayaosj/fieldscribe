@@ -55,13 +55,14 @@ def register():
         try:
             db.session.add(new_user)
             db.session.commit()
+            logger.info(f"User {username} registered successfully")
+            flash('Registration successful. Please log in.', 'success')
+            return redirect(url_for('auth.login'))
         except Exception as e:
             db.session.rollback()
+            logger.error(f"Error registering user {username}: {str(e)}")
             flash('An error occurred while creating the account. Please try again.', 'danger')
             return redirect(url_for('auth.register'))
-        
-        flash('Registration successful. Please log in.', 'success')
-        return redirect(url_for('auth.login'))
     
     return render_template('register.html')
 
