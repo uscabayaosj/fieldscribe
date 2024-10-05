@@ -1,19 +1,15 @@
-import openai
 import os
-from typing import List, Dict
+from openai import OpenAI
 
-openai.api_key = os.environ.get("OPENAI_API_KEY")
+client = OpenAI(api_key=os.environ.get("OPENAI_API_KEY"))
 
-def perform_thematic_analysis(entries: List[Dict]) -> str:
+def perform_thematic_analysis(entries):
     prompt = "Meticulously analyze the journal entries and provide a comprehensive summary of the main themes, emotions, and patterns:\n\n"
     for entry in entries:
-        #prompt += f"Title: {entry['title']}\n"
         prompt += f"Content: {entry['content']}\n"
-        #prompt += f"Date: {entry['date']}\n"
-        #prompt += f"Tags: {', '.join(entry['tags'])}\n\n"
 
-    response = openai.ChatCompletion.create(
-        model="gpt-4o-mini",
+    response = client.chat.completions.create(
+        model="gpt-4",
         messages=[
             {"role": "system", "content": "As a sophisticated qualitative researcher, provide in-depth thematic analysis of journal entries, highlighting main themes, emotions, and patterns with clarity."},
             {"role": "user", "content": prompt}
@@ -22,4 +18,3 @@ def perform_thematic_analysis(entries: List[Dict]) -> str:
     )
 
     return response.choices[0].message.content
-

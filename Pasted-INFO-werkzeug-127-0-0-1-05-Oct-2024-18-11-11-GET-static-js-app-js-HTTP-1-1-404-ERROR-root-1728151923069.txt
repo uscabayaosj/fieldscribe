@@ -1,0 +1,49 @@
+INFO:werkzeug:127.0.0.1 - - [05/Oct/2024 18:11:11] "GET /static/js/app.js HTTP/1.1" 404 -
+ERROR:root:{"error": "Error analyzing entries", "exception": "\n\nYou tried to access openai.ChatCompletion, but this is no longer supported in openai>=1.0.0 - see the README at https://github.com/openai/openai-python for the API.\n\nYou can run `openai migrate` to automatically upgrade your codebase to use the 1.0.0 interface. \n\nAlternatively, you can pin your installation to the old version, e.g. `pip install openai==0.28`\n\nA detailed migration guide is available here: https://github.com/openai/openai-python/discussions/742\n"}
+Traceback (most recent call last):
+  File "/home/runner/workspace/routes/entries.py", line 238, in analyze_entries
+    analysis_result = perform_thematic_analysis(serialized_entries)
+                      ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/home/runner/workspace/utils/thematic_analysis.py", line 15, in perform_thematic_analysis
+    response = openai.ChatCompletion.create(
+               ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/home/runner/workspace/.pythonlibs/lib/python3.11/site-packages/openai/lib/_old_api.py", line 39, in __call__
+    raise APIRemovedInV1(symbol=self._symbol)
+openai.lib._old_api.APIRemovedInV1: 
+
+You tried to access openai.ChatCompletion, but this is no longer supported in openai>=1.0.0 - see the README at https://github.com/openai/openai-python for the API.
+
+You can run `openai migrate` to automatically upgrade your codebase to use the 1.0.0 interface. 
+
+Alternatively, you can pin your installation to the old version, e.g. `pip install openai==0.28`
+
+A detailed migration guide is available here: https://github.com/openai/openai-python/discussions/742
+
+INFO:werkzeug:127.0.0.1 - - [05/Oct/2024 18:11:14] "GET /analyze HTTP/1.1" 302 -
+INFO:werkzeug:127.0.0.1 - - [05/Oct/2024 18:11:15] "GET /dashboard HTTP/1.1" 200 -
+INFO:werkzeug:127.0.0.1 - - [05/Oct/2024 18:11:16] "GET /static/css/tailwind.css HTTP/1.1" 404 -
+INFO:werkzeug:127.0.0.1 - - [05/Oct/2024 18:11:16] "GET /static/js/app.js HTTP/1.1" 404 -
+ERROR:root:{"error": "Error analyzing entries", "exception": "\n\nYou tried to access openai.ChatCompletion, but this is no longer supported in openai>=1.0.0 - see the README at https://github.com/openai/openai-python for the API.\n\nYou can run `openai migrate` to automatically upgrade your codebase to use the 1.0.0 interface. \n\nAlternatively, you can pin your installation to the old version, e.g. `pip install openai==0.28`\n\nA detailed migration guide is available here: https://github.com/openai/openai-python/discussions/742\n"}
+Traceback (most recent call last):
+  File "/home/runner/workspace/routes/entries.py", line 238, in analyze_entries
+    analysis_result = perform_thematic_analysis(serialized_entries)
+                      ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/home/runner/workspace/utils/thematic_analysis.py", line 15, in perform_thematic_analysis
+    response = openai.ChatCompletion.create(
+               ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/home/runner/workspace/.pythonlibs/lib/python3.11/site-packages/openai/lib/_old_api.py", line 39, in __call__
+    raise APIRemovedInV1(symbol=self._symbol)
+openai.lib._old_api.APIRemovedInV1: 
+
+You tried to access openai.ChatCompletion, but this is no longer supported in openai>=1.0.0 - see the README at https://github.com/openai/openai-python for the API.
+
+You can run `openai migrate` to automatically upgrade your codebase to use the 1.0.0 interface. 
+
+Alternatively, you can pin your installation to the old version, e.g. `pip install openai==0.28`
+
+A detailed migration guide is available here: https://github.com/openai/openai-python/discussions/742
+
+INFO:werkzeug:127.0.0.1 - - [05/Oct/2024 18:11:20] "GET /analyze HTTP/1.1" 302 -
+INFO:werkzeug:127.0.0.1 - - [05/Oct/2024 18:11:21] "GET /dashboard HTTP/1.1" 200 -
+INFO:werkzeug:127.0.0.1 - - [05/Oct/2024 18:11:21] "GET /static/css/tailwind.css HTTP/1.1" 404 -
+INFO:werkzeug:127.0.0.1 - - [05/Oct/2024 18:11:21] "GET /static/js/app.js HTTP/1.1" 404 -
