@@ -121,6 +121,23 @@ def edit_entry(entry):
                 if tag:
                     entry.tags.remove(tag)
 
+            # Handle photo upload
+            if 'photo' in request.files:
+                photo = request.files['photo']
+                if photo.filename != '':
+                    filename = secure_filename(photo.filename)
+                    photo_path = os.path.join(current_app.config['UPLOAD_FOLDER'], filename)
+                    photo.save(photo_path)
+                    
+                    # Delete old media if it exists
+                    old_media = Media.query.filter_by(entry_id=entry.id).first()
+                    if old_media:
+                        db.session.delete(old_media)
+                    
+                    # Create new media
+                    media = Media(filename=filename, entry_id=entry.id, media_type='image')
+                    db.session.add(media)
+
             db.session.commit()
 
             flash("Entry updated successfully!", "success")
@@ -152,7 +169,8 @@ def delete_entry(entry):
 @owner_required
 def view_entry(entry):
     try:
-        return render_template('entry_detail.html', entry=entry)
+        media = Media.query.filter_by(entry_id=entry.id).first()
+        return render_template('entry_detail.html', entry=entry, media=media)
     except Exception as e:
         logging.error(json.dumps({"error": "Error viewing entry", "exception": str(e)}), exc_info=True)
         flash("An error occurred while viewing the entry. Please try again.", "error")
