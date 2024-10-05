@@ -73,6 +73,7 @@ def login():
         user = User.query.filter_by(username=username).first()
         if user and user.check_password(password):
             login_user(user)
+            flash('Logged in successfully.', 'success')
 
             next_page = request.args.get('next')
             if next_page and is_safe_url(next_page):
