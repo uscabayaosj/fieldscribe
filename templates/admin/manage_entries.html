@@ -1,0 +1,31 @@
+{% extends "base.html" %}
+
+{% block title %}Manage Entries{% endblock %}
+
+{% block content %}
+<div class="container mx-auto px-4 py-8">
+    <h1 class="text-3xl font-bold mb-6 text-sky-800">Manage Entries</h1>
+    <div class="bg-white shadow-md rounded px-8 pt-6 pb-8 mb-4">
+        <table class="w-full">
+            <thead>
+                <tr>
+                    <th class="text-left">ID</th>
+                    <th class="text-left">Title</th>
+                    <th class="text-left">User</th>
+                    <th class="text-left">Date</th>
+                </tr>
+            </thead>
+            <tbody>
+                {% for entry in entries %}
+                <tr>
+                    <td>{{ entry.id }}</td>
+                    <td>{{ entry.title }}</td>
+                    <td>{{ entry.user.username }}</td>
+                    <td>{{ entry.date.strftime('%Y-%m-%d %H:%M:%S') }}</td>
+                </tr>
+                {% endfor %}
+            </tbody>
+        </table>
+    </div>
+</div>
+{% endblock %}
