@@ -25,22 +25,25 @@ class TestEntriesRoutes(unittest.TestCase):
         user = User(username='testuser', email='test@example.com')
         user.set_password('testpassword')
         db.session.add(user)
+        db.session.commit()  # Commit to get the user.id
+
         entry = Entry(title='Test Entry', content='Test Content', user_id=user.id)
         db.session.add(entry)
         db.session.commit()
 
         # Log in the user
-        self.client.post('/login', data=dict(
-            username='testuser',
-            password='testpassword'
-        ), follow_redirects=True)
+        with self.client:
+            self.client.post('/login', data=dict(
+                username='testuser',
+                password='testpassword'
+            ), follow_redirects=True)
 
-        # Test exporting the entry
-        response = self.client.get(f'/entry/{entry.id}/export')
-        self.assertEqual(response.status_code, 200)
-        self.assertEqual(response.mimetype, 'application/pdf')
-        self.assertTrue(response.headers['Content-Disposition'].startswith('attachment; filename=entry_'))
-        self.assertGreater(len(response.data), 0)
+            # Test exporting the entry
+            response = self.client.get(f'/entry/{entry.id}/export')
+            self.assertEqual(response.status_code, 200)
+            self.assertEqual(response.mimetype, 'application/pdf')
+            self.assertTrue(response.headers['Content-Disposition'].startswith('attachment; filename=entry_'))
+            self.assertGreater(len(response.data), 0)
 
 if __name__ == '__main__':
     unittest.main()
