@@ -49,6 +49,7 @@
                     {% else %}
                         <li><a href="{{ url_for('entries.dashboard') }}" class="hover:text-sky-200">Dashboard</a></li>
                         <li><a href="{{ url_for('entries.new_entry') }}" class="hover:text-sky-200">New Entry</a></li>
+                        <li><a href="{{ url_for('entries.analyze_entries') }}" class="hover:text-sky-200">Analyze Entries</a></li>
                     {% endif %}
                     <li><a href="{{ url_for('auth.logout') }}" class="hover:text-sky-200">Logout</a></li>
                 {% else %}
