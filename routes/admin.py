@@ -3,6 +3,7 @@ from flask_login import login_required
 from utils.decorators import admin_required
 from flask_app.models import User, Entry
 from flask_app.extensions import db
+from sqlalchemy.orm import joinedload
 
 bp = Blueprint('admin', __name__)
 
@@ -23,5 +24,5 @@ def manage_users():
 @login_required
 @admin_required
 def manage_entries():
-    entries = Entry.query.all()
+    entries = Entry.query.options(joinedload(Entry.user)).all()
     return render_template('admin/manage_entries.html', entries=entries)

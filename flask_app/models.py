@@ -45,6 +45,7 @@ class Entry(db.Model):
     tags = db.relationship('Tag', secondary='entry_tags', backref=db.backref('entries', lazy='dynamic'))
     media = db.relationship('Media', backref='entry', lazy='dynamic')
     share_token = db.Column(db.String(32), unique=True)
+    user = db.relationship('User', backref='entries')
 
 class Tag(db.Model):
     id = db.Column(db.Integer, primary_key=True)

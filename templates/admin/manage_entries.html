@@ -20,7 +20,7 @@
                 <tr>
                     <td>{{ entry.id }}</td>
                     <td>{{ entry.title }}</td>
-                    <td>{{ entry.user.username }}</td>
+                    <td>{{ entry.user.username if entry.user else 'N/A' }}</td>
                     <td>{{ entry.date.strftime('%Y-%m-%d %H:%M:%S') }}</td>
                 </tr>
                 {% endfor %}
