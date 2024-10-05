@@ -3,6 +3,7 @@ from flask_login import login_required, current_user
 from flask_app.models import Entry, Tag, Media
 from flask_app.extensions import db
 from utils.pdf_generator import generate_pdf
+from utils.thematic_analysis import perform_thematic_analysis
 import json
 import logging
 from datetime import datetime
@@ -233,7 +234,11 @@ def analyze_entries():
                 'tags': [tag.name for tag in entry.tags]
             }
             serialized_entries.append(serialized_entry)
-        return jsonify(serialized_entries), 200
+        
+        analysis_result = perform_thematic_analysis(serialized_entries)
+        
+        return render_template('analysis_result.html', analysis_result=analysis_result)
     except Exception as e:
-        logging.error(json.dumps({"error": "Error retrieving entries for analysis", "exception": str(e)}), exc_info=True)
-        return jsonify({'error': 'An error occurred while retrieving entries for analysis'}), 500
+        logging.error(json.dumps({"error": "Error analyzing entries", "exception": str(e)}), exc_info=True)
+        flash("An error occurred while analyzing the entries. Please try again.", "error")
+        return redirect(url_for('entries.dashboard'))
