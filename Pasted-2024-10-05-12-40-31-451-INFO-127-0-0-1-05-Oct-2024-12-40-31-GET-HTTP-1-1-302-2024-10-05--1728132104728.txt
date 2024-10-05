@@ -1,0 +1,27 @@
+2024-10-05 12:40:31,451 INFO 127.0.0.1 - - [05/Oct/2024 12:40:31] "GET / HTTP/1.1" 302 -
+2024-10-05 12:40:31,452 INFO 127.0.0.1 - - [05/Oct/2024 12:40:31] "GET / HTTP/1.1" 302 -
+2024-10-05 12:40:31,459 INFO 127.0.0.1 - - [05/Oct/2024 12:40:31] "GET /dashboard HTTP/1.1" 302 -
+2024-10-05 12:40:31,474 INFO 127.0.0.1 - - [05/Oct/2024 12:40:31] "GET /login?next=/dashboard HTTP/1.1" 200 -
+2024-10-05 12:40:31,486 INFO 127.0.0.1 - - [05/Oct/2024 12:40:31] "GET /static/css/tailwind.css HTTP/1.1" 404 -
+2024-10-05 12:40:31,504 INFO 127.0.0.1 - - [05/Oct/2024 12:40:31] "GET /static/js/app.js HTTP/1.1" 404 -
+2024-10-05 12:40:31,564 INFO 127.0.0.1 - - [05/Oct/2024 12:40:31] "GET /dashboard HTTP/1.1" 302 -
+2024-10-05 12:40:31,679 INFO 127.0.0.1 - - [05/Oct/2024 12:40:31] "GET /login?next=/dashboard HTTP/1.1" 200 -
+2024-10-05 12:40:31,812 INFO 127.0.0.1 - - [05/Oct/2024 12:40:31] "GET /static/css/tailwind.css HTTP/1.1" 404 -
+2024-10-05 12:40:32,191 INFO 127.0.0.1 - - [05/Oct/2024 12:40:32] "GET /static/js/app.js HTTP/1.1" 404 -
+2024-10-05 12:40:46,819 INFO 127.0.0.1 - - [05/Oct/2024 12:40:46] "GET / HTTP/1.1" 302 -
+2024-10-05 12:40:46,931 INFO 127.0.0.1 - - [05/Oct/2024 12:40:46] "GET /dashboard HTTP/1.1" 302 -
+2024-10-05 12:40:47,044 INFO 127.0.0.1 - - [05/Oct/2024 12:40:47] "GET /login?next=/dashboard HTTP/1.1" 200 -
+2024-10-05 12:40:47,182 INFO 127.0.0.1 - - [05/Oct/2024 12:40:47] "GET /static/css/tailwind.css HTTP/1.1" 404 -
+2024-10-05 12:40:47,509 INFO 127.0.0.1 - - [05/Oct/2024 12:40:47] "GET /static/js/app.js HTTP/1.1" 404 -
+2024-10-05 12:40:52,138 INFO 127.0.0.1 - - [05/Oct/2024 12:40:52] "GET /register HTTP/1.1" 200 -
+2024-10-05 12:40:52,608 INFO 127.0.0.1 - - [05/Oct/2024 12:40:52] "GET /static/css/tailwind.css HTTP/1.1" 404 -
+2024-10-05 12:40:52,617 INFO 127.0.0.1 - - [05/Oct/2024 12:40:52] "GET /static/js/app.js HTTP/1.1" 404 -
+2024-10-05 12:41:18,430 ERROR Error registering user testuser2: (psycopg2.errors.StringDataRightTruncation) value too long for type character varying(128)
+
+[SQL: INSERT INTO "user" (username, email, password_hash) VALUES (%(username)s, %(email)s, %(password_hash)s) RETURNING "user".id]
+[parameters: {'username': 'testuser2', 'email': 'testuser2@example.com', 'password_hash': 'scrypt:32768:8:1$k4wJsuPsMIHOKGds$b8872cfe97c95421f0adc4013b7ef484d86f54c161b271d32bd1a345f653317a2b2ba77ccfa551f1a71d84a4dc3064a191aee4bd9e577079cc0887fd803abe42'}]
+(Background on this error at: https://sqlalche.me/e/20/9h9h)
+2024-10-05 12:41:18,431 INFO 127.0.0.1 - - [05/Oct/2024 12:41:18] "POST /register HTTP/1.1" 302 -
+2024-10-05 12:41:18,544 INFO 127.0.0.1 - - [05/Oct/2024 12:41:18] "GET /register HTTP/1.1" 200 -
+2024-10-05 12:41:19,013 INFO 127.0.0.1 - - [05/Oct/2024 12:41:19] "GET /static/css/tailwind.css HTTP/1.1" 404 -
+2024-10-05 12:41:19,063 INFO 127.0.0.1 - - [05/Oct/2024 12:41:19] "GET /static/js/app.js HTTP/1.1" 404 -

@@ -27,6 +27,10 @@ def create_app():
     with app.app_context():
         from flask_app import models
         db.create_all()
+        # Check if the password_hash column needs to be altered
+        from sqlalchemy import text
+        db.session.execute(text("ALTER TABLE public.user ALTER COLUMN password_hash TYPE character varying(255);"))
+        db.session.commit()
 
         # Register blueprints
         from routes.entries import bp as entries_bp
