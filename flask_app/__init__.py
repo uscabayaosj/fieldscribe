@@ -1,5 +1,6 @@
 from flask import Flask, redirect, url_for
-from flask_app.extensions import db
+from flask_sqlalchemy import SQLAlchemy
+from flask_migrate import Migrate
 from flask_login import LoginManager
 import os
 from werkzeug.security import generate_password_hash
@@ -8,23 +9,27 @@ import logging
 logging.basicConfig(level=logging.INFO)
 logger = logging.getLogger(__name__)
 
-def create_admin_user():
-    from flask_app.models import User
-    logger.info("Checking for admin user...")
-    admin = User.query.filter_by(username='admin').first()
-    if not admin:
-        logger.info("Admin user not found. Creating new admin user...")
-        admin = User(
-            username='admin',
-            email='admin@example.com',
-            is_admin=True
-        )
-        admin.set_password('Admin123!')
-        db.session.add(admin)
-        db.session.commit()
-        logger.info("Admin user created successfully.")
-    else:
-        logger.info("Admin user already exists.")
+db = SQLAlchemy()
+migrate = Migrate()
+
+def create_admin_user(app):
+    with app.app_context():
+        from flask_app.models import User
+        logger.info("Checking for admin user...")
+        admin = User.query.filter_by(username='admin').first()
+        if not admin:
+            logger.info("Admin user not found. Creating new admin user...")
+            admin = User(
+                username='admin',
+                email='admin@example.com',
+                is_admin=True
+            )
+            admin.set_password('Admin123!')
+            db.session.add(admin)
+            db.session.commit()
+            logger.info("Admin user created successfully.")
+        else:
+            logger.info("Admin user already exists.")
 
 def create_app():
     app = Flask(__name__, template_folder='../templates')
@@ -41,7 +46,8 @@ def create_app():
     os.makedirs(app.config['UPLOAD_FOLDER'], exist_ok=True)
 
     db.init_app(app)
-
+    migrate.init_app(app, db)
+    
     login_manager = LoginManager()
     login_manager.init_app(app)
     login_manager.login_view = 'auth.login'
@@ -53,22 +59,17 @@ def create_app():
 
     with app.app_context():
         from flask_app import models
-        db.create_all()
-        # Check if the password_hash column needs to be altered
-        from sqlalchemy import text
-        db.session.execute(text("ALTER TABLE public.user ALTER COLUMN password_hash TYPE character varying(255);"))
-        db.session.execute(text("ALTER TABLE public.user ADD COLUMN IF NOT EXISTS is_admin BOOLEAN DEFAULT FALSE;"))
-        db.session.commit()
+        db.create_all()  # This will create tables based on your models
 
         # Create admin user if it doesn't exist
-        create_admin_user()
+        create_admin_user(app)
 
         # Register blueprints
         from routes.entries import bp as entries_bp
         from routes.auth import bp as auth_bp
         from routes.admin import bp as admin_bp
         app.register_blueprint(entries_bp)
-        app.register_blueprint(auth_bp)
+        app.register_blueprint(auth_bp, url_prefix='/auth')
         app.register_blueprint(admin_bp, url_prefix='/admin')
 
         @app.route('/')

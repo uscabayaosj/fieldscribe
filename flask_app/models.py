@@ -5,6 +5,7 @@ import pytz
 from flask_login import UserMixin
 
 class User(db.Model, UserMixin):
+    __tablename__ = 'app_users'  # Changed table name to avoid reserved keyword
     id = db.Column(db.Integer, primary_key=True)
     username = db.Column(db.String(80), unique=True, nullable=False)
     email = db.Column(db.String(120), unique=True, nullable=False)
@@ -40,7 +41,7 @@ class Entry(db.Model):
     title = db.Column(db.String(100), nullable=False)
     content = db.Column(db.Text, nullable=False)
     date = db.Column(db.DateTime, nullable=False, default=lambda: datetime.now(pytz.UTC))
-    user_id = db.Column(db.Integer, db.ForeignKey('user.id'), nullable=False)
+    user_id = db.Column(db.Integer, db.ForeignKey('app_users.id'), nullable=False)  # Updated foreign key
     location = db.Column(db.String(100))
     tags = db.relationship('Tag', secondary='entry_tags', backref=db.backref('entries', lazy='dynamic'))
     media = db.relationship('Media', backref='entry', lazy='dynamic')
