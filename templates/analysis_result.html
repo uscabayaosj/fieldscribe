@@ -8,38 +8,11 @@
     <div class="bg-white shadow-md rounded px-8 pt-6 pb-8 mb-4">
         <h2 class="text-2xl font-semibold mb-4 text-sky-700">Analysis Results</h2>
         <div class="prose max-w-none">
-            <h3 class="text-xl font-semibold mb-2 text-sky-600">Main Themes</h3>
-            <ul class="list-disc pl-5 mb-4">
-                {% for theme in analysis_result.main_themes %}
-                    <li>{{ theme }}</li>
-                {% endfor %}
-            </ul>
-
-            <h3 class="text-xl font-semibold mb-2 text-sky-600">Emotions</h3>
-            <ul class="list-disc pl-5 mb-4">
-                {% for emotion in analysis_result.emotions %}
-                    <li>{{ emotion }}</li>
-                {% endfor %}
-            </ul>
-
-            <h3 class="text-xl font-semibold mb-2 text-sky-600">Patterns</h3>
-            <ul class="list-disc pl-5 mb-4">
-                {% for pattern in analysis_result.patterns %}
-                    <li>{{ pattern }}</li>
-                {% endfor %}
-            </ul>
-
-            <h3 class="text-xl font-semibold mb-2 text-sky-600">Summary</h3>
-            <p class="mb-4">{{ analysis_result.summary }}</p>
+            {{ analysis_result|safe }}
         </div>
     </div>
-    <div class="flex justify-between">
-        <a href="{{ url_for('entries.dashboard') }}" class="bg-sky-500 hover:bg-sky-600 text-white font-bold py-2 px-4 rounded focus:outline-none focus:shadow-outline transition duration-300">
-            Back to Dashboard
-        </a>
-        <a href="{{ url_for('entries.export_analysis_pdf') }}" class="bg-green-500 hover:bg-green-600 text-white font-bold py-2 px-4 rounded focus:outline-none focus:shadow-outline transition duration-300">
-            Export as PDF
-        </a>
-    </div>
+    <a href="{{ url_for('entries.dashboard') }}" class="bg-sky-500 hover:bg-sky-600 text-white font-bold py-2 px-4 rounded focus:outline-none focus:shadow-outline transition duration-300">
+        Back to Dashboard
+    </a>
 </div>
 {% endblock %}
