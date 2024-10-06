@@ -238,7 +238,6 @@ def analyze_entries():
             
             analysis_result = perform_thematic_analysis(serialized_entries)
             
-            # Save the analysis result
             new_analysis = AnalysisResult(user_id=current_user.id, content=analysis_result)
             db.session.add(new_analysis)
             db.session.commit()
@@ -250,7 +249,6 @@ def analyze_entries():
             flash("An error occurred while analyzing the entries. Please try again.", "error")
             return redirect(url_for('entries.dashboard'))
     else:
-        # Fetch the latest analysis result for the current user
         latest_analysis = AnalysisResult.query.filter_by(user_id=current_user.id).order_by(AnalysisResult.date.desc()).first()
         return render_template('analyze.html', latest_analysis=latest_analysis)
 
@@ -259,3 +257,15 @@ def analyze_entries():
 def analysis_history():
     analysis_results = AnalysisResult.query.filter_by(user_id=current_user.id).order_by(AnalysisResult.date.desc()).all()
     return render_template('analysis_history.html', analysis_results=analysis_results)
+
+@bp.route('/delete_analysis/<int:analysis_id>', methods=['POST'])
+@login_required
+def delete_analysis(analysis_id):
+    analysis = AnalysisResult.query.get_or_404(analysis_id)
+    if analysis.user_id != current_user.id:
+        abort(403)  # Forbidden
+    
+    db.session.delete(analysis)
+    db.session.commit()
+    flash('Analysis result deleted successfully', 'success')
+    return redirect(url_for('entries.analysis_history'))
