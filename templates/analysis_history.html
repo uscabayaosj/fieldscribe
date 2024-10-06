@@ -1,0 +1,27 @@
+{% extends "base.html" %}
+
+{% block title %}Analysis History{% endblock %}
+
+{% block content %}
+<div class="container mx-auto px-4 py-8">
+    <h1 class="text-3xl font-bold mb-6 text-sky-800">Analysis History</h1>
+    {% if analysis_results %}
+        {% for result in analysis_results %}
+            <div class="bg-white shadow-md rounded px-8 pt-6 pb-8 mb-4">
+                <h2 class="text-2xl font-semibold mb-4 text-sky-700">Analysis Result</h2>
+                <p class="mb-4 text-sky-600">Performed on: {{ result.date.strftime('%Y-%m-%d %H:%M:%S') }}</p>
+                <div class="prose max-w-none">
+                    {{ result.content|safe }}
+                </div>
+            </div>
+        {% endfor %}
+    {% else %}
+        <p class="text-sky-700">No analysis results found.</p>
+    {% endif %}
+    <div class="mt-8">
+        <a href="{{ url_for('entries.analyze_entries') }}" class="bg-sky-500 hover:bg-sky-600 text-white font-bold py-2 px-4 rounded focus:outline-none focus:shadow-outline transition duration-300">
+            Perform New Analysis
+        </a>
+    </div>
+</div>
+{% endblock %}

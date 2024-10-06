@@ -9,9 +9,25 @@
         <p class="mb-4 text-sky-700">Click the button below to perform a thematic analysis of your journal entries. This process may take a few moments.</p>
         <form method="POST" action="{{ url_for('entries.analyze_entries') }}">
             <button type="submit" class="bg-sky-500 hover:bg-sky-600 text-white font-bold py-2 px-4 rounded focus:outline-none focus:shadow-outline transition duration-300">
-                Start Analysis
+                Start New Analysis
             </button>
         </form>
+    </div>
+
+    {% if latest_analysis %}
+    <div class="bg-white shadow-md rounded px-8 pt-6 pb-8 mt-8">
+        <h2 class="text-2xl font-semibold mb-4 text-sky-700">Latest Analysis Result</h2>
+        <p class="mb-4 text-sky-600">Performed on: {{ latest_analysis.date.strftime('%Y-%m-%d %H:%M:%S') }}</p>
+        <div class="prose max-w-none">
+            {{ latest_analysis.content|safe }}
+        </div>
+    </div>
+    {% endif %}
+
+    <div class="mt-8">
+        <a href="{{ url_for('entries.analysis_history') }}" class="bg-sky-100 hover:bg-sky-200 text-sky-800 font-bold py-2 px-4 rounded focus:outline-none focus:shadow-outline transition duration-300">
+            View Analysis History
+        </a>
     </div>
 </div>
 {% endblock %}

@@ -1,4 +1,4 @@
-from flask_app.extensions import db  # Import db from extensions
+from flask_app.extensions import db
 from werkzeug.security import generate_password_hash, check_password_hash
 from datetime import datetime
 import pytz
@@ -61,3 +61,13 @@ class Media(db.Model):
     filename = db.Column(db.String(255), nullable=False)
     entry_id = db.Column(db.Integer, db.ForeignKey('entry.id'), nullable=False)
     media_type = db.Column(db.String(50), nullable=False)
+
+class AnalysisResult(db.Model):
+    id = db.Column(db.Integer, primary_key=True)
+    user_id = db.Column(db.Integer, db.ForeignKey('user.id'), nullable=False)
+    content = db.Column(db.Text, nullable=False)
+    date = db.Column(db.DateTime, nullable=False, default=lambda: datetime.now(pytz.UTC))
+    user = db.relationship('User', backref='analysis_results')
+
+    def __repr__(self):
+        return f'<AnalysisResult {self.id}>'

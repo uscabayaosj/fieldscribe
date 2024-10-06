@@ -1,6 +1,6 @@
 from flask import Blueprint, render_template, redirect, url_for, request, jsonify, flash, abort, current_app, send_file
 from flask_login import login_required, current_user
-from flask_app.models import Entry, Tag, Media
+from flask_app.models import Entry, Tag, Media, AnalysisResult
 from flask_app.extensions import db
 from utils.pdf_generator import generate_pdf
 from utils.thematic_analysis import perform_thematic_analysis
@@ -238,10 +238,24 @@ def analyze_entries():
             
             analysis_result = perform_thematic_analysis(serialized_entries)
             
+            # Save the analysis result
+            new_analysis = AnalysisResult(user_id=current_user.id, content=analysis_result)
+            db.session.add(new_analysis)
+            db.session.commit()
+            
+            flash("Analysis completed and saved successfully!", "success")
             return render_template('analysis_result.html', analysis_result=analysis_result)
         except Exception as e:
             logging.error(f"Error analyzing entries: {str(e)}", exc_info=True)
             flash("An error occurred while analyzing the entries. Please try again.", "error")
             return redirect(url_for('entries.dashboard'))
     else:
-        return render_template('analyze.html')
+        # Fetch the latest analysis result for the current user
+        latest_analysis = AnalysisResult.query.filter_by(user_id=current_user.id).order_by(AnalysisResult.date.desc()).first()
+        return render_template('analyze.html', latest_analysis=latest_analysis)
+
+@bp.route('/analysis_history')
+@login_required
+def analysis_history():
+    analysis_results = AnalysisResult.query.filter_by(user_id=current_user.id).order_by(AnalysisResult.date.desc()).all()
+    return render_template('analysis_history.html', analysis_results=analysis_results)
