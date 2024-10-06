@@ -218,27 +218,30 @@ def view_shared_entry(share_token):
     entry = Entry.query.filter_by(share_token=share_token).first_or_404()
     return render_template('shared_entry.html', entry=entry)
 
-@bp.route('/analyze', methods=['GET'])
+@bp.route('/analyze', methods=['GET', 'POST'])
 @login_required
 def analyze_entries():
-    try:
-        entries = Entry.query.filter_by(user_id=current_user.id).all()
-        serialized_entries = []
-        for entry in entries:
-            serialized_entry = {
-                'id': entry.id,
-                'title': entry.title,
-                'content': entry.content,
-                'date': entry.date.isoformat(),
-                'location': entry.location,
-                'tags': [tag.name for tag in entry.tags]
-            }
-            serialized_entries.append(serialized_entry)
-        
-        analysis_result = perform_thematic_analysis(serialized_entries)
-        
-        return render_template('analysis_result.html', analysis_result=analysis_result)
-    except Exception as e:
-        logging.error(f"Error analyzing entries: {str(e)}", exc_info=True)
-        flash("An error occurred while analyzing the entries. Please try again.", "error")
-        return redirect(url_for('entries.dashboard'))
+    if request.method == 'POST':
+        try:
+            entries = Entry.query.filter_by(user_id=current_user.id).all()
+            serialized_entries = []
+            for entry in entries:
+                serialized_entry = {
+                    'id': entry.id,
+                    'title': entry.title,
+                    'content': entry.content,
+                    'date': entry.date.isoformat(),
+                    'location': entry.location,
+                    'tags': [tag.name for tag in entry.tags]
+                }
+                serialized_entries.append(serialized_entry)
+            
+            analysis_result = perform_thematic_analysis(serialized_entries)
+            
+            return render_template('analysis_result.html', analysis_result=analysis_result)
+        except Exception as e:
+            logging.error(f"Error analyzing entries: {str(e)}", exc_info=True)
+            flash("An error occurred while analyzing the entries. Please try again.", "error")
+            return redirect(url_for('entries.dashboard'))
+    else:
+        return render_template('analyze.html')

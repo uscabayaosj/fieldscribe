@@ -1,0 +1,17 @@
+{% extends "base.html" %}
+
+{% block title %}Analyze Entries{% endblock %}
+
+{% block content %}
+<div class="container mx-auto px-4 py-8">
+    <h1 class="text-3xl font-bold mb-6 text-sky-800">Analyze Your Journal Entries</h1>
+    <div class="bg-white shadow-md rounded px-8 pt-6 pb-8 mb-4">
+        <p class="mb-4 text-sky-700">Click the button below to perform a thematic analysis of your journal entries. This process may take a few moments.</p>
+        <form method="POST" action="{{ url_for('entries.analyze_entries') }}">
+            <button type="submit" class="bg-sky-500 hover:bg-sky-600 text-white font-bold py-2 px-4 rounded focus:outline-none focus:shadow-outline transition duration-300">
+                Start Analysis
+            </button>
+        </form>
+    </div>
+</div>
+{% endblock %}
