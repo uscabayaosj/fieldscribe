@@ -5,7 +5,7 @@ import os
 from werkzeug.security import generate_password_hash
 import logging
 
-logging.basicConfig(level=logging.INFO)
+logging.basicConfig(level=logging.DEBUG)
 logger = logging.getLogger(__name__)
 
 def create_admin_user():
@@ -53,12 +53,17 @@ def create_app():
 
     with app.app_context():
         from flask_app import models
+        logger.debug("Dropping all existing tables...")
+        db.drop_all()
+        logger.debug("Creating all tables...")
         db.create_all()
-        # Check if the password_hash column needs to be altered
-        from sqlalchemy import text
-        db.session.execute(text("ALTER TABLE public.user ALTER COLUMN password_hash TYPE character varying(255);"))
-        db.session.execute(text("ALTER TABLE public.user ADD COLUMN IF NOT EXISTS is_admin BOOLEAN DEFAULT FALSE;"))
-        db.session.commit()
+        
+        # Log table names
+        inspector = db.inspect(db.engine)
+        for table_name in inspector.get_table_names():
+            logger.debug(f"Table created: {table_name}")
+            for column in inspector.get_columns(table_name):
+                logger.debug(f"  Column: {column['name']} (Type: {column['type']})")
 
         # Create admin user if it doesn't exist
         create_admin_user()
