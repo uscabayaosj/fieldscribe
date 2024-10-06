@@ -47,14 +47,17 @@ def new_entry():
     form = EntryForm()
     if form.validate_on_submit():
         try:
+            project = form.project.data
             title = form.title.data
-            content = form.content.data
-            mood = form.mood.data
-            weather = form.weather.data
             location = form.location.data
+            context = form.context.data
+            detailed_observation = form.detailed_observation.data
+            reflection = form.reflection.data
             tags = [tag.strip() for tag in form.tags.data.split(',')]
             
-            entry = Entry(title=title, content=content, mood=mood, weather=weather, location=location, user_id=current_user.id, date=datetime.utcnow())
+            entry = Entry(project=project, title=title, location=location, context=context,
+                          detailed_observation=detailed_observation, reflection=reflection,
+                          user_id=current_user.id, date=datetime.utcnow())
             db.session.add(entry)
 
             existing_tags = Tag.query.filter(Tag.name.in_(tags)).all()
@@ -98,11 +101,12 @@ def edit_entry(entry):
     form = EntryForm(obj=entry)
     if form.validate_on_submit():
         try:
+            entry.project = form.project.data
             entry.title = form.title.data
-            entry.content = form.content.data
-            entry.mood = form.mood.data
-            entry.weather = form.weather.data
             entry.location = form.location.data
+            entry.context = form.context.data
+            entry.detailed_observation = form.detailed_observation.data
+            entry.reflection = form.reflection.data
             tags = [tag.strip() for tag in form.tags.data.split(',')]
             
             existing_tags = {tag.name for tag in entry.tags}
@@ -233,11 +237,12 @@ def analyze_entries():
                 serialized_entry = {
                     'id': entry.id,
                     'title': entry.title,
-                    'content': entry.content,
-                    'date': entry.date.isoformat(),
+                    'project': entry.project,
                     'location': entry.location,
-                    'mood': entry.mood,
-                    'weather': entry.weather,
+                    'context': entry.context,
+                    'detailed_observation': entry.detailed_observation,
+                    'reflection': entry.reflection,
+                    'date': entry.date.isoformat(),
                     'tags': [tag.name for tag in entry.tags]
                 }
                 serialized_entries.append(serialized_entry)

@@ -1,6 +1,7 @@
 from flask import Flask, redirect, url_for
 from flask_app.extensions import db
 from flask_login import LoginManager
+from flask_migrate import Migrate
 import os
 from werkzeug.security import generate_password_hash
 import logging
@@ -41,6 +42,7 @@ def create_app():
     os.makedirs(app.config['UPLOAD_FOLDER'], exist_ok=True)
 
     db.init_app(app)
+    migrate = Migrate(app, db)
 
     login_manager = LoginManager()
     login_manager.init_app(app)
@@ -53,20 +55,6 @@ def create_app():
 
     with app.app_context():
         from flask_app import models
-        logger.debug("Dropping all existing tables...")
-        db.drop_all()
-        logger.debug("Creating all tables...")
-        db.create_all()
-        
-        # Log table names
-        inspector = db.inspect(db.engine)
-        for table_name in inspector.get_table_names():
-            logger.debug(f"Table created: {table_name}")
-            for column in inspector.get_columns(table_name):
-                logger.debug(f"  Column: {column['name']} (Type: {column['type']})")
-
-        # Create admin user if it doesn't exist
-        create_admin_user()
 
         # Register blueprints
         from routes.entries import bp as entries_bp

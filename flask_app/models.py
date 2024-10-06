@@ -37,13 +37,14 @@ class User(db.Model, UserMixin):
 
 class Entry(db.Model):
     id = db.Column(db.Integer, primary_key=True)
+    project = db.Column(db.String(100), nullable=False)
     title = db.Column(db.String(100), nullable=False)
-    content = db.Column(db.Text, nullable=False)
+    location = db.Column(db.String(100))
+    context = db.Column(db.Text)
+    detailed_observation = db.Column(db.Text, nullable=False)
+    reflection = db.Column(db.Text)
     date = db.Column(db.DateTime, nullable=False, default=lambda: datetime.now(pytz.UTC))
     user_id = db.Column(db.Integer, db.ForeignKey('user.id'), nullable=False)
-    location = db.Column(db.String(100))
-    mood = db.Column(db.String(50))
-    weather = db.Column(db.String(50))
     tags = db.relationship('Tag', secondary='entry_tags', backref=db.backref('entries', lazy='dynamic'))
     media = db.relationship('Media', backref='entry', lazy='dynamic')
     share_token = db.Column(db.String(32), unique=True)
