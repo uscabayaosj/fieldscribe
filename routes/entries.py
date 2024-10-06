@@ -239,6 +239,6 @@ def analyze_entries():
         
         return render_template('analysis_result.html', analysis_result=analysis_result)
     except Exception as e:
-        logging.error(json.dumps({"error": "Error analyzing entries", "exception": str(e)}), exc_info=True)
+        logging.error(f"Error analyzing entries: {str(e)}", exc_info=True)
         flash("An error occurred while analyzing the entries. Please try again.", "error")
         return redirect(url_for('entries.dashboard'))

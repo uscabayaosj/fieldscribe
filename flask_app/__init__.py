@@ -29,10 +29,10 @@ def create_admin_user():
 def create_app():
     app = Flask(__name__, template_folder='../templates')
 
-    # Set the database URI for PostgreSQL with SSL mode disabled
+    # Set the database URI for PostgreSQL with SSL mode required
     app.config['SQLALCHEMY_DATABASE_URI'] = os.getenv('DATABASE_URL', 'postgresql://username:password@localhost/dbname')
     if '?sslmode=' not in app.config['SQLALCHEMY_DATABASE_URI']:
-        app.config['SQLALCHEMY_DATABASE_URI'] += '?sslmode=disable'
+        app.config['SQLALCHEMY_DATABASE_URI'] += '?sslmode=require'
     app.config['SQLALCHEMY_TRACK_MODIFICATIONS'] = False
     app.config['SECRET_KEY'] = os.getenv('SECRET_KEY', 'your-secret-key')
 

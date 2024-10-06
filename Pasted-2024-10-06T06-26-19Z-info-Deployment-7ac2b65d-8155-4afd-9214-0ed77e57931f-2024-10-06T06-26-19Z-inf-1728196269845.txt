@@ -1,0 +1,133 @@
+2024-10-06T06:26:19Z info: Deployment: 7ac2b65d-8155-4afd-9214-0ed77e57931f
+2024-10-06T06:26:19Z info: Build: bfb10b4b-b089-4da6-839a-b09f638bd1f8
+2024-10-06T06:26:19Z info: Connecting to builder
+2024-10-06T06:26:24Z info: Builder connected
+2024-10-06T06:26:26Z info: Installing packages
+--> npm install
+
+
+removed 15 packages, and audited 1282 packages in 8s
+
+167 packages are looking for funding
+  run `npm fund` for details
+
+
+31 vulnerabilities (2 low, 8 moderate, 21 high)
+
+To address issues that do not require attention, run:
+  npm audit fix
+
+To address all issues (including breaking changes), run:
+  npm audit fix --force
+
+Run `npm audit` for details.
+
+npm notice
+npm notice New minor version of npm available! 10.8.1 -> 10.9.0
+npm notice Changelog: https://github.com/npm/cli/releases/tag/v10.9.0
+npm notice To update run: npm install -g npm@10.9.0
+npm notice
+
+--> poetry lock --no-update
+
+--> poetry lock --no-update
+
+Resolving dependencies...
+
+Resolving dependencies...
+
+--> poetry install
+
+--> poetry install
+
+Installing dependencies from lock file
+
+Installing dependencies from lock file
+
+Package operations: 1 install, 2 updates, 0 removals
+  • Updating anyio (3.7.1 -> 4.6.0)
+
+  • Updating anyio (3.7.1 -> 4.6.0)
+
+  • Installing jiter (0.5.0)
+
+  • Installing jiter (0.5.0)
+
+  • Updating openai (1.3.5 -> 1.51.0)
+
+  • Updating openai (1.3.5 -> 1.51.0)
+
+2024-10-06T06:26:43Z info: Skipping Build as no Build command set
+2024-10-06T06:26:43Z info: Pushing pid1 binary layer...
+2024-10-06T06:26:48Z info: Skipping Python layer creation
+2024-10-06T06:26:48Z info: Pushing hosting layer...
+2024-10-06T06:26:49Z info: Retrieved cached nix layer
+2024-10-06T06:26:49Z info: Created hosting layer
+2024-10-06T06:26:50Z info: Created pid1 binary layer
+2024-10-06T06:28:26Z info: Created Repl layer
+2024-10-06T06:28:27Z info: Pushed image manifest
+2024-10-06T06:28:28Z info: Pushed soci index manifest
+2024-10-06T06:28:33Z info: Creating Autoscale service
+  File "/home/runner/workspace/.pythonlibs/lib/python3.11/site-packages/sqlalchemy/engine/base.py", line 146, in __init__
+  File "/home/runner/workspace/.pythonlibs/lib/python3.11/site-packages/sqlalchemy/pool/base.py", line 1263, in _checkout
+  File "/home/runner/workspace/.pythonlibs/lib/python3.11/site-packages/sqlalchemy/engine/base.py", line 3302, in raw_connection
+    return self._create_connection()
+    with self.begin() as conn:
+  File "/home/runner/workspace/.pythonlibs/lib/python3.11/site-packages/sqlalchemy/pool/base.py", line 896, in __connect
+The above exception was the direct cause of the following exception:
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+          ^^^^^^^^^^^^
+  File "/home/runner/workspace/.pythonlibs/lib/python3.11/site-packages/sqlalchemy/engine/base.py", line 3302, in raw_connection
+  File "/home/runner/workspace/.pythonlibs/lib/python3.11/site-packages/sqlalchemy/pool/impl.py", line 179, in _do_get
+    return dialect.connect(*cargs, **cparams)
+                             ^^^^^^^^^^^^^^^^^^^^^^^
+Traceback (most recent call last):
+  File "/home/runner/workspace/.pythonlibs/lib/python3.11/site-packages/sqlalchemy/pool/base.py", line 900, in __connect
+    return _ConnectionRecord(self)
+  File "/home/runner/workspace/.pythonlibs/lib/python3.11/site-packages/sqlalchemy/pool/base.py", line 712, in checkout
+sqlalchemy.exc.OperationalError: (psycopg2.OperationalError) connection to server at "ep-green-dew-a59eb1x3.us-east-2.aws.neon.tech" (2600:1f16:12b2:b40a:533d:22ad:38c2:f393), port 5432 failed: ERROR:  connection is insecure (try using `sslmode=require`)
+  File "/home/runner/workspace/.pythonlibs/lib/python3.11/site-packages/sqlalchemy/util/langhelpers.py", line 146, in __exit__
+                             ^^^^^^^^^^^^^^^^^^^^^^^
+    return self.loaded_dbapi.connect(*cargs, **cparams)
+    return self.pool.connect()
+  File "/home/runner/workspace/.pythonlibs/lib/python3.11/site-packages/sqlalchemy/util/langhelpers.py", line 146, in __exit__
+  File "/home/runner/workspace/.pythonlibs/lib/python3.11/site-packages/sqlalchemy/engine/base.py", line 146, in __init__
+           ^^^^^^^^^^^^^^^^^^^
+    raise exc_value.with_traceback(exc_tb)
+    return _ConnectionFairy._checkout(self)
+  File "/home/runner/workspace/.pythonlibs/lib/python3.11/site-packages/sqlalchemy/pool/base.py", line 449, in connect
+    self.dbapi_connection = connection = pool._invoke_creator(self)
+    self._call_for_binds(bind_key, "create_all")
+    fairy = _ConnectionRecord.checkout(pool)
+    with util.safe_reraise():
+  File "/home/runner/workspace/.pythonlibs/lib/python3.11/site-packages/sqlalchemy/engine/base.py", line 146, in __init__
+                                         ^^^^^^^^^^^^^^^^^^^^^^^^^^
+           ^^^^^^^^^^^^^^
+Traceback (most recent call last):
+  File "/home/runner/workspace/.pythonlibs/lib/python3.11/site-packages/sqlalchemy/pool/impl.py", line 177, in _do_get
+    db.create_all()
+    return self.loaded_dbapi.connect(*cargs, **cparams)
+  File "/home/runner/workspace/.pythonlibs/lib/python3.11/site-packages/sqlalchemy/pool/base.py", line 449, in connect
+    with util.safe_reraise():
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/home/runner/workspace/.pythonlibs/lib/python3.11/site-packages/sqlalchemy/pool/base.py", line 390, in _create_connection
+    self.__connect()
+  File "/home/runner/workspace/.pythonlibs/lib/python3.11/site-packages/sqlalchemy/util/langhelpers.py", line 146, in __exit__
+
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+    fairy = _ConnectionRecord.checkout(pool)
+    rec = pool._do_get()
+    self.dbapi_connection = connection = pool._invoke_creator(self)
+    self.__connect()
+    with util.safe_reraise():
+
+sqlalchemy.exc.OperationalError: (psycopg2.OperationalError) connection to server at "ep-green-dew-a59eb1x3.us-east-2.aws.neon.tech" (2600:1f16:12b2:b424:fdaf:6c84:8d6e:429f), port 5432 failed: ERROR:  connection is insecure (try using `sslmode=require`)
+Traceback (most recent call last):
+  File "/home/runner/workspace/.pythonlibs/lib/python3.11/site-packages/sqlalchemy/engine/base.py", line 146, in __init__
+            ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+    with util.safe_reraise():
+
+    raise exc_value.with_traceback(exc_tb)
+  File "/home/runner/workspace/.pythonlibs/lib/python3.11/site-packages/sqlalchemy/pool/base.py", line 896, in __connect
+    raise exc_value.with_traceback(exc_tb)
+2024-10-06T06:29:47Z error: The deployment failed to initialize due to a configuration or code error. Check the logs tab for more information. For additional support, contact us at support@replit.com. 
