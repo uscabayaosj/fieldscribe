@@ -49,10 +49,12 @@ def new_entry():
         try:
             title = form.title.data
             content = form.content.data
+            mood = form.mood.data
+            weather = form.weather.data
             location = form.location.data
             tags = [tag.strip() for tag in form.tags.data.split(',')]
             
-            entry = Entry(title=title, content=content, location=location, user_id=current_user.id, date=datetime.utcnow())
+            entry = Entry(title=title, content=content, mood=mood, weather=weather, location=location, user_id=current_user.id, date=datetime.utcnow())
             db.session.add(entry)
 
             existing_tags = Tag.query.filter(Tag.name.in_(tags)).all()
@@ -98,6 +100,8 @@ def edit_entry(entry):
         try:
             entry.title = form.title.data
             entry.content = form.content.data
+            entry.mood = form.mood.data
+            entry.weather = form.weather.data
             entry.location = form.location.data
             tags = [tag.strip() for tag in form.tags.data.split(',')]
             
@@ -232,6 +236,8 @@ def analyze_entries():
                     'content': entry.content,
                     'date': entry.date.isoformat(),
                     'location': entry.location,
+                    'mood': entry.mood,
+                    'weather': entry.weather,
                     'tags': [tag.name for tag in entry.tags]
                 }
                 serialized_entries.append(serialized_entry)

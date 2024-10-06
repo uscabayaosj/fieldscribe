@@ -19,6 +19,10 @@ args = "Run Flask App"
 task = "workflow.run"
 args = "Run Tests"
 
+[[workflows.workflow.tasks]]
+task = "workflow.run"
+args = "Apply migrations"
+
 [[workflows.workflow]]
 name = "Run Flask App"
 author = "agent"
@@ -41,6 +45,17 @@ agentRequireRestartOnSave = false
 [[workflows.workflow.tasks]]
 task = "shell.exec"
 args = "python -m unittest tests/test_entries.py"
+
+[[workflows.workflow]]
+name = "Apply migrations"
+author = "agent"
+
+[workflows.workflow.metadata]
+agentRequireRestartOnSave = false
+
+[[workflows.workflow.tasks]]
+task = "shell.exec"
+args = "flask db migrate -m 'Add mood and weather fields to Entry model' && flask db upgrade"
 
 [deployment]
 run = ["sh", "-c", "python main.py"]

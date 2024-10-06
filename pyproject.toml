@@ -19,6 +19,7 @@ python-magic = "^0.4.27"
 reportlab = "^4.2.5"
 wtforms = "^3.1.2"
 openai = "^1.51.0"
+flask-migrate = "^4.0.7"
 
 
 [build-system]

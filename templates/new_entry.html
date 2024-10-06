@@ -13,7 +13,15 @@
         </div>
         <div class="space-y-2">
             <label for="content" class="block text-sm font-medium text-sky-700">Content</label>
-            {{ form.content(class="w-full px-3 py-2 border border-sky-300 rounded-md focus:outline-none focus:ring-2 focus:ring-sky-500", rows="5") }}
+            {{ form.content(class="w-full px-3 py-2 border border-sky-300 rounded-md focus:outline-none focus:ring-2 focus:ring-sky-500", rows="10", id="content-editor") }}
+        </div>
+        <div class="space-y-2">
+            <label for="mood" class="block text-sm font-medium text-sky-700">Mood</label>
+            {{ form.mood(class="w-full px-3 py-2 border border-sky-300 rounded-md focus:outline-none focus:ring-2 focus:ring-sky-500") }}
+        </div>
+        <div class="space-y-2">
+            <label for="weather" class="block text-sm font-medium text-sky-700">Weather</label>
+            {{ form.weather(class="w-full px-3 py-2 border border-sky-300 rounded-md focus:outline-none focus:ring-2 focus:ring-sky-500") }}
         </div>
         <div class="space-y-2">
             <label for="location" class="block text-sm font-medium text-sky-700">Location</label>
@@ -36,7 +44,14 @@
     </form>
 </div>
 
+<script src="https://cdn.ckeditor.com/ckeditor5/38.0.1/classic/ckeditor.js"></script>
 <script>
+    ClassicEditor
+        .create(document.querySelector('#content-editor'))
+        .catch(error => {
+            console.error(error);
+        });
+
     const photoInput = document.getElementById('photo');
     const photoPreview = document.getElementById('photo-preview');
     const previewImage = document.getElementById('preview-image');
