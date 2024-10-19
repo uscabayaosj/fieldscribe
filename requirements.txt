@@ -1,1 +1,10 @@
 openai==1.51.0
+Flask==2.2.5
+Flask-Login==0.6.2
+Werkzeug==2.2.3
+Flask-SQLAlchemy==3.0.3
+Flask-Migrate==4.0.4
+psycopg2-binary==2.9.6
+pytz==2023.3
+reportlab==4.2.5  # or the latest version
+Flask-WTF==1.1.1  # or the latest version

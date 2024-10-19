@@ -1,5 +1,5 @@
 modules = ["web", "python-3.11", "nodejs-20"]
-run = "node index.js"
+run = "python main.py"
 
 [nix]
 channel = "stable-24_05"
@@ -126,6 +126,10 @@ deploymentTarget = "cloudrun"
 localPort = 5000
 externalPort = 80
 exposeLocalhost = true
+
+[[ports]]
+localPort = 8080
+externalPort = 8080
 
 [[ports]]
 localPort = 8081
