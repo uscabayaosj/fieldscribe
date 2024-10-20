@@ -1,10 +1,14 @@
 from flask import Flask, redirect, url_for
+from .models import User  # Add this near the top of the file
 from flask_app.extensions import db
 from flask_login import LoginManager
 from flask_migrate import Migrate
 import os
 from werkzeug.security import generate_password_hash
 import logging
+from flask.cli import with_appcontext
+import click
+
 
 logging.basicConfig(level=logging.DEBUG)
 logger = logging.getLogger(__name__)
@@ -28,7 +32,7 @@ def create_admin_user():
         logger.info("Admin user already exists.")
 
 def create_app():
-    app = Flask(__name__, template_folder='../templates')
+    app = Flask(__name__, template_folder='../templates', static_folder='../static')
 
     # Set the database URI for PostgreSQL with SSL mode required
     app.config['SQLALCHEMY_DATABASE_URI'] = os.getenv('DATABASE_URL', 'postgresql://username:password@localhost/dbname')
@@ -53,9 +57,20 @@ def create_app():
         from flask_app.models import User
         return User.query.get(int(user_id))
 
+    @app.cli.command("reset-db")
+    @with_appcontext
+    def reset_db():
+        """Drops all tables and recreates them"""
+        with app.app_context():
+            db.drop_all()
+            db.engine.execute("DROP SEQUENCE IF EXISTS user_id_seq;")
+            db.create_all()
+            click.echo('Database tables reset!')
+
     with app.app_context():
         from flask_app import models
-
+        db.create_all()
+        create_admin_user()    
         # Register blueprints
         from routes.entries import bp as entries_bp
         from routes.auth import bp as auth_bp
