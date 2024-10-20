@@ -68,4 +68,7 @@ def create_app():
         def index():
             return redirect(url_for('entries.dashboard'))
 
+        # Ensure admin user is created
+        create_admin_user()
+
     return app
