@@ -119,7 +119,7 @@ task = "shell.exec"
 args = "export FLASK_APP=main.py && flask db upgrade && flask db migrate && flask db upgrade"
 
 [deployment]
-run = ["sh", "-c", "node index.js"]
+run = ["sh", "-c", "python main.py"]
 deploymentTarget = "cloudrun"
 
 [[ports]]

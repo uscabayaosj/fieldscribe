@@ -58,7 +58,7 @@ To run the application:
    - `set FLASK_APP=main.py`
 
 4. Run the application:
-   - `flask run`
+   - `flask run --host=0.0.0.0 --port=5000`
 
 6. Open a web browser and navigate to `http://localhost:5000`
 
